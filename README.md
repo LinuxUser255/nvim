@@ -1,6 +1,10 @@
 # Neovim Config
 
-![myNeovim](https://github.com/LinuxUser255/linux.nvim/assets/46334926/e2575fcb-495e-40c3-b55f-1a8faa0b990d)
+
+![Neovim-new](https://github.com/LinuxUser255/nvim/assets/46334926/30a2de18-0a82-41fa-8c12-8556830963ec)
+
+
+
 
 <br>
 
