@@ -13,21 +13,23 @@ local mason = {
 	},
 }
 
+-- uncomment the ones you want to use
+-- you may have to install them manually
 local mason_lspconfig = {
 	"williamboman/mason-lspconfig.nvim",
 	opts = {
 		ensure_installed = {
-			"solidity_ls",
-			"efm",
-			"bashls",
-			"tsserver",
-			"tailwindcss",
-			"pyright",
-			"lua_ls",
-			"emmet_ls",
-			"jsonls",
-			"clangd",
-			"dockerls",
+		--	"solidity_ls",
+		--	"efm",
+		--	"bashls",
+		--	"tsserver",
+		--	"tailwindcss",
+		--	"pyright",
+		--	"lua_ls",
+		--	"emmet_ls",
+		--	"jsonls",
+		--	"clangd",
+		--	"dockerls",
 		},
 		automatic_installation = true,
 	},
