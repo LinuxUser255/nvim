@@ -8,21 +8,44 @@ vim.keymap.set("n", "<leader>ve", vim.cmd.Vex)
 -- when highlighting a line, press shift + j or k
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 -- J takes the line below and appends it to your current line with a space
-
 -- And this one keeps your cursor in one place dispite movving other lines
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "J", "mzJ`z")
-
 -- The two below keeps the cursor in the middle when scrolling with ctrl + d & u
 -- Makes searching the file less disorienting.
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+-- Make search terms stay in the middle when searching the file for characters, text, etc..
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
 
--- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+-- Pasting highlighted text over a pre-selected highligted text
+-- Deletes highlighted word into the 'void' register and then paste it over.
+vim.keymap.set("x", "<leader>p", [["_dP]])
+
+-- YANK TEXT TO THE SYSTEM CLIPBOARD, leader y enabling you to paste elsewhere
+vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+vim.keymap.set("i", "<C-c>", "<Esc>")
+vim.keymap.set("n", "Q", "<nop>")
+
+-- When using Tmux: ctrl + f and now fuzzy find in another terminal session
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+
+-- Quick-fix navigation list
+vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
+vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
+vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+
+-- ! Extremely useful: space + s opens a menu and begin replacing the word on which your cursor lies.
+vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
+-- Make the file executable without having to exit and chmoding it manually.
+vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -61,4 +84,3 @@ autocmd({"BufWritePre"}, {
 -- attempt opaque background: It worked!
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-
