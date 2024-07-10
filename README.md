@@ -15,10 +15,9 @@
 
 **https://www.lua.org/**
 
-<br>
-
 **https://github.com/neovim**
 
+**[lazy.nvim](https://lazy.folke.io/)**
 
 
 ## Pre-install Requirements:
@@ -64,13 +63,13 @@ nvim
 ```
 
 
-- The `netrw` way
+- The [netrw](https://neovim.io/doc/user/pi_netrw.html) way
 ```sh
 nvim .
 ```
 
 
-- Sync Lazy
+- Sync [Lazy](https://lazy.folke.io/)
 ```sh
 nvim --headless "+Lazy! sync" +qa
 ```
