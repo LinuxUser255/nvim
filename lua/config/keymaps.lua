@@ -25,7 +25,9 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
 -- YANK TEXT TO THE SYSTEM CLIPBOARD, leader y enabling you to paste elsewhere
+-- 1st way: Select the line(s): Normal mode, ctrl v to select the line, then leader y
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+-- 2nd way: Normal mode, then shift + leader + y
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
 vim.keymap.set("i", "<C-c>", "<Esc>")
