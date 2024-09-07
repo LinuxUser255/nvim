@@ -33,7 +33,7 @@ local opts = {
 		lazy = true,
 	},
 	install = {
-		colorscheme = { "rose-pine" },
+		colorscheme = { "tokyonight-night" },
 	},
 }
 
