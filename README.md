@@ -22,6 +22,12 @@
 
 ## Pre-install Requirements:
   * [ripgrep](https://github.com/BurntSushi/ripgrep#installation) is required for multiple [telescope](https://github.com/nvim-telescope/telescope.nvim#suggested-dependencies) pickers.
+  * If you are having issues with Tree-Sitter, then you might not have `node js` installed. The two quick solution to try are:
+  * `sudo apt install tree-sitter-cli` if that doesn't work, then you may need to install **Node.js** 
+  * `sudo apt install nodejs npm` then Install Tree-sitter CLI globally with npm:
+  * `sudo npm install -g tree-sitter-cli`
+  * Verify the installation and restart NeoVim
+  * `tree-sitter --version`
 
 
 ## Installation
