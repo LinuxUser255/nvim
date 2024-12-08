@@ -1,16 +1,47 @@
 -- This keymaps file needs to be "required" in /nvim/config/init.lua
 
+-- [[ Useful Remaps ]]
+
+-- leader pv returns to Project View
+-- leader ve splits the screen in two verticaly
+-- Ctrl l jumps to the Right window
+-- Ctrl h jumps to the Left window
+
+-- [[ Moving lines up and down ]]
+-- when highlighting a line, press shift + j or k
+-- visual shif K to move up, and
+-- visual shift J to move down
+
+-- ! Extremely useful:
+-- space + s opens a menu
+-- and begins replacing the word on which your cursor lies.
+
+-- [[ Copy Pasting ]]
+-- leader y
+-- or leader capital Y
+
 -- [[ NetRW cmds Project view & vertical window split ]]
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>ve", vim.cmd.Vex)
 
+-- Remap Ctrl + l to move to the right split window
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to the right split window" })
+
+-- Remap Ctrl + h to move to the left split window
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to the left split window" })
+
+-- Make the file executable without having to exit and chmoding it manually.
+vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+
 --[ ! Move an entite line or lines up or down. ]]
 -- when highlighting a line, press shift + j or k
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+
 -- J takes the line below and appends it to your current line with a space
 -- And this one keeps your cursor in one place dispite movving other lines
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "J", "mzJ`z")
+
 -- The two below keeps the cursor in the middle when scrolling with ctrl + d & u
 -- Makes searching the file less disorienting.
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -47,7 +78,7 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Make the file executable without having to exit and chmoding it manually.
-vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
+--vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
