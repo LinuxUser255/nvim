@@ -77,9 +77,6 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 -- ! Extremely useful: space + s opens a menu and begin replacing the word on which your cursor lies.
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
--- Make the file executable without having to exit and chmoding it manually.
---vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
-
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
