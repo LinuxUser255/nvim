@@ -2,8 +2,8 @@
 
 -- [[ Useful Remaps ]]
 
--- leader pv returns to Project View
--- leader ve splits the screen in two verticaly
+-- leader pv enters Project View, ( netrw's version of a file tree)
+-- leader ve splits the screen in two, verticaly
 -- Ctrl l jumps to the Right window
 -- Ctrl h jumps to the Left window
 
