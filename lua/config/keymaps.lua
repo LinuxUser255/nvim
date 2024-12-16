@@ -2,33 +2,54 @@
 
 -- [[ Useful Remaps ]]
 
--- leader pv enters Project View, ( netrw's version of a file tree)
--- leader ve splits the screen in two, verticaly
--- Ctrl l jumps to the Right window
--- Ctrl h jumps to the Left window
+--  [[ Project View & Vertical Splits ]]
+--   leader pv enters Project View, ( netrw's version of a file tree)
+--   leader ve splits the screen in two, verticaly
+
+-- [[ Vertical window navigation ]]
+--  Ctrl l jumps to the Right window
+--  Ctrl h jumps to the Left window
+
+-- [[ Window Resizing ]]
+--  Increase width by 3 columns: Ctrl o
+--  Decrease width by 3 columns: Ctrl y
 
 -- [[ Moving lines up and down ]]
--- when highlighting a line, press shift + j or k
--- visual shif K to move up, and
--- visual shift J to move down
+--  when highlighting a line, press shift + j or k
+--  visual shif K to move up, and
+--  visual shift J to move down
+
+-- [[ Open Telescope ]]
+--  space tt
 
 -- ! Extremely useful:
--- space + s opens a menu
--- and begins replacing the word on which your cursor lies.
+--  space + s opens a menu
+--  and begins replacing the word on which your cursor lies.
 
 -- [[ Copy Pasting ]]
--- leader y
--- or leader capital Y
+--  leader y
+--  or leader capital Y
 
 -- [[ NetRW cmds Project view & vertical window split ]]
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>ve", vim.cmd.Vex)
 
+-- Open Telescope
+vim.keymap.set("n", "<leader>tt", vim.cmd.Telescope)
+
+-- [[ Vertical split window navigation ]]
 -- Remap Ctrl + l to move to the right split window
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to the right split window" })
 
 -- Remap Ctrl + h to move to the left split window
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Move to the left split window" })
+
+-- Increase width by 3 columns: Ctrl o
+vim.keymap.set("n", "<C-o>", "<C-w>3>", { desc = "Increase vertical width by 3 columns" })
+
+-- Decrease width by 3 columns: Ctrl y
+vim.keymap.set("n", "<C-y>", "<C-w>3<", { desc = "Decrease vertical width by 3 columns" })
+
 
 -- Make the file executable without having to exit and chmoding it manually.
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
