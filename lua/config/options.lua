@@ -29,4 +29,8 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
+-- highlight current line
+vim.opt.cursorline = true
+
+-- display vertical line column at 80
 vim.opt.colorcolumn = "80"
