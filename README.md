@@ -1,7 +1,8 @@
 # Neovim Config
 
+![NeoVimConfig-New](https://github.com/user-attachments/assets/32b2e3a4-94b8-4153-845f-856850e89959)
 
-![Neovim-new](https://github.com/LinuxUser255/nvim/assets/46334926/30a2de18-0a82-41fa-8c12-8556830963ec)
+
 
 
 
