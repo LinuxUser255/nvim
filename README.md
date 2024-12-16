@@ -19,6 +19,7 @@
 
 **[lazy.nvim](https://lazy.folke.io/)**
 
+<br>
 
 ## Pre-install Requirements:
   * [ripgrep](https://github.com/BurntSushi/ripgrep#installation) is required for multiple [telescope](https://github.com/nvim-telescope/telescope.nvim#suggested-dependencies) pickers.
@@ -29,6 +30,7 @@
   * Verify the installation and restart NeoVim
   * `tree-sitter --version`
 
+<br>
 
 ## Installation
 
@@ -58,8 +60,9 @@ git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.co
 | Linux | `$XDG_CONFIG_HOME/nvim`, `~/.config/nvim` |
 | MacOS | `$XDG_CONFIG_HOME/nvim`, `~/.config/nvim` |
 
+<br>
 
-### Post Install
+## Post Install
 
 **Open Neovim**
 
@@ -80,5 +83,55 @@ nvim .
 nvim --headless "+Lazy! sync" +qa
 ```
 
+<br>
+
+# How to Use
+
+### Remaps & Shortcuts:
+
+
+***The spacebar is the leader key***
+
+| Command          | Description                            |
+|------------------|----------------------------------------|
+| `leader pv`      | **Enter Project View**                 |
+| `leader ve`      | **Split windows vertically**          |
+| `Ctrl l`         | **Jumps to the Right window**          |
+| `Ctrl h`         | **Jumps to the Left window**           |
+| `Ctrl o`         | **Increase window width by 3 columns** |
+| `Ctrl y`         | **Decrease window width by 3 columns** |
+| `leader tt`      | **Open Telescope**                     |
+
 
 <br>
+
+
+### Moving lines Up & Down
+- Higlight the line, `Shift v`, then while holding down Shift, press `j` to go down
+- And `k` to move up.
+- This also works with muliple lines selected simultanuiously
+
+| Command              | Description                            |
+|----------------------|----------------------------------------|
+| `Shift v Shift j`    |  **Moves seclected line down**         |
+| `Shift v Shift k`    |  **Moves seclected line up**           |
+
+<br>
+
+### Highlight Replace
+| Command       | Description                                                  |
+|--------------------------|---------------------------------------------------|
+| `Shift s`                |  **Highlihts line on which your cursor lies.**    |
+| `Backspace`              |  **Deletes the highlighted line.**                |
+| `Typing new characters`  |  **Replaces the highlighted line with new chars.**|
+
+
+<br>
+
+
+
+
+
+
+
+
