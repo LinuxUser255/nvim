@@ -19,9 +19,6 @@
 --  visual shif K to move up, and
 --  visual shift J to move down
 
--- [[ Open Telescope ]]
---  space tt
-
 -- ! Extremely useful:
 --  space + s opens a menu
 --  and begins replacing the word on which your cursor lies.
@@ -97,6 +94,22 @@ vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
 -- ! Extremely useful: space + s opens a menu and begin replacing the word on which your cursor lies.
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+
+-- Telescope keymaps
+vim.keymap.set("n", "<leader>tt", vim.cmd.Telescope, { desc = "Open Telescope" })
+vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find All Files" })
+vim.keymap.set("n", "<leader>ft", "<cmd>Telescope treesitter<cr>", { desc = "Treesitter" })
+vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live Grep (Ripgrep)" })
+vim.keymap.set("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Buffer search" })
+--vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
+--vim.keymap.set("n", "<leader>fc", "<cmd>Telescope git_commits<cr>", { desc = "Commits" })
+--vim.keymap.set("n", "<C-p>", "<cmd>Telescope git_files<cr>", { desc = "Git files" })
+--vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
+--vim.keymap.set("n", "<leader>fj", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
+--vim.keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
+--vim.keymap.set("n", "<leader>fl", "<cmd>Telescope lsp_references<cr>", { desc = "LSP References" })
+--vim.keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Old Files" })
+--vim.keymap.set("n", "<leader>fs", "<cmd>Telescope grep_string<cr>", { desc = "Grep String" })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
