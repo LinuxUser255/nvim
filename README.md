@@ -47,7 +47,7 @@ rm -rf ~/.local/share/nvim
 
 <br>
 
--  Linux and Mac install
+-  Linux and Mac install. Plug n play - Copy past the git clone command below, type neovim, and boom. One and done!
 ```bash
 git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
