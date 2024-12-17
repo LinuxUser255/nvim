@@ -1,5 +1,4 @@
 -- This init.lua is responsible for lazy.nvim
--- Set the leaderkey to spacebar
 vim.g.maplocalleader = ' '
 vim.g.mapleader = ' '
 
@@ -25,18 +24,6 @@ vim.opt.rtp:prepend(lazypath)
 require('config.options')
 require("config.globals")
 require('config.keymaps')
-
-local plugins = "plugins"
-
-local opts = {
-	defaults = {
-		lazy = true,
-	},
-	install = {
-		colorscheme = { "tokyonight-night" },
-	},
-}
-
 
 -- Need to invoke lazy, and separate the responsiblity of plugins
 -- Instruct lazy to look in the 'plugins' directory
