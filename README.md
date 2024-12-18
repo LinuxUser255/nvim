@@ -30,6 +30,7 @@
   * `sudo npm install -g tree-sitter-cli`
   * Verify the installation and restart NeoVim
   * `tree-sitter --version`
+  * Enababling [Tabnine Auto Completion](https://github.com/codota/tabnine-nvim) will require some additional configuration 
 
 <br>
 
