@@ -27,9 +27,10 @@
 --  leader y
 --  or leader capital Y
 
--- [[ NetRW cmds Project view & vertical window split ]]
+-- [[ NetRW cmds Project view, vertical & horizontal window split ]]
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>ve", vim.cmd.Vex)
+vim.keymap.set("n", "<leader>he", vim.cmd.Hex)
 
 -- Open Telescope
 vim.keymap.set("n", "<leader>tt", vim.cmd.Telescope)
@@ -46,7 +47,6 @@ vim.keymap.set("n", "<C-o>", "<C-w>3>", { desc = "Increase vertical width by 3 c
 
 -- Decrease width by 3 columns: Ctrl y
 vim.keymap.set("n", "<C-y>", "<C-w>3<", { desc = "Decrease vertical width by 3 columns" })
-
 
 -- Make the file executable without having to exit and chmoding it manually.
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
