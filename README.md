@@ -97,7 +97,8 @@ nvim --headless "+Lazy! sync" +qa
 | Command          | Description                            |
 |------------------|----------------------------------------|
 | `leader pv`      | **Enter Project View**                 |
-| `leader ve`      | **Split windows vertically**          |
+| `leader ve`      | **Split windows vertically**           |
+| `leader he`      | **Split windows horizontally**         |
 | `Ctrl l`         | **Jumps to the Right window**          |
 | `Ctrl h`         | **Jumps to the Left window**           |
 | `Ctrl o`         | **Increase window width by 3 columns** |
