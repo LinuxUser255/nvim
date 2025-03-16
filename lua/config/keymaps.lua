@@ -30,7 +30,7 @@
 -- [[ NetRW cmds Project view, vertical & horizontal window split ]]
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>ve", vim.cmd.Vex)
-vim.keymap.set("n", "<leader>he", vim.cmd.Hex)
+vim.keymap.set("n", "<leader>he", vim.cmd.Sex)
 
 -- Open Telescope
 vim.keymap.set("n", "<leader>tt", vim.cmd.Telescope)
