@@ -104,6 +104,7 @@ nvim --headless "+Lazy! sync" +qa
 | `Ctrl o`         | **Increase window width by 3 columns** |
 | `Ctrl y`         | **Decrease window width by 3 columns** |
 | `leader tt`      | **Open Telescope**                     |
+| `leader ff`       | **Find file using Telescope**          |
 
 
 <br>
