@@ -125,9 +125,7 @@ nvim --headless "+Lazy! sync" +qa
 ### Highlight Replace
 | Command       | Description                                                  |
 |--------------------------|---------------------------------------------------|
-| `Shift s`                |  **Highlihts line on which your cursor lies.**    |
-| `Backspace`              |  **Deletes the highlighted line.**                |
-| `Typing new characters`  |  **Replaces the highlighted line with new chars.**|
+| `Shift s`                |  **Deletes the line and goes into insert mode.**  |                |
 
 
 <br>
