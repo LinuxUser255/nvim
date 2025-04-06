@@ -42,8 +42,7 @@
 
 ```bash
 # First delete and remove your current/previous neovim files and dirs.
-rm -rf ~/.config/nvim
-rm -rf ~/.local/share/nvim
+rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
 ```
 
 <br>
