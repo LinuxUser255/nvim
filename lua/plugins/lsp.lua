@@ -25,17 +25,22 @@ return {
                     "pyright",  -- Python language server
                     "clangd",   -- Make sure this is included
                     "bashls",
+                    "gopls",    -- Go language server
                 },
                 automatic_installation = true,
             })
 
             require("mason-registry").refresh(function()
-                -- Install additional tools for C/C++ development
+                -- Install additional tools for development
                 local mr = require("mason-registry")
                 local packages = {
                     "clangd",       -- Make sure this is included
                     "codelldb",     -- LLDB-based debugger
                     "cpptools",     -- Microsoft C/C++ tools (includes cppdbg)
+                    "gopls",        -- Go language server
+                    "delve",        -- Go debugger
+                    "eslint-lsp",   -- ESLint language server
+                    "prettier",     -- Code formatter for JS/TS
                 }
 
                 for _, pkg_name in ipairs(packages) do
@@ -94,6 +99,28 @@ return {
                 end,
                 init_options = {
                     compilationDatabasePath = "build",
+                },
+            })
+
+            -- Go LSP configuration (gopls)
+            lspconfig.gopls.setup({
+                cmd = {"gopls", "serve"},
+                filetypes = {"go", "gomod", "gowork", "gotmpl"},
+                root_dir = function(fname)
+                    return require("lspconfig.util").root_pattern("go.work", "go.mod", ".git")(fname) or vim.fn.getcwd()
+                end,
+                settings = {
+                    gopls = {
+                        analyses = {
+                            unusedparams = true,
+                            shadow = true,
+                        },
+                        staticcheck = true,
+                        gofumpt = true,
+                        usePlaceholders = true,
+                        completeUnimported = true,
+                        matcher = "fuzzy",
+                    },
                 },
             })
 
