@@ -2,12 +2,16 @@ return {
     -- C/C++ specific plugins
     {
         "p00f/clangd_extensions.nvim",
-        ft = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+        -- Remove the ft restriction to ensure it loads
+        -- ft = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
         dependencies = {
             "neovim/nvim-lspconfig",
+            "hrsh7th/cmp-nvim-lsp",
         },
         config = function()
             -- Enhanced clangd configuration
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
             require("clangd_extensions").setup({
                 server = {
                     -- options to pass to nvim-lspconfig
@@ -18,7 +22,7 @@ return {
                         "--clang-tidy",
                         "--header-insertion=iwyu",
                     },
-                    capabilities = require("cmp_nvim_lsp").default_capabilities(),
+                    capabilities = capabilities,
                 },
                 extensions = {
                     -- defaults:
@@ -91,6 +95,7 @@ return {
         "mfussenegger/nvim-dap",
         dependencies = {
             "rcarriga/nvim-dap-ui",
+            "nvim-neotest/nvim-nio"
         },
         config = function()
             local dap = require("dap")
@@ -167,5 +172,28 @@ return {
             -- Configure neotest for C/C++ if needed
             -- Currently there's no specific C/C++ adapter for neotest
         end,
-    }
+    },
+    {
+        "rcarriga/nvim-dap-ui",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+            "nvim-neotest/nvim-nio", -- This is the missing dependency
+        },
+        config = function()
+            local dapui = require("dapui")
+            dapui.setup()
+
+            -- Add automatic opening/closing of dapui when debugging starts/ends
+            local dap = require("dap")
+            dap.listeners.after.event_initialized["dapui_config"] = function()
+                dapui.open()
+            end
+            dap.listeners.before.event_terminated["dapui_config"] = function()
+                dapui.close()
+            end
+            dap.listeners.before.event_exited["dapui_config"] = function()
+                dapui.close()
+            end
+        end,
+    },
 }

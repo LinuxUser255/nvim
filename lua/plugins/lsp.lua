@@ -23,9 +23,8 @@ return {
                     "lua_ls",
                     "rust_analyzer",
                     "pyright",  -- Python language server
-                    "clangd",
+                    "clangd",   -- Make sure this is included
                     "bashls",
-                    "tsserver",
                 },
                 automatic_installation = true,
             })
@@ -34,9 +33,9 @@ return {
                 -- Install additional tools for C/C++ development
                 local mr = require("mason-registry")
                 local packages = {
-                    "clangd",
-                    "codelldb",  -- LLDB-based debugger
-                    "cpptools",  -- Microsoft C/C++ tools (includes cppdbg)
+                    "clangd",       -- Make sure this is included
+                    "codelldb",     -- LLDB-based debugger
+                    "cpptools",     -- Microsoft C/C++ tools (includes cppdbg)
                 }
 
                 for _, pkg_name in ipairs(packages) do
