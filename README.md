@@ -59,7 +59,10 @@
 ## Installation
 
 > **NOTE**
-> `cp your_nvim_conf your_nvim_conf-bk` (if any exists)
+**Back up your current Neovim config if you want.
+```bash
+cp your_nvim_conf your_nvim_conf-bk
+```
 
 
 - #### Then Copy-paste this curl command in your terminal, press Enter, and follow the prompts.
