@@ -10,7 +10,12 @@ return {
       dismiss_keymap = "<C-]>",
       debounce_ms = 800,
       suggestion_color = {gui = "#808080", cterm = 244},
-      exclude_filetypes = {"TelescopePrompt"}
+      exclude_filetypes = {"TelescopePrompt"},
+      -- Enable Tabnine Chat feature
+      chat = {
+        enable = true,
+        shortcut = "<leader>tc", -- Shortcut to open Tabnine Chat
+      }
     })
 
     -- Add keymaps for common Tabnine commands
@@ -19,6 +24,7 @@ return {
     vim.keymap.set("n", "<leader>ts", "<cmd>TabnineStatus<CR>", { desc = "Tabnine Status" })
     vim.keymap.set("n", "<leader>tt", "<cmd>TabnineToggle<CR>", { desc = "Toggle Tabnine" })
     vim.keymap.set("n", "<leader>tn", "<cmd>TabnineNext<CR>", { desc = "Next Tabnine suggestion" })
+
     -- When user highligts code tabnine provides option to edit the code with Tabnine
     -- Edit with tabnine
     vim.keymap.set("n", "<leader>tw", "<cmd>TabnineEdit<CR>", { desc = "Edit with Tabnine" })
@@ -30,6 +36,12 @@ return {
     vim.keymap.set("n", "<leader>td", "<cmd>TabnineDocument<CR>", { desc = "Document code with Tabnine" })
     -- Generate test
     vim.keymap.set("n", "<leader>tg", "<cmd>TabnineGenerate<CR>", { desc = "Generate test with Tabnine" })
+
+    -- Add Tabnine Chat specific keymaps
+    vim.keymap.set("n", "<leader>tc", "<cmd>TabnineChat<CR>", { desc = "Open Tabnine Chat" })
+    vim.keymap.set("v", "<leader>tc", "<cmd>TabnineChat<CR>", { desc = "Open Tabnine Chat with selection" })
+    vim.keymap.set("n", "<leader>tch", "<cmd>TabnineChatHistory<CR>", { desc = "View Tabnine Chat history" })
+    vim.keymap.set("n", "<leader>tcn", "<cmd>TabnineChatNew<CR>", { desc = "Start new Tabnine Chat" })
 
     -- Single debugging command for future troubleshooting
     vim.api.nvim_create_user_command('TabnineDebug', function()
