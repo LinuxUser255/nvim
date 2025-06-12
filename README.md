@@ -75,14 +75,6 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
 
 <br>
 
-- **Linux and Mac install. Plug n play - Copy past the git clone command below**
-- **type `nvim`, the plugins will load, and that's it!**
-```bash
-  git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-```
-
-<br>
-
 
 **Neovim's configurations are located under the following paths, depending on your OS:**
 
