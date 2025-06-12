@@ -33,11 +33,16 @@
  - Vue/Svelte
  - TOML
 
-### The install script will take care of most of the dependencies; however check your version of Neovim first.
+#### The install script will take care of most of the dependencies; however check your version of Neovim first.
 ```bash
   nvim -v
 ```
-  * [This config was built on Neovim version 11.2 - And built from source - latest stable version](https://github.com/neovim/neovim/blob/master/BUILD.md)
+
+#### Should be Version 10 or higher
+
+  * The repos tend to have older versions. But you can still try it.
+  * [This config was built using Neovim version 11.2 - And built from source - latest stable version](https://github.com/neovim/neovim/blob/master/BUILD.md)
+  * And built on Debian 12
   * [Using lazy.nvim for plugin management](https://lazy.folke.io/)
   * [ripgrep](https://github.com/BurntSushi/ripgrep#installation) is required for multiple [telescope](https://github.com/nvim-telescope/telescope.nvim#suggested-dependencies) pickers.
   * [ShellCheck](https://github.com/koalaman/shellcheck)
