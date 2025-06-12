@@ -157,7 +157,7 @@
 
 ## [Netrw Cheat Sheet](https://github.com/LinuxUser255/BashAndLinux/tree/main/NeovimCheatSheets)
 
-## [Tabnine Integration]
+## [Tabnine Integration Separate Documentation](docs/Tabnine-Integration.md)
 
 <br>
 
