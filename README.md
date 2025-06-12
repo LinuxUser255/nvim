@@ -13,7 +13,8 @@
 - [Moving lines Up & Down](#moving-lines-up--down)
 - [Highlight Replace](#highlight-replace)
 - [Netrw Cheat Sheet](#netrw-cheat-sheet)
-
+- [Detailed Config and Tabnine Integration](docs/usage.md)
+- [Tabnine Integration Separate Documentation](docs/Tabnine-Integration.md)
 
 ## Supported Languages
  - Python3
@@ -56,7 +57,7 @@
 
 - **Remove your current/previous neovim files and dirs.**
 ```bash
-rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
+  rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
 ```
 
 <br>
@@ -64,7 +65,7 @@ rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
 - **Linux and Mac install. Plug n play - Copy past the git clone command below**
 - **type `nvim`, the plugins will load, and that's it!**
 ```bash
-git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+  git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
 
 <br>
@@ -82,22 +83,26 @@ git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.co
 ## Post Install
 
 **Open Neovim**
+---
+
 
 - The regular way
 ```sh
-nvim
+  nvim
 ```
 
+<br>
 
 - The [netrw](https://neovim.io/doc/user/pi_netrw.html) way
 ```sh
-nvim .
+  nvim .
 ```
 
+<br>
 
 - Sync [Lazy](https://lazy.folke.io/)
 ```sh
-nvim --headless "+Lazy! sync" +qa
+  nvim --headless "+Lazy! sync" +qa
 ```
 
 <br>
@@ -106,11 +111,12 @@ nvim --headless "+Lazy! sync" +qa
 
 ### Netrw - Getting Started - How to use this config
 
-***For details see the [netrw documentation](docs/netrw/netrw-docs.md)***
+**For details see the [netrw documentation](docs/netrw/netrw-docs.md)**
+
+<br>
 
 ### Remaps & Shortcuts:
 
-<br>
 
 ***The spacebar is the leader key***
 
@@ -150,6 +156,8 @@ nvim --headless "+Lazy! sync" +qa
 ## See the cheat sheet below, for more usage info
 
 ## [Netrw Cheat Sheet](https://github.com/LinuxUser255/BashAndLinux/tree/main/NeovimCheatSheets)
+
+## [Tabnine Integration]
 
 <br>
 

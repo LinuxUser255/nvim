@@ -382,6 +382,18 @@ Debugging is provided through the Debug Adapter Protocol (DAP) with language-spe
 
 <br>
 
+
+3. Restart Neovim after building the binary
+
+<br>
+
+### Additional documentation
+1. More detailed configuration options
+2. Information about subscription tiers
+3. Comprehensive troubleshooting steps
+4. Privacy considerations
+5. Examples of how to extend Tabnine functionality
+
 ## [Tabnine Neovim Integration](https://github.com/codota/tabnine-nvim/tree/master) 
 
 **Tabnine provides AI-powered code completion and assistance features.**
@@ -479,17 +491,6 @@ If you encounter the error "Tabnine_chat binary not found", you need to build th
   cd ~/.local/share/nvim/lazy/tabnine-nvim/chat/
   cargo build --release
 ```
-3. Restart Neovim after building the binary
-
-<br>
-
-### Additional documentation
-1. More detailed configuration options
-2. Information about subscription tiers
-3. Comprehensive troubleshooting steps
-4. Privacy considerations
-5. Examples of how to extend Tabnine functionality
-
 
 ## Tabnine Configuration
 You can customize Tabnine's behavior by modifying the configuration in `lua/plugins/tabnine.lua`:
@@ -611,8 +612,6 @@ vim.keymap.set("n", "<leader>tcdf", "<cmd>TabnineChatDocumentFunction<CR>",
 
 **- LinuxUser255**
  
-<br>
-<br>
 
 ### Neovim with Tabnine Chat 
 ![Tabnine-Chat-Neovim.png](images/Tabnine-Chat-Neovim.png)
