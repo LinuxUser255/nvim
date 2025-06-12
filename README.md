@@ -33,9 +33,8 @@
  - TOML
 
 ## Pre-install Requirements:
-  * [Neovim version 10 & higher](https://github.com/neovim/neovim/blob/master/BUILD.md)
+  * [Neovim version 11.2 - I built from source - latest stable version](https://github.com/neovim/neovim/blob/master/BUILD.md)
   * [lazy.nvim for plugin management](https://lazy.folke.io/)
-  * Neovim version: I suggest [building the latest stable version from source.](https://github.com/neovim/neovim/blob/master/BUILD.md) The pkgs in the repos are older.
   * [ripgrep](https://github.com/BurntSushi/ripgrep#installation) is required for multiple [telescope](https://github.com/nvim-telescope/telescope.nvim#suggested-dependencies) pickers.
   * [ShellCheck](https://github.com/koalaman/shellcheck)
   * If you are having issues with [Tree-Sitter](https://github.com/tree-sitter/tree-sitter), then you might not have [node js](https://nodejs.org/en/download) installed. The two quick solution to try are:
