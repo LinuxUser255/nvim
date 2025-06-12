@@ -22,6 +22,17 @@
 # 14. TOML
 
 
+check_neovim_version() {
+    # Neovim version needs to be 10 or higher
+    nvim_version=$(nvim --version)
+    if [[ "$nvim_version" < "v0.9.0" ]]; then
+        printf "\e[1;31m[-] Neovim version 0.9.0 or higher is required.\e[0m\n"
+        printf "\e[1;31m[-] I suggest building from source.\e[0m\n"
+        printf "\e[1;31m[-] https://github.com/neovim/neovim/blob/master/BUILD.md.\e[0m\n"
+        exit 1
+    fi
+}
+
 install_prompt() {
         # Acceptable inputs: yes, y, no, n and Enter1
         read -r -p "Ready to install the new Neovim configuration? (yes/no): " confirm
@@ -37,10 +48,12 @@ install_prompt() {
 # Updating system and installing dependencies
 install_deps() {
         printf "\e[1;34m[+] Installing dependencies...\e[0m\n"
-        sudo apt update
-        sudo apt install -y  git ripgrep shellcheck nodejs npm tree-sitter-cli
-        # Install Tree-Sitter CLI globally with npm
-        sudo npm install -g tree-sitter-cli
+        sudo apt update && sudo apt install -y \
+             tree-sitter \
+             tree-sitter-cli \
+             nodjs npm \
+             shellcheck \
+             ripgrep
 }
 
 # Removing your old Neovim config to install the new one
@@ -60,6 +73,7 @@ install_config() {
 
 
 # calling the functions
+check_neovim_version
 install_prompt
 install_deps
 remove_old_config
