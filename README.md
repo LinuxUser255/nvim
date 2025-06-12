@@ -16,7 +16,8 @@
 - [Detailed Config and Tabnine Integration](docs/usage.md)
 - [Tabnine Integration Separate Documentation](docs/Tabnine-Integration.md)
 
-## Supported Languages
+## Supported Languages.
+### Be if you do not have all of these langs installed, the config will still work, but throw errors
  - Python3
  - Lua
  - JavaScript/TypeScript
@@ -32,9 +33,9 @@
  - Vue/Svelte
  - TOML
 
-## Pre-install Requirements:
-  * [Neovim version 11.2 - I built from source - latest stable version](https://github.com/neovim/neovim/blob/master/BUILD.md)
-  * [lazy.nvim for plugin management](https://lazy.folke.io/)
+## The install script will instll most of these dependencies; however check your version of Neovim
+  * [This config was built on Neovim version 11.2 - And built from source - latest stable version](https://github.com/neovim/neovim/blob/master/BUILD.md)
+  * [Using lazy.nvim for plugin management](https://lazy.folke.io/)
   * [ripgrep](https://github.com/BurntSushi/ripgrep#installation) is required for multiple [telescope](https://github.com/nvim-telescope/telescope.nvim#suggested-dependencies) pickers.
   * [ShellCheck](https://github.com/koalaman/shellcheck)
   * If you are having issues with [Tree-Sitter](https://github.com/tree-sitter/tree-sitter), then you might not have [node js](https://nodejs.org/en/download) installed. The two quick solution to try are:
@@ -50,13 +51,16 @@
 ## Installation
 
 > **NOTE**
-> [Backup](#FAQ) your previous configuration (if any exists)
+> `cp your_nvim_conf your_nvim_conf-bk` (if any exists)
 
 <br>
 
-- **Remove your current/previous neovim files and dirs.**
+- ### Then Copy-paste this curl command in your terminal, press Enter, and follow the prompts.
+- ### This will auto-remove your current Neovim config, install this one and open `nvim` to install plugins.
 ```bash
-  rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
+
+curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh; chmod +x install.sh; ./install.sh
+
 ```
 
 <br>
