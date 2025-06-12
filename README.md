@@ -61,10 +61,9 @@
 > **NOTE**
 > `cp your_nvim_conf your_nvim_conf-bk` (if any exists)
 
-<br>
 
-- ### Then Copy-paste this curl command in your terminal, press Enter, and follow the prompts.
-- ### This will auto-remove your current Neovim config, install this one and open `nvim` to install plugins.
+- #### Then Copy-paste this curl command in your terminal, press Enter, and follow the prompts.
+- #### This will auto-remove your current Neovim config, install this one and open `nvim` to install plugins.
 ```bash
 
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh; chmod +x install.sh; ./install.sh
