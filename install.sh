@@ -23,10 +23,15 @@
 
 
 check_neovim_version() {
+    # Extract version number
+    nvim_version=$(nvim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?')
+
     # Neovim version needs to be 10 or higher
-    nvim_version=$(nvim --version)
-    if [[ "$nvim_version" < "v0.9.0" ]]; then
-        printf "\e[1;31m[-] Neovim version 0.9.0 or higher is required.\e[0m\n"
+    required_version="0.9.0"
+
+    # Compare versions using sort -V
+    if ! printf "%s\n%s" "$required_version" "$nvim_version" | sort -VC; then
+        printf "\e[1;31m[-] Neovim version %s or higher is required.\e[0m\n" "$required_version"
         printf "\e[1;31m[-] I suggest building from source.\e[0m\n"
         printf "\e[1;31m[-] https://github.com/neovim/neovim/blob/master/BUILD.md.\e[0m\n"
         exit 1
@@ -45,15 +50,50 @@ install_prompt() {
         fi
 }
 
-# Updating system and installing dependencies
-install_deps() {
+# Updating system and installing dependencies Debian based distros
+install_deps_debian() {
         printf "\e[1;34m[+] Installing dependencies...\e[0m\n"
         sudo apt update && sudo apt install -y \
              tree-sitter \
              tree-sitter-cli \
-             nodjs npm \
+             nodejs npm \
              shellcheck \
              ripgrep
+}
+
+# Update system and install dependencies for Arch based distros
+install_deps_arch() {
+    printf "\e[1;34m[+] Installing dependencies...\e[0m\n"
+    sudo pacman -Syu --needed --noconfirm \
+        tree-sitter \
+        tree-sitter-cli \
+        nodejs \
+        npm \
+        shellcheck \
+        ripgrep
+}
+
+# Check current OS and then install dependencies using the appropriate package manager
+install_deps() {
+    # Detect OS
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        case "$ID" in
+            arch|archcraft|endeavouros|manjaro)
+                install_deps_arch
+                ;;
+            debian|ubuntu|linuxmint|pop)
+                install_deps_debian
+                ;;
+            *)
+                echo "Unsupported OS: $ID"
+                exit 1
+                ;;
+        esac
+    else
+        echo "Cannot detect OS. /etc/os-release not found."
+        exit 1
+    fi
 }
 
 # Removing your old Neovim config to install the new one
@@ -78,9 +118,4 @@ install_prompt
 install_deps
 remove_old_config
 install_config
-
-
-
-
-
 
