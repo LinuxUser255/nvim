@@ -1,7 +1,6 @@
 # Neovim Config
 
-![my-nvim-confitg-screenshot.png](resources/my-nvim-confitg-screenshot.png)
-
+![nvim-telescope-inaction-scaled.png](resources/nvim-telescope-inaction-scaled.png)
 
 ## Table of Contents
 - [Supported Languages](#supported-languages)
