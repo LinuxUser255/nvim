@@ -36,6 +36,10 @@ Take what you like from mine; leave what you don’t.
 
 It's my hope that by leaving detailed blueprints, it will be easy for anyone to *leggo* their own Neovim configuration environment.
 
+For more on the architecture of this config, see the docs and illustration here:
+
+**[Config-Structure.md](docs/Config-Structure.md)**
+
 Enjoy!
 
 <br>
