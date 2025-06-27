@@ -1,4 +1,20 @@
-## [Tabnine Neovim Integration](https://github.com/codota/tabnine-nvim/tree/master) 
+# Tabnine Integration
+
+## Table of Contents
+- [Tabnine Neovim Integration](#tabnine-neovim-integration)
+- [Tabnine Basic Features](#tabnine-basic-features)
+- [Tabnine Code Assistance](#tabnine-code-assistance)
+- [Tabnine Chat](#tabnine-chat)
+  - [Using Tabnine Chat](#using-tabnine-chat)
+  - [Advanced Tabnine Chat Commands](#advanced-tabnine-chat-commands)
+- [Tabnine Chat Setup](#tabnine-chat-setup)
+- [Tabnine Configuration](#tabnine-configuration)
+- [Troubleshooting Tabnine](#troubleshooting-tabnine)
+- [Tabnine Privacy Considerations](#tabnine-privacy-considerations)
+- [Tabnine Subscription Tiers](#tabnine-subscription-tiers)
+- [Screenshots](#screenshots)
+
+## [Tabnine Neovim Integration](https://github.com/codota/tabnine-nvim/tree/master)
 
 **Tabnine provides AI-powered code completion and assistance features.**
 
@@ -186,7 +202,7 @@ vim.keymap.set("n", "<leader>tcdf", "<cmd>TabnineChatDocumentFunction<CR>",
 1. Free Tier:
    - Basic code completions
    - Limited chat functionality
-   -Public code model
+   - Public code model
      
      <br>
 
@@ -215,7 +231,9 @@ vim.keymap.set("n", "<leader>tcdf", "<cmd>TabnineChatDocumentFunction<CR>",
 **Best,**
 
 **- LinuxUser255**
- 
 
 ### Neovim with Tabnine Chat 
-![Tabnine-Chat-Neovim.png](images/Tabnine-Chat-Neovim.png)
+ 
+![Tabnine-Chat-and-neovim-tabnine-lua.png](images/Tabnine-Chat-and-neovim-tabnine-lua.png)
+
+<br>
