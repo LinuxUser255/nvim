@@ -41,7 +41,7 @@ Enjoy!
 <br>
 
 ## Supported Languages.
-### Be if you do not have all of these langs installed, the config will still work, but throw errors
+### If you do not have all of these langs installed, the config will still work, but throw errors
  - Python3
  - Lua
  - JavaScript/TypeScript
