@@ -3,6 +3,7 @@
 ![nvim-telescope-inaction-scaled.png](resources/nvim-telescope-inaction-scaled.png)
 
 ## Table of Contents
+- [About this config](#about-this-config)
 - [Supported Languages](#supported-languages)
 - [Pre-install Requirements](#pre-install-requirements)
 - [Installation](#installation)
@@ -14,6 +15,30 @@
 - [Netrw Cheat Sheet](#netrw-cheat-sheet)
 - [Detailed Config and Tabnine Integration](docs/usage.md)
 - [Tabnine Integration Separate Documentation](docs/Tabnine-Integration.md)
+
+## About this config:
+
+There are countless Neovim configurations out there.
+Throughout my Neovim config journey, one of the biggest frustrations has been the lack of strict or standardized
+architecture—and no universal templates to follow.
+
+Yes, the high-level overview is consistent: Neovim looks for `init.lua` in `$XDG_CONFIG_HOME/nvim`,
+and your Neovim environment spawns from there. However, from that point on, things can go in many different directions.
+
+Understanding the *code flow* of other people's Neovim configurations often requires significant time and mental
+overhead—depending on their complexity.
+
+Part of my goal in creating this configuration was not only to build something that works best for me,
+but also to provide comprehensive and detailed documentation.
+
+This is something others can use and follow when creating their own config—similar in spirit to [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim).
+Take what you like from mine; leave what you don’t.
+
+It's my hope that by leaving detailed blueprints, it will be easy for anyone to *leggo* their own Neovim configuration environment.
+
+Enjoy!
+
+<br>
 
 ## Supported Languages.
 ### Be if you do not have all of these langs installed, the config will still work, but throw errors
