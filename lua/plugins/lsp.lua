@@ -23,8 +23,8 @@ return {
                     "lua_ls",
                     "rust_analyzer",
                     "pyright",  -- Python language server
-                    "clangd",   -- Make sure this is included
-                    "bashls",
+                    "clangd",   -- Clangd-based C/C++ language server
+                    "bashls",  -- Bash language server
                     "gopls",    -- Go language server
                 },
                 automatic_installation = true,
@@ -34,7 +34,7 @@ return {
                 -- Install additional tools for development
                 local mr = require("mason-registry")
                 local packages = {
-                    "clangd",       -- Make sure this is included
+                    "clangd",       -- Be sure to included this
                     "codelldb",     -- LLDB-based debugger
                     "cpptools",     -- Microsoft C/C++ tools (includes cppdbg)
                     "gopls",        -- Go language server
@@ -186,7 +186,7 @@ return {
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp", priority = 1000 },
-                    { name = "tabnine", priority = 900 },  -- Add this line if not present
+                    { name = "tabnine", priority = 900 },
                     { name = "luasnip", priority = 800 },
                     { name = "buffer", priority = 700 },
                     { name = "path", priority = 600 },
