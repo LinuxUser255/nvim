@@ -169,7 +169,7 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
 <br>
 
 
-### This one's really unique: Moving lines Up & Down
+### Moving lines Up & Down
 - Higlight the line, `Shift v`, then while holding down Shift, press `j` to go down
 - And `k` to move up.
 - This also works with muliple lines selected simultanuiously
