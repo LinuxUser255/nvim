@@ -199,5 +199,5 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
  <a href="https://buymeacoffee.com/chrisbingh8" target="_blank" style="color: #be0c3b; text-decoration: none; font-weight: bold; font-size: 35px; margin-left: 40px;">
                           <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px; width: 217px;">
                             <br>
-                            &nbsp;&nbsp;Support My Work :)
+                            <span style="color: #FF0000; font-weight: bold; font-size: 24pt;">&nbsp;&nbsp;Support My Work :)</span>
                             <br><br><br>
