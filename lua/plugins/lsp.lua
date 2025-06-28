@@ -24,7 +24,7 @@ return {
                     "rust_analyzer",
                     "pyright",  -- Python language server
                     "clangd",   -- Clangd-based C/C++ language server
-                    "bashls",  -- Bash language server
+                    "bashls",   -- Bash language server
                     "gopls",    -- Go language server
                 },
                 automatic_installation = true,
@@ -34,7 +34,7 @@ return {
                 -- Install additional tools for development
                 local mr = require("mason-registry")
                 local packages = {
-                    "clangd",       -- Be sure to included this
+                    "clangd",       -- Be sure to include this
                     "codelldb",     -- LLDB-based debugger
                     "cpptools",     -- Microsoft C/C++ tools (includes cppdbg)
                     "gopls",        -- Go language server
