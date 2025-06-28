@@ -5,19 +5,28 @@
 # Compiled Lua sources
 luac.out
 
-# Lua language server files
+# Lua LSP
 .luarc.json
 
 # Plugin manager generated files
 lazy-lock.json
 
+# Backup files
+*~
+*.bak
+
+# Neovim session files
+Session.vim
+
 # Temporary files
 *.swp
 *.swo
 *~
+.netrwhist
+**/tmp/**
 
-# Undo directory
-.vim/undodir/
+# Generated files
+tags
 
 # Log files
 *.log
