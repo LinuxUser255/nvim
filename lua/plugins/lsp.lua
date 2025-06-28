@@ -185,10 +185,11 @@ return {
                     ["<CR>"] = cmp.mapping.confirm({ select = false }),
                 }),
                 sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "buffer" },
-                    { name = "path" },
+                    { name = "nvim_lsp", priority = 1000 },
+                    { name = "tabnine", priority = 900 },  -- Add this line if not present
+                    { name = "luasnip", priority = 800 },
+                    { name = "buffer", priority = 700 },
+                    { name = "path", priority = 600 },
                 }),
                 formatting = {
                     format = lspkind.cmp_format({

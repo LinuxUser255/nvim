@@ -39,7 +39,6 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>ve", vim.cmd.Vex)
 vim.keymap.set("n", "<leader>he", vim.cmd.Sex)
 
-
 -- [[ Vertical split window navigation ]]
 -- Remap Ctrl + l to move to the right split window
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Move to the right split window" })
@@ -80,10 +79,10 @@ vim.keymap.set("x", "<leader>p", [["_dP]])
 
 -- YANK TEXT TO THE SYSTEM CLIPBOARD, leader y enabling you to paste elsewhere
 -- 1st way: Select the line(s): Normal mode, ctrl v to select the line, then leader y
-vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 -- 2nd way: Normal mode, then shift + leader + y
 vim.keymap.set("n", "<leader>Y", [["+Y]])
-vim.keymap.set({"n", "v"}, "<leader>d", [["_d]])
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("n", "Q", "<nop>")
 
@@ -105,16 +104,17 @@ vim.keymap.set("n", "<leader>tt", vim.cmd.Telescope, { desc = "Open Telescope" }
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find All Files" })
 vim.keymap.set("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { desc = "Live Grep (Ripgrep)" })
 vim.keymap.set("n", "<leader>/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", { desc = "Buffer search" })
---vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
---vim.keymap.set("n", "<leader>ft", "<cmd>Telescope treesitter<cr>", { desc = "Treesitter" })
---vim.keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Old Files" })
---vim.keymap.set("n", "<leader>fs", "<cmd>Telescope grep_string<cr>", { desc = "Grep String" })
---vim.keymap.set("n", "<leader>fc", "<cmd>Telescope git_commits<cr>", { desc = "Commits" })
---vim.keymap.set("n", "<C-p>", "<cmd>Telescope git_files<cr>", { desc = "Git files" })
---vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
---vim.keymap.set("n", "<leader>fj", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
---vim.keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
---vim.keymap.set("n", "<leader>fl", "<cmd>Telescope lsp_references<cr>", { desc = "LSP References" })
+vim.keymap.set("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Buffers" })
+vim.keymap.set("n", "<leader>ft", "<cmd>Telescope treesitter<cr>", { desc = "Treesitter" })
+vim.keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Old Files" })
+vim.keymap.set("n", "<leader>fs", "<cmd>Telescope grep_string<cr>", { desc = "Grep Strg" })
+vim.keymap.set("n", "<leader>fc", "<cmd>Telescope git_commits<cr>", { desc = "Commits" })
+
+vim.keymap.set("n", "<C-p>", "<cmd>Telescope git_files<cr>", { desc = "Git files" })
+vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
+vim.keymap.set("n", "<leader>fj", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
+vim.keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
+vim.keymap.set("n", "<leader>fl", "<cmd>Telescope lsp_references<cr>", { desc = "LSP References" })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
@@ -144,7 +144,7 @@ autocmd('TextYankPost', {
     end,
 })
 
-autocmd({"BufWritePre"}, {
+autocmd({ "BufWritePre" }, {
     group = ThePrimeagenGroup,
     pattern = "*",
     command = [[%s/\s\+$//e]],
@@ -153,4 +153,3 @@ autocmd({"BufWritePre"}, {
 -- attempt opaque background: It worked!
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-

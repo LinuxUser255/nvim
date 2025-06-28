@@ -21,7 +21,6 @@
 # 13. Vue/Svelte
 # 14. TOML
 
-
 check_neovim_version() {
     # Extract version number
     nvim_version=$(nvim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?')

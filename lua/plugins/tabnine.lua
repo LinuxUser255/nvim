@@ -53,5 +53,33 @@ return {
         end
       end
     end, {})
-  end
+
+    -- Register Tabnine as a source for nvim-cmp
+    local has_cmp, cmp = pcall(require, "cmp")
+    if has_cmp then
+      -- Check if Tabnine source is already registered
+      local sources = cmp.get_config().sources
+      local has_tabnine_source = false
+
+      for _, source in ipairs(sources or {}) do
+        if source.name == "tabnine" then
+          has_tabnine_source = true
+          break
+        end
+      end
+
+      -- Add Tabnine as a source if not already present
+      if not has_tabnine_source then
+        sources = sources or {}
+        table.insert(sources, { name = "tabnine", priority = 900 })
+        cmp.setup({ sources = sources })
+        print("Tabnine source added to nvim-cmp")
+      end
+    end
+  end,
+  -- Autocomplete
+  dependencies = {
+    "hrsh7th/nvim-cmp",
+    "tzachar/cmp-tabnine", -- Autocomplete suggestions
+  },
 }
