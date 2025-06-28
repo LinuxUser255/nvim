@@ -1,0 +1,27 @@
+# IDE specific files
+.idea/
+.vscode/
+
+# Compiled Lua sources
+luac.out
+
+# Lua language server files
+.luarc.json
+
+# Plugin manager generated files
+lazy-lock.json
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+# Undo directory
+.vim/undodir/
+
+# Log files
+*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db
