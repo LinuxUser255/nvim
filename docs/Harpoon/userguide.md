@@ -1,6 +1,8 @@
 # Using Harpoon with Telescope in Neovim
 
-Harpoon is a powerful navigation tool that allows you to quickly jump between your most frequently used files. Your configuration already integrates Harpoon with Telescope, which enhances the file selection experience. Here's how to use it:
+Harpoon is a powerful navigation tool that allows you to quickly jump between your most frequently used files.
+This config integrates Harpoon with Telescope, which enhances the file selection experience.
+Here's how to use it:
 
 ## Basic Harpoon Commands
 
