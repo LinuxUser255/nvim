@@ -44,6 +44,18 @@ Enjoy!
 
 <br>
 
+**Make a backup of your config if you want**
+
+## Installation
+```bash
+
+curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh ./install.sh
+
+```
+
+<br>
+
+
 ## Supported Languages.
 ### If you do not have all of these langs installed, the config will still work, but throw errors
  - Python3
@@ -81,25 +93,6 @@ Enjoy!
   * Verify the installation and restart NeoVim
   * `tree-sitter --version`
   * This config comes configured with [Tabnine Auto Completion](https://github.com/codota/tabnine-nvim)
-
-<br>
-
-## Installation
-
-> **NOTE**
-**Back up your current Neovim config if you want.
-```bash
-cp your_nvim_conf your_nvim_conf-bk
-```
-
-
-- #### Then Copy-paste this curl command in your terminal, press Enter, and follow the prompts.
-- #### This will auto-remove your current Neovim config, install this one and open `nvim` to install plugins.
-```bash
-
-curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh; chmod +x install.sh; ./install.sh
-
-```
 
 <br>
 
