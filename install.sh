@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-# Below is a list of supported languages for this Neovim configuration
-#==============================================================
-
+# This install script supports 9 Linux Distros & MacOS
+# Debian, Ubuntu, Fedora, Red Hat, CentOS Arch, Alpine, OpenSUSE, Void, and MacOS
+# It detects your OS, and it's distro / version, then builds Neovim from source.
+# Installs the dependencies for the custom Neovim configuration
+#
+# The Neovim configuration supports the following programming languages & file types
+#===================================================================================
+#
 # 1. Python3
 # 2. Lua
 # 3. Java/TypeScript
@@ -23,7 +28,6 @@ install_prompt() {
         # Acceptable inputs: yes, y, no, n and Enter1
         read -r -p "Ready to install the new Neovim configuration? (yes/no) or hit Enter: " confirm
         confirm=${confirm:"yes"}
-        # Convert to lowercase for comparison
         confirm=$(echo "$confirm" | tr '[:upper:]' '[:lower:]')
         if [[ "$confirm" != "yes" && "$confirm" != "y" ]]; then
             printf "\e[1;31m[-] Exiting installation.\e[0m\n"
@@ -63,10 +67,25 @@ get_os() {
     printf "\e[1;32m[+] Detected OS: %s\e[0m\n" "$OS"
 }
 
+# Check if we're on macOS first
 detect_distro() {
+        # Define an array of supported macOS versions
+        local mac_vers=("Tahoe" "Sequoia" "Sonoma" "Ventura" "Monterey")
+        local is_macos_version=false
+
+        for ((i=0;i<${#mac_vers[@]};i++)); do
+            if [ "$OS" = "${mac_vers[$i]}" ]; then
+                is_macos_version=true
+                break
+            fi
+        done
+
+        [ "$OS" ] && is_macos_version=true || is_macos_version=false
+
         # Check if we're on macOS first
-        if [ "$OS" = "Tahoe" ] || [ "$OS" = "Sequoia" ] || [ "$OS" = "Sonoma" ] || [ "$OS" = "Ventura" ] || [ "$OS" = "Monterey" ] || [[ "$OS" == "macOS"* ]]; then
+        if [ "$is_macos_version" = true ]; then
             DISTRO="$OS"
+
             # Check if Homebrew is installed
             if command -v brew &> /dev/null; then
                 PKG_MANAGER="brew"
@@ -89,7 +108,7 @@ detect_distro() {
             return
         fi
 
-        # First try to get distribution info from os-release file
+        # Attempt to get distribution info from os-release file
         if [ -f /etc/os-release ]; then
             . /etc/os-release
             DISTRO="$NAME"
@@ -241,9 +260,9 @@ build_neovim() {
         if command -v nvim &> /dev/null; then
             printf "\e[1;34m[?] Remove existing Neovim installation? (yes/no): \e[0m"
             read -r -p "" remove_existing
-            remove_existing=${remove_existing:-"yes"}
             remove_existing=$(echo "$remove_existing" | tr '[:upper:]' '[:lower:]')
-            if [[ "$remove_existing" == "yes" || "$remove_existing" == "y" ]]; then
+            if [[ "$remove_existing" =~ ^(yes|y)$ ]]; then
+                echo "Removing existing Neovim installation..."
                 # Complete removal: remove all previous neovim files and directories & purge
                 case "$PKG_MANAGER" in
                     "apt")
@@ -337,7 +356,6 @@ build_neovim() {
                 exit 1
             fi
 
-            # Navigate to the cloned Neovim repository
             cd neovim || {
                 printf "\e[1;31m[-] Failed to change directory to neovim.\e[0m\n"
                 exit 1
@@ -376,8 +394,8 @@ build_neovim() {
         fi
 }
 
-nvim_config_deps(){
-         printf "\e[1;34m[+] Installing dependencies for %s using %s...\e[0m\n" "$DISTRO" "$PKG_MANAGER"
+install_nvim_config_deps(){
+         printf "\e[1;34m[+] Installing nvim config dependencies for %s using %s...\e[0m\n" "$DISTRO" "$PKG_MANAGER"
 
          case "$PKG_MANAGER" in
              "apt")
@@ -413,7 +431,6 @@ nvim_config_deps(){
          # Execute the command stored in $_
            eval "$_"
 }
-
 # Removing your old Neovim config to install the new one
 remove_old_config() {
         printf "\e[1;34m[+] Removing old Neovim configuration...\e[0m\n"
@@ -434,7 +451,7 @@ main() {
         full_sys_upgrade
         check_neovim_version
         build_neovim #  if required by user (if not, it will be skipped)
-        nvim_config_deps
+        install_nvim_config_deps
         remove_old_config
         install_config
 }
