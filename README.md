@@ -52,6 +52,7 @@ Enjoy!
 
 ```bash
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
+```
 
 <br>
 
