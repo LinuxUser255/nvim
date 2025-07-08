@@ -47,7 +47,7 @@ get_os() {
                 14.*) OS="Sonoma" ;;
                 13.*) OS="Ventura" ;;
                 12.*) OS="Monterey" ;;
-                *)    OS="macOS ($darwin_version)" ;;
+                *)    OS="macOS" ;;
             esac
         ;;
         "Linux")
@@ -70,7 +70,7 @@ get_os() {
 # Check for macOS first
 detect_distro() {
         # Define an array of supported macOS versions
-        local mac_vers=("Tahoe" "Sequoia" "Sonoma" "Ventura" "Monterey")
+        local mac_vers=("Tahoe" "Sequoia" "Sonoma" "Ventura" "Monterey" "macOS")
         local is_macos_version=false
 
         for ((i=0;i<${#mac_vers[@]};i++)); do
@@ -79,8 +79,6 @@ detect_distro() {
                 break
             fi
         done
-
-        [ "$OS" ] && is_macos_version=true || is_macos_version=false
 
         if [ "$is_macos_version" = true ]; then
             DISTRO="$OS"
@@ -490,4 +488,3 @@ main() {
 }
 
 main
-
