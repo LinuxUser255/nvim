@@ -67,7 +67,7 @@ get_os() {
     printf "\e[1;32m[+] Detected OS: %s\e[0m\n" "$OS"
 }
 
-# Check if we're on macOS first
+# Check for macOS first
 detect_distro() {
         # Define an array of supported macOS versions
         local mac_vers=("Tahoe" "Sequoia" "Sonoma" "Ventura" "Monterey")
@@ -82,7 +82,6 @@ detect_distro() {
 
         [ "$OS" ] && is_macos_version=true || is_macos_version=false
 
-        # Check if we're on macOS first
         if [ "$is_macos_version" = true ]; then
             DISTRO="$OS"
 
@@ -144,34 +143,37 @@ detect_distro() {
         # Determine package manager based on distribution
         case "$DISTRO" in
             "Debian"* | "Ubuntu"*)
-                PKG_MANAGER="apt"
+                : "apt"
             ;;
             "Fedora"*)
-                PKG_MANAGER="dnf"
+                : "dnf"
             ;;
             "Red Hat"* | "CentOS"*)
-                PKG_MANAGER="dnf"
+                : "dnf"
             ;;
             "Arch"*)
-                PKG_MANAGER="pacman"
+                : "pacman"
             ;;
             "Alpine"*)
-                PKG_MANAGER="apk"
+                : "apk"
             ;;
             "openSUSE"*)
-                PKG_MANAGER="zypper"
+                : "zypper"
             ;;
             "Void"*)
-                PKG_MANAGER="xbps"
+                : "xbps"
             ;;
             "FreeBSD"*)
-                PKG_MANAGER="pkg"
+                : "pkg"
             ;;
             *)
                 printf "\e[1;31m[-] Unsupported Linux distribution.\e[0m\n"
                 exit 1
             ;;
         esac
+
+        # Stored value using $_ after the case statement
+        PKG_MANAGER="$_"
 
         printf "\e[1;32m[+] Detected distribution: %s (Package Manager: %s)\e[0m\n" "$DISTRO" "$PKG_MANAGER"
 }
@@ -230,12 +232,12 @@ check_neovim_version() {
             return
         fi
 
-        # Extract version number
-        nvim_version=$(nvim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?')
+        # Reliably extract version number
+        nvim_version=$(nvim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' || nvim --version | head -n1 | grep -oE '[0-9]+\.[0-9]+')
         required_version="0.9.0"
 
-        # Compare versions using sort -V
-        if ! printf "%s\n%s" "$required_version" "$nvim_version" | sort -VC; then
+        # Compare versions using sort -V (version sort)
+        if ! printf "%s\n%s\n" "$required_version" "$nvim_version" | sort -V -C; then
             printf "\e[1;31m[-] Neovim version %s or higher is required. Your version: %s\e[0m\n" "$required_version" "$nvim_version"
             printf "\e[1;34m[?] Would you like to build the latest Neovim from source? (yes/no): \e[0m"
             read -r -p "" build_source
@@ -252,7 +254,6 @@ check_neovim_version() {
         fi
 }
 
-# Build Neovim from source
 build_neovim() {
         printf "\e[1;34m[+] Building Neovim from source...\e[0m\n"
 
@@ -457,4 +458,3 @@ main() {
 }
 
 main
-
