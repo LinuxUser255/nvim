@@ -471,12 +471,9 @@ main() {
         install_prompt
         detect_distro
         full_sys_upgrade
-        check_neovim_version
-        build_neovim #  if required by user (if not, it will be skipped)
-        install_nvim_config_deps # custom config dependencies
-        mk_nvim_dir
-        remove_old_config
+        check_neovim_version  # This will call build_neovim if needed
+        install_nvim_config_deps
+        mk_nvim_dir  # Create directory first
+        remove_old_config  # Then remove old config (this will recreate the directory)
         install_config
 }
-
-main
