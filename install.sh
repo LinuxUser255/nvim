@@ -441,12 +441,30 @@ remove_old_config() {
         sleep 2
 }
 
+
+# Function to make the nvim directory if it doesn't exist in ~/.config/nvim
+# mkdir -p ~/.config/nvim
+mk_nvim_dir() {
+        mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+        # check that the directory was created
+        if [ -d "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim ]; then
+                printf "\e[1;32m[+] Neovim configuration directory created successfully.\e[0m\n"
+        else
+            # Force a manual creation of the directory if it doesn't exist
+            # prompt user to enter mkdir -p ~/.config/nvim
+            printf "\e[1;31m[-] Failed to create Neovim configuration directory.\e[0m\n"
+            printf "\e[1;31mPlease run the following commands manually:\e[0m\n"
+            printf "\e[1;31m    mkdir -p ~/.config/nvim\e[0m\n"
+            printf "\e[1;31mThen continue with the custom config installation:\e[0m\n"
+            printf "\e[1;31m    git clone https://github.com/LinuxUser255/nvim.git ~/.config/nvim\e[0m\n"
+            exit 1
+        fi
+}
+
 # Git clone the Neovim configuration repo
 install_config() {
-        printf "\e[1;34m[+] Git cloning new config & opening Neovim to install plugins...\e[0m\n"
-        mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+        printf "\e[1;34m[+] Git cloning new config. Open Neovim to install plugins...\e[0m\n"
         git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-        printf "\e[1;34m[+] Open Neovim to install plugins...\e[0m\n"
 }
 
 main() {
@@ -455,7 +473,8 @@ main() {
         full_sys_upgrade
         check_neovim_version
         build_neovim #  if required by user (if not, it will be skipped)
-        install_nvim_config_deps
+        install_nvim_config_deps # custom config dependencies
+        mk_nvim_dir
         remove_old_config
         install_config
 }
