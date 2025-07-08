@@ -255,149 +255,150 @@ check_neovim_version() {
 }
 
 build_neovim() {
-    printf "\e[1;34m[+] Building Neovim from source...\e[0m\n"
+        printf "\e[1;34m[+] Building Neovim from source...\e[0m\n"
 
-    # Check if existing Neovim should be removed
-    if command -v nvim &> /dev/null; then
-        printf "\e[1;34m[?] Remove existing Neovim installation? (yes/no): \e[0m"
-        read -r -p "" remove_existing
-        remove_existing=${remove_existing:-"no"}
-        remove_existing=$(echo "$remove_existing" | tr '[:upper:]' '[:lower:]')
-        if [[ "$remove_existing" =~ ^(yes|y)$ ]]; then
-            echo "Removing existing Neovim installation..."
-            # Complete removal: remove all previous neovim files and directories & purge
-            case "$PKG_MANAGER" in
-                "apt")
-                    : "sudo apt remove -y neovim && sudo apt purge -y --autoremove neovim"
-                ;;
-                "dnf")
-                    : "sudo dnf remove -y neovim && sudo dnf autoremove -y"
-                ;;
-                "pacman")
-                    : "sudo pacman -Rns --noconfirm neovim"
-                ;;
-                "apk")
-                    : "sudo apk del neovim"
-                ;;
-                "pkg")
-                    : "sudo pkg delete -y neovim"
-                ;;
-                "zypper") # openSUSE
-                    : "sudo zypper remove -y --clean-deps neovim"
-                ;;
-                "xbps") # Void Linux
-                    : "sudo xbps-remove -R -y neovim"
-                ;;
-                "brew") # macOS with Homebrew
-                    : "brew remove neovim"
-                ;;
-                *)
-                    printf "\e[1;31m[-] Unsupported package manager: %s\e[0m\n" "$PKG_MANAGER"
-                    exit 1
-                ;;
-            esac
+        # Check if existing Neovim should be removed
+        if command -v nvim &> /dev/null; then
+            printf "\e[1;34m[?] Remove existing Neovim installation? (yes/no): \e[0m"
+            read -r -p "" remove_existing
+            remove_existing=${remove_existing:-"no"}
+            remove_existing=$(echo "$remove_existing" | tr '[:upper:]' '[:lower:]')
+            if [[ "$remove_existing" =~ ^(yes|y)$ ]]; then
+                echo "Removing existing Neovim installation..."
+                # Complete removal: remove all previous neovim files and directories & purge
+                case "$PKG_MANAGER" in
+                    "apt")
+                        : "sudo apt remove -y neovim && sudo apt purge -y --autoremove neovim"
+                    ;;
+                    "dnf")
+                        : "sudo dnf remove -y neovim && sudo dnf autoremove -y"
+                    ;;
+                    "pacman")
+                        : "sudo pacman -Rns --noconfirm neovim"
+                    ;;
+                    "apk")
+                        : "sudo apk del neovim"
+                    ;;
+                    "pkg")
+                        : "sudo pkg delete -y neovim"
+                    ;;
+                    "zypper") # openSUSE
+                        : "sudo zypper remove -y --clean-deps neovim"
+                    ;;
+                    "xbps") # Void Linux
+                        : "sudo xbps-remove -R -y neovim"
+                    ;;
+                    "brew") # macOS with Homebrew
+                        : "brew remove neovim"
+                    ;;
+                    *)
+                        printf "\e[1;31m[-] Unsupported package manager: %s\e[0m\n" "$PKG_MANAGER"
+                        exit 1
+                    ;;
+                esac
 
-            # Execute the command stored in $_
-            eval "$_"
+                # Execute the command stored in $_
+                eval "$_"
+            fi
         fi
-    fi
 
-    # Install Neovim build prerequisites
-    printf "\e[1;34m[+] Installing Neovim build dependencies...\e[0m\n"
-    case "$PKG_MANAGER" in
-        "apt") # Debian/Ubuntu & debian-based systems
-            : "sudo apt install -y ninja-build gettext cmake unzip curl build-essential"
-        ;;
-        "dnf") # RHEL/Fedora
-            : "sudo dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra"
-        ;;
-        "pacman") # Arch Linux
-            : "sudo pacman -S base-devel cmake ninja curl"
-        ;;
-        "apk") # Alpine Linux
-            : "apk add build-base cmake coreutils curl gettext-tiny-dev"
-        ;;
-        "zypper") # openSUSE
-            : "sudo zypper install ninja cmake gcc-c++ gettext-tools curl"
-        ;;
-        "xbps") # Void Linux
-            : "xbps-install base-devel cmake curl git"
-        ;;
-        "pkg") # FreeBSD
-            : "sudo pkg install cmake gmake sha wget gettext curl"
-        ;;
-        "brew") # macOS with Homebrew
-            : "brew install ninja cmake gettext curl"
-        ;;
-        *)
-            printf "\e[1;31m[-] Unsupported package manager: %s\e[0m\n" "$PKG_MANAGER"
+        # Install Neovim build prerequisites
+        printf "\e[1;34m[+] Installing Neovim build dependencies...\e[0m\n"
+        case "$PKG_MANAGER" in
+            "apt") # Debian/Ubuntu & debian-based systems
+                : "sudo apt install -y ninja-build gettext cmake unzip curl build-essential"
+            ;;
+            "dnf") # RHEL/Fedora
+                : "sudo dnf -y install ninja-build cmake gcc make gettext curl glibc-gconv-extra"
+            ;;
+            "pacman") # Arch Linux
+                : "sudo pacman -S base-devel cmake ninja curl"
+            ;;
+            "apk") # Alpine Linux
+                : "apk add build-base cmake coreutils curl gettext-tiny-dev"
+            ;;
+            "zypper") # openSUSE
+                : "sudo zypper install ninja cmake gcc-c++ gettext-tools curl"
+            ;;
+            "xbps") # Void Linux
+                : "xbps-install base-devel cmake curl git"
+            ;;
+            "pkg") # FreeBSD
+                : "sudo pkg install cmake gmake sha wget gettext curl"
+            ;;
+            "brew") # macOS with Homebrew
+                : "brew install ninja cmake gettext curl"
+            ;;
+            *)
+                printf "\e[1;31m[-] Unsupported package manager: %s\e[0m\n" "$PKG_MANAGER"
+                exit 1
+            ;;
+        esac
+
+        # Execute the command
+        eval "$_"
+
+        # Create a temporary directory for building Neovim
+        build_dir=$(mktemp -d)
+        if ! build_dir=$(mktemp -d); then
+            printf "\e[1;31m[-] Failed to create temporary directory for building Neovim.\e[0m\n"
             exit 1
-        ;;
-    esac
+        fi
 
-    # Execute the command
-    eval "$_"
+        # Ensure clean up after build
+        trap 'rm -rf "$build_dir"' EXIT
 
-    # Create a temporary directory for building Neovim
-    build_dir=$(mktemp -d)
-    if ! build_dir=$(mktemp -d); then
-        printf "\e[1;31m[-] Failed to create temporary directory for building Neovim.\e[0m\n"
-        exit 1
-    fi
+        # Clone Neovim repository
+        cd "$build_dir" || {
+            printf "\e[1;31m[-] Failed to change directory to %s.\e[0m\n" "$build_dir"
+            exit 1
+        }
 
-    # Ensure clean up after build
-    trap 'rm -rf "$build_dir"' EXIT
+        if ! git clone https://github.com/neovim/neovim.git; then
+            printf "\e[1;31m[-] Failed to clone Neovim repository.\e[0m\n"
+            exit 1
+        fi
 
-    # Clone Neovim repository
-    cd "$build_dir" || {
-        printf "\e[1;31m[-] Failed to change directory to %s.\e[0m\n" "$build_dir"
-        exit 1
-    }
+        cd neovim || {
+            printf "\e[1;31m[-] Failed to change directory to neovim.\e[0m\n"
+            exit 1
+        }
 
-    if ! git clone https://github.com/neovim/neovim.git; then
-        printf "\e[1;31m[-] Failed to clone Neovim repository.\e[0m\n"
-        exit 1
-    fi
+        # Checkout the stable branch
+        if ! git checkout stable; then
+            printf "\e[1;31m[-] Failed to checkout stable branch.\e[0m\n"
+            exit 1
+        fi
 
-    cd neovim || {
-        printf "\e[1;31m[-] Failed to change directory to neovim.\e[0m\n"
-        exit 1
-    }
+        # Build Neovim with parallel jobs
+        printf "\e[1;34m[+] Building Neovim (this may take a while)...\e[0m\n"
+        if ! make -j"$(nproc)" CMAKE_BUILD_TYPE=RelWithDebInfo; then
+            printf "\e[1;31m[-] Failed to build Neovim.\e[0m\n"
+            exit 1
+        fi
 
-    # Checkout the stable branch
-    if ! git checkout stable; then
-        printf "\e[1;31m[-] Failed to checkout stable branch.\e[0m\n"
-        exit 1
-    fi
+        # Install Neovim
+        printf "\e[1;34m[+] Installing Neovim...\e[0m\n"
+        if ! sudo make install; then
+            printf "\e[1;31m[-] Failed to install Neovim.\e[0m\n"
+            exit 1
+        fi
 
-    # Build Neovim with parallel jobs
-    printf "\e[1;34m[+] Building Neovim (this may take a while)...\e[0m\n"
-    if ! make -j"$(nproc)" CMAKE_BUILD_TYPE=RelWithDebInfo; then
-        printf "\e[1;31m[-] Failed to build Neovim.\e[0m\n"
-        exit 1
-    fi
+        # Create a symbolic link for Neovim if it doesn't exist
+        if [ ! -f /usr/bin/nvim ]; then
+            sudo ln -sf /usr/local/bin/nvim /usr/bin/nvim
+        fi
 
-    # Install Neovim
-    printf "\e[1;34m[+] Installing Neovim...\e[0m\n"
-    if ! sudo make install; then
-        printf "\e[1;31m[-] Failed to install Neovim.\e[0m\n"
-        exit 1
-    fi
+        printf "\e[1;32m[+] Neovim built and installed successfully.\e[0m\n"
 
-    # Create a symbolic link for Neovim if it doesn't exist
-    if [ ! -f /usr/bin/nvim ]; then
-        sudo ln -sf /usr/local/bin/nvim /usr/bin/nvim
-    fi
-
-    printf "\e[1;32m[+] Neovim built and installed successfully.\e[0m\n"
-
-    # Verify the installation
-    nvim_version=$(nvim --version | head -n1)
-    printf "\e[1;32m[+] Installed: %s\e[0m\n" "$nvim_version"
+        # Verify the installation
+        nvim_version=$(nvim --version | head -n1)
+        printf "\e[1;32m[+] Installed: %s\e[0m\n" "$nvim_version"
 }
 
+
 install_nvim_config_deps(){
-         printf "\e[1;34m[+] Installing nvim config dependencies for %s using %s...\e[0m\n" "$DISTRO" "$PKG_MANAGER"
+         printf "\e[1;34m[+] Installing the custom configuration dependencies for %s using %s...\e[0m\n" "$DISTRO" "$PKG_MANAGER"
 
          case "$PKG_MANAGER" in
              "apt")
