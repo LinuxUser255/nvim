@@ -444,6 +444,7 @@ remove_old_config() {
 # Git clone the Neovim configuration repo
 install_config() {
         printf "\e[1;34m[+] Git cloning new config & opening Neovim to install plugins...\e[0m\n"
+        mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
         git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
         printf "\e[1;34m[+] Open Neovim to install plugins...\e[0m\n"
 }
