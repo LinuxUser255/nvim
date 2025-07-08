@@ -464,16 +464,30 @@ mk_nvim_dir() {
 # Git clone the Neovim configuration repo
 install_config() {
         printf "\e[1;34m[+] Git cloning new config. Open Neovim to install plugins...\e[0m\n"
-        git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
+        # Create the directory
+        mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
+        # Clone the repository
+        if ! git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim; then
+            printf "\e[1;31m[-] Failed to clone the configuration repository.\e[0m\n"
+            printf "\e[1;31m    The directory might not be empty. Try running the script again.\e[0m\n"
+            exit 1
+        fi
+
+        printf "\e[1;32m[+] Configuration cloned successfully.\e[0m\n"
 }
 
 main() {
         install_prompt
+        get_os
         detect_distro
         full_sys_upgrade
         check_neovim_version  # This will call build_neovim if needed
         install_nvim_config_deps
-        mk_nvim_dir  # Create directory first
         remove_old_config  # Then remove old config (this will recreate the directory)
         install_config
 }
+
+main
+
