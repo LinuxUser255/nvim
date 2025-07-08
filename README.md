@@ -50,7 +50,7 @@ Enjoy!
 
 ```bash
 
-curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh ./install.sh
+curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && sudo ./install.sh
 
 ```
 
