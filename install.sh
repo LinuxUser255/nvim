@@ -51,10 +51,10 @@ get_os() {
             esac
         ;;
         "Linux")
-            : "Linux"
+            OS="Linux"  # Directly set OS to "Linux"
         ;;
         *BSD|DragonFly|Bitrig)
-            : "BSD"
+            OS="BSD"    # Directly set OS to "BSD"
         ;;
         *)
             printf "\e[1;31m[-] Unknown OS detected: '%s', aborting...\e[0m\n" "$(uname -s)" >&2
@@ -62,8 +62,7 @@ get_os() {
         ;;
     esac
 
-    # Set the OS variable from the stored value
-    OS="$_"
+    # No need for $_ here, OS is already set
     printf "\e[1;32m[+] Detected OS: %s\e[0m\n" "$OS"
 }
 
@@ -141,37 +140,34 @@ detect_distro() {
         # Determine package manager based on distribution
         case "$DISTRO" in
             "Debian"* | "Ubuntu"*)
-                : "apt"
+                PKG_MANAGER="apt"
             ;;
             "Fedora"*)
-                : "dnf"
+                PKG_MANAGER="dnf"
             ;;
             "Red Hat"* | "CentOS"*)
-                : "dnf"
+                PKG_MANAGER="dnf"
             ;;
             "Arch"*)
-                : "pacman"
+                PKG_MANAGER="pacman"
             ;;
             "Alpine"*)
-                : "apk"
+                PKG_MANAGER="apk"
             ;;
             "openSUSE"*)
-                : "zypper"
+                PKG_MANAGER="zypper"
             ;;
             "Void"*)
-                : "xbps"
+                PKG_MANAGER="xbps"
             ;;
             "FreeBSD"*)
-                : "pkg"
+                PKG_MANAGER="pkg"
             ;;
             *)
                 printf "\e[1;31m[-] Unsupported Linux distribution.\e[0m\n"
                 exit 1
             ;;
         esac
-
-        # Stored value using $_ after the case statement
-        PKG_MANAGER="$_"
 
         printf "\e[1;32m[+] Detected distribution: %s (Package Manager: %s)\e[0m\n" "$DISTRO" "$PKG_MANAGER"
 }
