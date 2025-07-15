@@ -40,11 +40,20 @@ For more on the architecture of this config, see the docs and illustration here:
 
 **[Config-Structure.md](docs/Config-Structure.md)**
 
-Enjoy!
+### Enjoy!
 
 <br>
 
-**Make a backup of your config if you want**
+
+
+ <a href="https://buymeacoffee.com/chrisbingh8" target="_blank">
+   <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px; width: 217px;">
+   <br>
+   <span style="color: #FF0000; font-weight: bold; font-size: 26pt;">&nbsp;&nbsp;Support My Work :)</span>
+
+ </a>
+ <br><br>
+
 
 
 
@@ -188,10 +197,3 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
 
 <br>
 
-<br>
-
- <a href="https://buymeacoffee.com/chrisbingh8" target="_blank" style="color: #be0c3b; text-decoration: none; font-weight: bold; font-size: 35px; margin-left: 40px;">
-                          <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" alt="Buy Me A Coffee" style="height: 60px; width: 217px;">
-                            <br>
-                            <span style="color: #FF0000; font-weight: bold; font-size: 36pt;">&nbsp;&nbsp;Support My Work :)</span>
-                            <br><br><br>
