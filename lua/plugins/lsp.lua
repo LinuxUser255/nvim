@@ -21,7 +21,7 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "rust_analyzer",
+                    "rust_analyzer", -- Rust language server
                     "pyright",  -- Python language server
                     "clangd",   -- Clangd-based C/C++ language server
                     "bashls",   -- Bash language server
@@ -36,7 +36,7 @@ return {
                 local packages = {
                     "clangd",       -- Be sure to include this
                     "codelldb",     -- LLDB-based debugger
-                    "cpptools",     -- Microsoft C/C++ tools (includes cppdbg)
+                    "cpptools",     -- C/C++ tools (includes cppdbg)
                     "gopls",        -- Go language server
                     "delve",        -- Go debugger
                     "eslint-lsp",   -- ESLint language server
@@ -63,6 +63,57 @@ return {
                         },
                     },
                 },
+            })
+            -- Rust LSP configuration (rust-analyzer)
+            lspconfig.rust_analyzer.setup({
+                settings = {
+                    ["rust-analyzer"] = {
+                        checkOnSave = {
+                            command = "clippy",
+                            extraArgs = {"--all", "--all-features"}
+                        },
+                        cargo = {
+                            allFeatures = true,
+                            loadOutDirsFromCheck = true,
+                        },
+                        procMacro = {
+                            enable = true,
+                        },
+                        diagnostics = {
+                            enable = true,
+                            experimental = {
+                                enable = true,
+                            },
+                        },
+                        inlayHints = {
+                            chainingHints = true,
+                            parameterHints = true,
+                            typeHints = true,
+                            maxLength = 25,
+                        },
+                        completion = {
+                            autoimport = {
+                                enable = true,
+                            },
+                            postfix = {
+                                enable = true,
+                            },
+                        },
+                        imports = {
+                            granularity = {
+                                group = "module",
+                            },
+                            prefix = "self",
+                        },
+                    },
+                },
+                capabilities = require('cmp_nvim_lsp').default_capabilities(),
+                on_attach = function(client, bufnr)
+                    -- Enable inlay hints if supported
+                    if client.server_capabilities.inlayHintProvider then
+                        vim.lsp.inlay_hint.enable(bufnr, true)
+                    end
+                end,
             })
 
             -- Python LSP configuration (pyright)
