@@ -90,8 +90,16 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
 
 #### Use this config's  [install.sh script](install.sh), and all dependencies and Requirements will be automated for you.
 
+
+<br>
+
+
 #### Change the color theme using the command:
 `:colorscheme` use tab to select between tokyo night, (default) and catpuccin.
+
+
+<br>
+
 
 **Dependencies**
   * The repos tend to have older versions. But you can still try it.
