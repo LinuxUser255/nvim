@@ -84,18 +84,18 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
  - TOML
  - LaTeX
 
-#### The install script will take care of most of the dependencies; however check your version of Neovim first.
+### - The install script will take care of most of the dependencies; however check your version of Neovim first.
 ```bash
   nvim -v
 ```
 
-#### Use this config's  [install.sh script](install.sh), and all dependencies and Requirements will be automated for you.
+### - Use this config's  [install.sh script](install.sh), and all dependencies and Requirements will be automated for you.
 
 
 <br>
 
 
-#### Change the color theme using the command:
+### - Change the color theme using the command:
 `:colorscheme` use tab to select between tokyo night, (default) and catpuccin.
 
 
