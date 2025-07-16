@@ -1,70 +1,155 @@
 return {
-    "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000,
-    config = function()
-        require("catppuccin").setup({
-            flavour = "mocha", -- latte, frappe, macchiato, mocha
-            background = { -- :h background
-                light = "latte",
-                dark = "mocha",
-            },
-            transparent_background = false, -- disables setting the background color.
-            show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
-            term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
-            dim_inactive = {
-                enabled = false, -- dims the background color of inactive window
-                shade = "dark",
-                percentage = 0.15, -- percentage of the shade to apply to the inactive window
-            },
-            no_italic = false, -- Force no italic
-            no_bold = false, -- Force no bold
-            no_underline = false, -- Force no underline
-            styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
-                comments = { "italic" }, -- Change the style of comments
-                conditionals = { "italic" },
-                loops = {},
-                functions = {},
-                keywords = {},
-                strings = {},
-                variables = {},
-                numbers = {},
-                booleans = {},
-                properties = {},
-                types = {},
-                operators = {},
-                -- miscs = {}, -- Uncomment to turn off hard-coded styles
-            },
-            color_overrides = {},
-            custom_highlights = {},
-            default_integrations = true,
-            integrations = {
-                cmp = true,
-                gitsigns = true,
-                nvimtree = true,
-                treesitter = true,
-                notify = false,
-                mini = {
-                    enabled = true,
-                    indentscope_color = "",
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        priority = 1000,
+        config = function()
+            require("catppuccin").setup({
+                flavour = "mocha", -- latte, frappe, macchiato, mocha
+                background = { -- :h background
+                    light = "latte",
+                    dark = "mocha",
                 },
-                -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
-            },
-        })
+                transparent_background = false, -- disables setting the background color.
+                show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
+                term_colors = false, -- sets terminal colors (e.g. `g:terminal_color_0`)
+                dim_inactive = {
+                    enabled = false, -- dims the background color of inactive window
+                    shade = "dark",
+                    percentage = 0.15, -- percentage of the shade to apply to the inactive window
+                },
+                no_italic = false, -- Force no italic
+                no_bold = false, -- Force no bold
+                no_underline = false, -- Force no underline
+                styles = { -- Handles the styles of general hi groups (see `:h highlight-args`):
+                    comments = { "italic" }, -- Change the style of comments
+                    conditionals = { "italic" },
+                    loops = {},
+                    functions = {},
+                    keywords = {},
+                    strings = {},
+                    variables = {},
+                    numbers = {},
+                    booleans = {},
+                    properties = {},
+                    types = {},
+                    operators = {},
+                    -- miscs = {}, -- Uncomment to turn off hard-coded styles
+                },
+                color_overrides = {},
+                custom_highlights = {},
+                default_integrations = true,
+                integrations = {
+                    cmp = true,
+                    gitsigns = true,
+                    nvimtree = true,
+                    treesitter = true,
+                    notify = false,
+                    mini = {
+                        enabled = true,
+                        indentscope_color = "",
+                    },
+                    -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+                },
+            })
+        end
+    },
+    {
+        "folke/tokyonight.nvim",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require("tokyonight").setup({
+                style = "storm", -- The theme comes in three styles: storm, moon, night, day
+                transparent = false, -- Enable this to disable setting the background color
+                terminal_colors = true, -- Configure the colors used when opening a `:terminal`
+                styles = {
+                    comments = { italic = true },
+                    keywords = { italic = true },
+                    functions = {},
+                    variables = {},
+                    sidebars = "dark", -- style for sidebars
+                    floats = "dark", -- style for floating windows
+                },
+                sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows
+                day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style
+                hide_inactive_statusline = false, -- Enabling this option will hide inactive statuslines
+                dim_inactive = false, -- dims inactive windows
+                lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
+            })
+        end
+    },
+    {
+        "nvim-lua/plenary.nvim", -- Required for theme switching command
+        lazy = false,
+    },
+    {
+        "nvim-telescope/telescope.nvim", -- Required for theme selection UI
+        lazy = false,
+    },
+    {
+        "nvim-lua/popup.nvim", -- Required for theme selection UI
+        lazy = false,
+    },
+    {
+        "rcarriga/nvim-notify", -- Add this plugin for theme switching notifications
+        name = "nvim-notify",   -- Add a name for this plugin
+        priority = 1000,
+        config = function()
+            -- Set default colorscheme
+            vim.cmd.colorscheme "tokyonight-night"
 
-        -- Apply the colorscheme after setup
-        vim.cmd.colorscheme "catppuccin"
+            -- Create a command to switch between themes
+            vim.api.nvim_create_user_command('Color', function()
+                local themes = {
+                    { name = "Catppuccin - Latte (Light)", value = "catppuccin-latte" },
+                    { name = "Catppuccin - Frappe", value = "catppuccin-frappe" },
+                    { name = "Catppuccin - Macchiato", value = "catppuccin-macchiato" },
+                    { name = "Catppuccin - Mocha (Dark)", value = "catppuccin" },
+                    { name = "Tokyo Night - Storm", value = "tokyonight-storm" },
+                    { name = "Tokyo Night - Night", value = "tokyonight-night" },
+                    { name = "Tokyo Night - Moon", value = "tokyonight-moon" },
+                    { name = "Tokyo Night - Day (Light)", value = "tokyonight-day" },
+                }
 
-        -- If you need to use the palettes, uncomment and use them like this:
-        -- local latte = require("catppuccin.palettes").get_palette "latte"
-        -- local frappe = require("catppuccin.palettes").get_palette "frappe"
-        -- local macchiato = require("catppuccin.palettes").get_palette "macchiato"
-        -- local mocha = require("catppuccin.palettes").get_palette "mocha"
+                local actions = require('telescope.actions')
+                local action_state = require('telescope.actions.state')
+                local pickers = require('telescope.pickers')
+                local finders = require('telescope.finders')
+                local sorters = require('telescope.sorters')
+                local dropdown = require('telescope.themes').get_dropdown()
 
-        -- Example of using palette colors:
-        -- vim.api.nvim_set_hl(0, "MyHighlightGroup", { fg = mocha.text, bg = mocha.base })
+                pickers.new(dropdown, {
+                    prompt_title = 'Select Theme',
+                    finder = finders.new_table {
+                        results = themes,
+                        entry_maker = function(entry)
+                            return {
+                                value = entry,
+                                display = entry.name,
+                                ordinal = entry.name,
+                            }
+                        end,
+                    },
+                    sorter = sorters.get_generic_fuzzy_sorter(),
+                    attach_mappings = function(prompt_bufnr, _)
+                        actions.select_default:replace(function()
+                            local selection = action_state.get_selected_entry()
+                            actions.close(prompt_bufnr)
 
-        -- catppuccin github repository:
-        -- https://github.com/catppuccin/nvim
-    end
+                            -- Apply the selected theme
+                            vim.cmd.colorscheme(selection.value.value)
+
+                            -- Notify the user
+                            vim.notify('Theme switched to ' .. selection.value.name, vim.log.levels.INFO)
+                        end)
+                        return true
+                    end,
+                }):find()
+            end, {})
+
+            -- Add a keymap for quick access
+            vim.keymap.set('n', '<leader>ct', '<cmd>Color<CR>', { desc = 'Change Theme' })
+        end
+    }
 }
