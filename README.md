@@ -88,8 +88,12 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
   nvim -v
 ```
 
-#### Should be Version 10 or higher
+#### Use this config's  [install.sh script](install.sh), and all dependencies and Requirements will be automated for you.
 
+#### Change the color theme using the command:
+`:colorscheme` use tab to select between tokyo night, (default) and catpuccin.
+
+**Dependencies**
   * The repos tend to have older versions. But you can still try it.
   * [This config was built using Neovim version 11.2 - And built from source - latest stable version](https://github.com/neovim/neovim/blob/master/BUILD.md)
   * And built on Debian 12
