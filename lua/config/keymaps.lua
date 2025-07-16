@@ -133,12 +133,26 @@ function R(name)
     require("plenary.reload").reload_module(name)
 end
 
+-- Create a custom highlight group for yank highlighting
+local set_yank_highlight = function()
+    vim.api.nvim_set_hl(0, 'YankHighlight', { bg = '#FBDE84', fg = '#000000', bold = true })
+end
+
+-- Set it now
+set_yank_highlight()
+
+-- And also set it whenever the colorscheme changes
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    callback = set_yank_highlight,
+})
+
 autocmd('TextYankPost', {
     group = yank_group,
     pattern = '*',
     callback = function()
         vim.highlight.on_yank({
-            higroup = 'IncSearch',
+            higroup = 'YankHighlight',
             timeout = 40,
         })
     end,
@@ -151,5 +165,5 @@ autocmd({ "BufWritePre" }, {
 })
 
 -- attempt opaque background: It worked!
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+--vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+--vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
