@@ -82,6 +82,7 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
  - Solidity
  - Vue/Svelte
  - TOML
+ - LaTeX
 
 #### The install script will take care of most of the dependencies; however check your version of Neovim first.
 ```bash

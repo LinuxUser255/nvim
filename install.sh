@@ -22,7 +22,7 @@
 # 12. Solidity
 # 13. Vue/Svelte
 # 14. TOML
-# 15. LaTex -- Soon
+# 15. LaTex
 
 install_prompt() {
         # Acceptable inputs: yes, y, no, n and Enter1
