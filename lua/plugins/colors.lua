@@ -1,5 +1,6 @@
 return {
     {
+        -- Catppuccin colorscheme
         "catppuccin/nvim",
         name = "catppuccin",
         priority = 1000,
@@ -55,6 +56,7 @@ return {
         end
     },
     {
+        -- Tokyonight theme
         "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
@@ -80,6 +82,28 @@ return {
         end
     },
     {
+        -- Rosepine
+        "rose-pine/neovim",
+        name = "rose-pine",
+        priority = 1000,
+        config = function()
+            require("rose-pine").setup({
+                variant = "auto", -- auto, main, moon, or dawn
+                dark_variant = "main", -- main or moon
+                dim_inactive_windows = false,
+                extend_background_behind_borders = true,
+                styles = {
+                    bold = true,
+                    italic = true,
+                    transparency = false,
+                },
+                highlight_groups = {
+                    -- Custom highlight group adjustments can be added here
+                }
+            })
+        end
+    },
+    {
         "nvim-lua/plenary.nvim", -- Required for theme switching command
         lazy = false,
     },
@@ -99,8 +123,8 @@ return {
             -- Set default colorscheme
             vim.cmd.colorscheme "tokyonight-night"
 
-            -- Create a command to switch between themes
-            vim.api.nvim_create_user_command('Color', function()
+            -- Command to switch between themes
+                vim.api.nvim_create_user_command('Color', function()
                 local themes = {
                     { name = "Catppuccin - Latte (Light)", value = "catppuccin-latte" },
                     { name = "Catppuccin - Frappe", value = "catppuccin-frappe" },
@@ -110,6 +134,9 @@ return {
                     { name = "Tokyo Night - Night", value = "tokyonight-night" },
                     { name = "Tokyo Night - Moon", value = "tokyonight-moon" },
                     { name = "Tokyo Night - Day (Light)", value = "tokyonight-day" },
+                    { name = "Rose Pine - Main (Dark)", value = "rose-pine" },
+                    { name = "Rose Pine - Moon (Dark)", value = "rose-pine-moon" },
+                    { name = "Rose Pine - Dawn (Light)", value = "rose-pine-dawn" },
                 }
 
                 local actions = require('telescope.actions')
@@ -118,6 +145,7 @@ return {
                 local finders = require('telescope.finders')
                 local sorters = require('telescope.sorters')
                 local dropdown = require('telescope.themes').get_dropdown()
+
 
                 pickers.new(dropdown, {
                     prompt_title = 'Select Theme',
