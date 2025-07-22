@@ -2,7 +2,6 @@ return {
     -- Python-specific plugins
     {
         "mfussenegger/nvim-dap-python",
-        -- Remove the ft = "python" line to ensure it loads regardless of filetype
         dependencies = {
             "mfussenegger/nvim-dap",
         },
@@ -15,7 +14,7 @@ return {
         "rcarriga/nvim-dap-ui",
         dependencies = {
             "mfussenegger/nvim-dap",
-            "nvim-neotest/nvim-nio", -- Add this missing dependency
+            "nvim-neotest/nvim-nio",
         },
         config = function()
             require("dapui").setup()

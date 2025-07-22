@@ -1,3 +1,4 @@
+-- SET DEFAULT COLORSCHEME ON LINE 125:  vim.cmd.colorscheme "catppuccin"
 return {
     {
         -- Catppuccin colorscheme
@@ -50,7 +51,7 @@ return {
                         enabled = true,
                         indentscope_color = "",
                     },
-                    -- For more plugins integrations please scroll down (https://github.com/catppuccin/nvim#integrations)
+                    -- For more plugins integrations https://github.com/catppuccin/nvim#integrations
                 },
             })
         end
@@ -98,7 +99,7 @@ return {
                     transparency = false,
                 },
                 highlight_groups = {
-                    -- Custom highlight group adjustments can be added here
+                    -- Custom highlight group adjustments go here
                 }
             })
         end
@@ -120,8 +121,8 @@ return {
         name = "nvim-notify",   -- Add a name for this plugin
         priority = 1000,
         config = function()
-            -- Set default colorscheme
-            vim.cmd.colorscheme "tokyonight-night"
+            -- SET DEFAULT COLORSCHEME
+            vim.cmd.colorscheme "catppuccin"
 
             -- Command to switch between themes
                 vim.api.nvim_create_user_command('Color', function()

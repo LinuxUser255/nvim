@@ -36,7 +36,7 @@ return {
         config = function(_, opts)
             require("typescript-tools").setup(opts)
 
-            -- Add TypeScript specific keymaps
+            -- Adding TypeScript specific keymaps
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = {"typescript", "javascript", "typescriptreact", "javascriptreact"},
                 callback = function()

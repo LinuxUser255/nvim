@@ -4,6 +4,7 @@
 
 --  [[ Project View & Vertical Splits ]]
 
+--   The leader key is the spacebar
 --   leader pv enters Project View, ( netrw's version of a file tree)
 --   leader ve splits the screen in two, verticaly
 
@@ -86,6 +87,10 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("n", "Q", "<nop>")
 
+-- TOGGLE WARNING MESSAGES OFF AND ON.
+vim.keymap.set('n', '<leader>dt', ':DiagnosticsToggle<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>dv', ':VirtualTextToggle<CR>', { noremap = true, silent = true })
+
 -- When using Tmux: ctrl + f and now fuzzy find in another terminal session
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
@@ -96,7 +101,7 @@ vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
 vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
 
--- ! Extremely useful: space + s opens a menu and begin replacing the word on which your cursor lies.
+-- ! Extremely useful: leader + s opens a menu and begin replacing the word on which your cursor lies.
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Telescope keymaps

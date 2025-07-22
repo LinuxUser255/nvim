@@ -34,7 +34,7 @@ return {
                 -- Install additional tools for development
                 local mr = require("mason-registry")
                 local packages = {
-                    "clangd",       -- Be sure to include this
+                    "clangd",       -- Include this
                     "codelldb",     -- LLDB-based debugger
                     "cpptools",     -- C/C++ tools (includes cppdbg)
                     "gopls",        -- Go language server
