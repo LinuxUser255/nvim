@@ -2,7 +2,8 @@ return {
   -- Rust-specific plugin with enhanced features
   {
     "simrat39/rust-tools.nvim",
-    ft = { "rust" },
+    -- Remove ft restriction and use event instead
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-lua/plenary.nvim",
@@ -48,9 +49,6 @@ return {
         server = {
           on_attach = function(_client, bufnr)
             rt.inlay_hints.enable()
-            local opts = { buffer = bufnr, noremap = true, silent = true }
-            vim.keymap.set("n", "K", rt.hover_actions.hover_actions, opts)
-            vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, opts)
           end,
           settings = {
             ["rust-analyzer"] = {
@@ -75,6 +73,17 @@ return {
           },
         },
       })
+
+      -- Only set up rust-specific keymaps for rust files
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "rust",
+        callback = function(ev)
+          local bufnr = ev.buf
+          local opts = { buffer = bufnr, noremap = true, silent = true }
+          vim.keymap.set("n", "K", rt.hover_actions.hover_actions, opts)
+          vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, opts)
+        end
+      })
     end,
   },
 
@@ -96,4 +105,3 @@ return {
     end,
   },
 }
-

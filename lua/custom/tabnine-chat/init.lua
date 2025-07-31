@@ -79,5 +79,5 @@ vim.keymap.set("v", "<leader>tcd", "<cmd>TabnineChatDebug<CR>", { desc = "Debug 
 
 -- Return the module
 return {
-  chat_with_prompt = tabnine_chat_with_prompt
+  tabnine_chat_with_prompt = tabnine_chat_with_prompt
 }

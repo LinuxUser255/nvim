@@ -6,7 +6,10 @@ return {
             "nvim-lua/plenary.nvim",
             "neovim/nvim-lspconfig",
         },
-        ft = {
+        -- Remove the ft restriction and use event instead
+        event = { "BufReadPre", "BufNewFile" },
+        -- Keep the filetypes for conditional setup
+        filetypes = {
             "typescript",
             "javascript",
             "typescriptreact",
@@ -36,7 +39,7 @@ return {
         config = function(_, opts)
             require("typescript-tools").setup(opts)
 
-            -- Adding TypeScript specific keymaps
+            -- Adding TypeScript specific keymaps - modify to check filetype
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = {"typescript", "javascript", "typescriptreact", "javascriptreact"},
                 callback = function()

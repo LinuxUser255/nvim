@@ -1,7 +1,8 @@
 return {
   'codota/tabnine-nvim',
   build = "./dl_binaries.sh",
-  lazy = false,
+  lazy = false,  -- Load immediately
+  priority = 1000,  -- High priority to ensure it loads before extensions
   config = function()
     -- Load and configure Tabnine
     require('tabnine').setup({
@@ -43,6 +44,22 @@ return {
     vim.keymap.set("n", "<leader>tch", "<cmd>TabnineChatHistory<CR>", { desc = "View Tabnine Chat history" })
     vim.keymap.set("n", "<leader>tcn", "<cmd>TabnineChatNew<CR>", { desc = "Start new Tabnine Chat" })
 
+    -- Add diagnostic commands
+    vim.api.nvim_create_user_command('TabnineDiagnostics', function()
+      local diagnostics = require("custom.tabnine-diagnostics")
+      diagnostics.diagnose()
+    end, {})
+
+    vim.api.nvim_create_user_command('TabnineInstallBinaries', function()
+      local diagnostics = require("custom.tabnine-diagnostics")
+      diagnostics.install_binaries()
+    end, {})
+
+    vim.api.nvim_create_user_command('TabnineBuildChat', function()
+      local diagnostics = require("custom.tabnine-diagnostics")
+      diagnostics.build_chat_binary()
+    end, {})
+
     -- Single debugging command for future troubleshooting
     vim.api.nvim_create_user_command('TabnineDebug', function()
       print("Available Tabnine commands:")
@@ -73,13 +90,7 @@ return {
         sources = sources or {}
         table.insert(sources, { name = "tabnine", priority = 900 })
         cmp.setup({ sources = sources })
-        print("Tabnine source added to nvim-cmp")
       end
     end
   end,
-  -- Autocomplete
-  dependencies = {
-    "hrsh7th/nvim-cmp",
-    "tzachar/cmp-tabnine", -- Autocomplete suggestions
-  },
 }

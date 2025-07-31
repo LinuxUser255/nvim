@@ -460,8 +460,9 @@ mk_nvim_dir() {
 install_config() {
         printf "\e[1;34m[+] Git cloning new config. Open Neovim to install plugins...\e[0m\n"
 
-        # Create the directory
-        mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+        # Create the directory: Commented out because it's not needed. It's redundant
+        # But leaving it here for potential future use in refactoring.
+        #mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 
         # Clone the repository
         if ! git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim; then

@@ -1,6 +1,3 @@
--- Attempts at creating a font size adjustment for the Tabnine Chat window.
--- But seems to be only available for GUI versions like Neovide.
-
 return {
   -- Create a local plugin
   dir = vim.fn.stdpath("config") .. "/lua/custom/tabnine-chat",
@@ -13,7 +10,7 @@ return {
 
   config = function()
     -- Load the custom Tabnine chat extension
-    require("custom.tabnine-chat")
+    local tabnine_chat = require("custom.tabnine-chat")
 
     -- Create a command to toggle font size for Tabnine Chat
     -- Define this command first to ensure it's available globally
@@ -47,6 +44,10 @@ return {
       callback = function(ev)
         local buf = ev.buf
         local win = vim.fn.bufwinid(buf)
+        
+        if win == -1 then
+          return  -- Window not found
+        end
 
         -- Make window opaque
         vim.api.nvim_win_set_option(win, "winblend", 0)
@@ -95,6 +96,6 @@ return {
     end)
   end,
 
-  -- Ensure this plugin is loaded immediately
-  lazy = false,
+  -- Ensure this plugin is loaded after tabnine-nvim
+  event = "VeryLazy",
 }
