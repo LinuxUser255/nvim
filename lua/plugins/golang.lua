@@ -14,7 +14,7 @@ return {
                 go = "go", -- Go command
                 goimport = "gopls", -- goimport command, can be gopls[default] or goimport
                 fillstruct = "gopls", -- can be nil (use fillstruct, slower) or gopls
-                gofmt = "gofumpt", -- gofmt cmd,
+                gofmt = "golines", -- Changed from "gofumpt" to "golines" to make max_line_len effective
                 max_line_len = 120, -- max line length in goline format
                 tag_transform = false, -- tag_transfer  check gomodifytags for details
                 test_template = "", -- default to testify if not set; g:go_nvim_tests_template  check gotests for details
@@ -39,7 +39,7 @@ return {
                     -- Only show inlay hints for the current line
                     only_current_line = false,
                     -- Event which triggers a refersh of the inlay hints.
-                    -- You can make this "CursorMoved" or "CursorMoved,CursorMovedI" but
+                    -- You can make this "CursorMoved" or "CursorMovedI" but
                     -- not that this may cause higher CPU usage.
                     -- This option is only respected when only_current_line and
                     -- autoSetHints both are true.

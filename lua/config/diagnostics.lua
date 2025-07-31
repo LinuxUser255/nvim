@@ -65,10 +65,21 @@ end
 -- Function to toggle just the virtual text (inline errors)
 function M.toggle_virtual_text()
   M.virtual_text_active = not M.virtual_text_active
-  vim.diagnostic.config({
-    virtual_text = M.virtual_text_active
-  })
-  print("Virtual text " .. (M.virtual_text_active and "enabled" or "disabled"))
+
+  -- Only update if diagnostics are active
+  if M.diagnostics_active then
+    vim.diagnostic.config({
+      virtual_text = M.virtual_text_active,
+    })
+
+    if M.virtual_text_active then
+      print("Virtual text enabled")
+    else
+      print("Virtual text disabled")
+    end
+  else
+    print("Note: Diagnostics are currently disabled. Virtual text setting will apply when diagnostics are enabled.")
+  end
 end
 
 -- Function to suppress specific diagnostic types
@@ -111,7 +122,9 @@ function M.reset_suppressions()
     vim.diagnostic.handlers.virtual_text.show = M.original_handler
     M.original_handler = nil
     M.suppressed_patterns = {}
-    print("Reset all diagnostic suppressions")
+    print("All diagnostic suppressions have been reset")
+  else
+    print("No suppressions were active")
   end
 end
 
