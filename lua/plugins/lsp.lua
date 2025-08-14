@@ -53,6 +53,19 @@ return {
 
             local lspconfig = require("lspconfig")
 
+            -- Enhanced on_attach function with better inlay hint handling
+            local function on_attach(client, bufnr)
+                -- Enable inlay hints if supported, with error handling
+                if client.server_capabilities.inlayHintProvider then
+                    local ok, _ = pcall(function()
+                        vim.lsp.inlay_hint.enable(bufnr, true)
+                    end)
+                    if not ok then
+                        vim.notify("Failed to enable inlay hints for " .. client.name, vim.log.levels.WARN)
+                    end
+                end
+            end
+
             -- Lua LSP configuration
             lspconfig.lua_ls.setup({
                 settings = {
@@ -63,7 +76,9 @@ return {
                         },
                     },
                 },
+                on_attach = on_attach,
             })
+
             -- Rust LSP configuration (rust-analyzer)
             lspconfig.rust_analyzer.setup({
                 settings = {
@@ -86,9 +101,10 @@ return {
                             },
                         },
                         inlayHints = {
-                            chainingHints = true,
-                            parameterHints = true,
-                            typeHints = true,
+                            enable = true,
+                            chainingHints = { enable = true },
+                            parameterHints = { enable = true },
+                            typeHints = { enable = true },
                             maxLength = 25,
                         },
                         completion = {
@@ -108,12 +124,7 @@ return {
                     },
                 },
                 capabilities = require('cmp_nvim_lsp').default_capabilities(),
-                on_attach = function(client, bufnr)
-                    -- Enable inlay hints if supported
-                    if client.server_capabilities.inlayHintProvider then
-                        vim.lsp.inlay_hint.enable(bufnr, true)
-                    end
-                end,
+                on_attach = on_attach,
             })
 
             -- Python LSP configuration (pyright)
@@ -129,6 +140,7 @@ return {
                         pythonPath = vim.fn.exepath("python3"),  -- Use Python 3
                     },
                 },
+                on_attach = on_attach,
             })
 
             -- C/C++ LSP configuration (clangd)
@@ -151,6 +163,7 @@ return {
                 init_options = {
                     compilationDatabasePath = "build",
                 },
+                on_attach = on_attach,
             })
 
             -- Go LSP configuration (gopls)
@@ -171,8 +184,18 @@ return {
                         usePlaceholders = true,
                         completeUnimported = true,
                         matcher = "fuzzy",
+                        hints = {
+                            assignVariableTypes = true,
+                            compositeLiteralFields = true,
+                            compositeLiteralTypes = true,
+                            constantValues = true,
+                            functionTypeParameters = true,
+                            parameterNames = true,
+                            rangeVariableTypes = true,
+                        },
                     },
                 },
+                on_attach = on_attach,
             })
 
             -- Set up keybindings for LSP functionality
@@ -198,6 +221,11 @@ return {
                     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
                     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
                     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+
+                    -- Add keymap to toggle inlay hints
+                    vim.keymap.set('n', '<leader>ih', function()
+                        vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled(0))
+                    end, opts)
                 end,
             })
         end,
