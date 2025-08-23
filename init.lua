@@ -1,6 +1,8 @@
 require('config')
 require('config.diagnostics')
 require('config.commands')
+require('config.lsp-inlay-hints-fix')
+require('config.disable-inlay-hints')
 
 -- Add this to your init.lua file
 vim.api.nvim_create_autocmd("VimEnter", {

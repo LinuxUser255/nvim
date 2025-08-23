@@ -56,14 +56,14 @@ return {
             -- Enhanced on_attach function with better inlay hint handling
             local function on_attach(client, bufnr)
                 -- Enable inlay hints if supported, with error handling
-                if client.server_capabilities.inlayHintProvider then
-                    local ok, _ = pcall(function()
-                        vim.lsp.inlay_hint.enable(bufnr, true)
-                    end)
-                    if not ok then
-                        vim.notify("Failed to enable inlay hints for " .. client.name, vim.log.levels.WARN)
-                    end
-                end
+                -- if client.server_capabilities.inlayHintProvider then
+                --     local ok, _ = pcall(function()
+                --         vim.lsp.inlay_hint.enable(bufnr, true)
+                --     end)
+                --     if not ok then
+                --         vim.notify("Failed to enable inlay hints for " .. client.name, vim.log.levels.WARN)
+                --     end
+                -- end
             end
 
             -- Lua LSP configuration
@@ -223,9 +223,9 @@ return {
                     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
 
                     -- Add keymap to toggle inlay hints
-                    vim.keymap.set('n', '<leader>ih', function()
-                        vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled(0))
-                    end, opts)
+                    -- vim.keymap.set('n', '<leader>ih', function()
+                    --     vim.lsp.inlay_hint.enable(0, not vim.lsp.inlay_hint.is_enabled(0))
+                    -- end, opts)
                 end,
             })
         end,
