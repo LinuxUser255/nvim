@@ -59,7 +59,7 @@ For more on the architecture of this config, see the docs and illustration here:
 
 # Installation
 
-### For the full install - includes detecting your sys, installng all dependencies,  and building the latest statbele Neovim from source.
+### For the full install - includes detecting your sys, installng all dependencies,  and building the latest stable Neovim from source.
 
 ```bash
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
