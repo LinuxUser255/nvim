@@ -91,6 +91,17 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
 
 ### - Use this config's  [install.sh script](install.sh), and all dependencies and Requirements will be automated for you.
 
+### This works too:
+```bash
+# remove your old neovim config and it's files
+rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
+
+# git clone this one
+git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
+```
+
+
 
 <br>
 

@@ -1,4 +1,4 @@
--- SET DEFAULT COLORSCHEME ON LINE 125:  vim.cmd.colorscheme "catppuccin"
+-- SET DEFAULT COLORSCHEME ON LINE 125:  vim.cmd.colorscheme "colorscheme here"
 return {
     {
         -- Catppuccin colorscheme
@@ -122,7 +122,7 @@ return {
         priority = 1000,
         config = function()
             -- SET DEFAULT COLORSCHEME
-            vim.cmd.colorscheme "rose-pine"
+            vim.cmd.colorscheme "catppuccin"
 
             -- Command to switch between themes
                 vim.api.nvim_create_user_command('Color', function()
