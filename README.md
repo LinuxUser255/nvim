@@ -59,9 +59,23 @@ For more on the architecture of this config, see the docs and illustration here:
 
 # Installation
 
+### For the full install - includes detecting your sys, installng all dependencies,  and building the latest statbele Neovim from source.
+
 ```bash
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
 ```
+
+### Or the quick and easy way.
+
+```bash
+# remove your old neovim config and it's files
+rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
+
+# git clone this one
+git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
+```
+
 
 <br>
 
@@ -92,15 +106,6 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
 ### - Use this config's  [install.sh script](install.sh), and all dependencies and Requirements will be automated for you.
 
 ### This works too:
-```bash
-# remove your old neovim config and it's files
-rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
-
-# git clone this one
-git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-
-```
-
 
 
 <br>
