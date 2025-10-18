@@ -65,7 +65,7 @@ For more on the architecture of this config, see the docs and illustration here:
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
 ```
 
-### Or the quick and easy way.
+### The manual way.
 
 ```bash
 # remove your old neovim config and it's files
