@@ -1,6 +1,8 @@
 # IDE specific files
 .idea/
 .vscode/
+/misc/
+
 
 # Compiled Lua sources
 luac.out

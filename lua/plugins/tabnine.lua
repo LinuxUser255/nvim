@@ -7,7 +7,7 @@ return {
     -- Load and configure Tabnine
     require('tabnine').setup({
       disable_auto_comment = true,
-      accept_keymap = "<Tab>",
+      accept_keymap = "<Tab>",  -- Tab will work through nvim-cmp
       dismiss_keymap = "<C-]>",
       debounce_ms = 800,
       suggestion_color = {gui = "#808080", cterm = 244},
@@ -44,30 +44,19 @@ return {
     vim.keymap.set("n", "<leader>tch", "<cmd>TabnineChatHistory<CR>", { desc = "View Tabnine Chat history" })
     vim.keymap.set("n", "<leader>tcn", "<cmd>TabnineChatNew<CR>", { desc = "Start new Tabnine Chat" })
 
-    -- Add diagnostic commands
-    vim.api.nvim_create_user_command('TabnineDiagnostics', function()
-      local diagnostics = require("custom.tabnine-diagnostics")
-      diagnostics.diagnose()
-    end, {})
-
-    vim.api.nvim_create_user_command('TabnineInstallBinaries', function()
-      local diagnostics = require("custom.tabnine-diagnostics")
-      diagnostics.install_binaries()
-    end, {})
-
-    vim.api.nvim_create_user_command('TabnineBuildChat', function()
-      local diagnostics = require("custom.tabnine-diagnostics")
-      diagnostics.build_chat_binary()
-    end, {})
-
-    -- Single debugging command for future troubleshooting
+    -- Simple debug command for troubleshooting (no verbose diagnostics)
     vim.api.nvim_create_user_command('TabnineDebug', function()
-      print("Available Tabnine commands:")
+      vim.notify("Tabnine is " .. (vim.g.tabnine_enabled and "enabled" or "disabled"), vim.log.levels.INFO)
+      -- List available commands quietly
       local commands = vim.api.nvim_get_commands({})
+      local tabnine_cmds = {}
       for name, _ in pairs(commands) do
         if name:match("^Tabnine") then
-          print("  " .. name)
+          table.insert(tabnine_cmds, name)
         end
+      end
+      if #tabnine_cmds > 0 then
+        vim.notify("Available Tabnine commands: " .. table.concat(tabnine_cmds, ", "), vim.log.levels.INFO)
       end
     end, {})
 

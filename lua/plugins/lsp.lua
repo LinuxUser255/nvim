@@ -65,7 +65,7 @@ return {
                 --     end
                 -- end
             end
-
+            
             -- Lua LSP configuration
             lspconfig.lua_ls.setup({
                 settings = {
@@ -84,6 +84,7 @@ return {
                 settings = {
                     ["rust-analyzer"] = {
                         checkOnSave = {
+                            enable = true,
                             command = "clippy",
                             extraArgs = {"--all", "--all-features"}
                         },
@@ -153,13 +154,11 @@ return {
                     "--header-insertion=iwyu",
                 },
                 filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
-                root_dir = function(fname)
-                    return require("lspconfig.util").root_pattern(
-                        "compile_commands.json",
-                        "compile_flags.txt",
-                        ".git"
-                    )(fname) or vim.fn.getcwd()
-                end,
+                root_dir = require("lspconfig.util").root_pattern(
+                    "compile_commands.json",
+                    "compile_flags.txt",
+                    ".git"
+                ),
                 init_options = {
                     compilationDatabasePath = "build",
                 },
@@ -170,9 +169,7 @@ return {
             lspconfig.gopls.setup({
                 cmd = {"gopls", "serve"},
                 filetypes = {"go", "gomod", "gowork", "gotmpl"},
-                root_dir = function(fname)
-                    return require("lspconfig.util").root_pattern("go.work", "go.mod", ".git")(fname) or vim.fn.getcwd()
-                end,
+                root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
                 settings = {
                     gopls = {
                         analyses = {
@@ -262,6 +259,41 @@ return {
                     ["<C-Space>"] = cmp.mapping.complete(),
                     ["<C-e>"] = cmp.mapping.abort(),
                     ["<CR>"] = cmp.mapping.confirm({ select = false }),
+                    -- Smart Tab mapping that works with indentation
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            -- If completion menu is visible, confirm selection
+                            -- This will insert the selected item (including Tabnine suggestions)
+                            cmp.confirm({ select = true })
+                        elseif luasnip.expand_or_jumpable() then
+                            -- If snippet is expandable/jumpable, do that
+                            luasnip.expand_or_jump()
+                        else
+                            -- Otherwise, do normal Tab behavior (indentation)
+                            -- For Rust files, check if we're at the start of a line after {
+                            local line = vim.api.nvim_get_current_line()
+                            local col = vim.fn.col('.') - 1
+                            local is_rust = vim.bo.filetype == 'rust'
+                            
+                            -- Only insert spaces if not immediately after an opening brace
+                            -- This prevents double-indentation in Rust
+                            if is_rust and col == 0 and string.match(line, '^%s*$') then
+                                -- Empty line in Rust, let smartindent handle it
+                                fallback()
+                            else
+                                fallback()
+                            end
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if cmp.visible() then
+                            cmp.select_prev_item()
+                        elseif luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp", priority = 1000 },

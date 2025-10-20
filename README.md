@@ -12,6 +12,7 @@
 - [Remaps & Shortcuts](#remaps--shortcuts)
 - [Moving lines Up & Down](#moving-lines-up--down)
 - [Highlight Replace](#highlight-replace)
+- [Presentations in Neovim](#presentations-in-neovim)
 - [Netrw Cheat Sheet](#netrw-cheat-sheet)
 - [Detailed Config and Tabnine Integration](docs/usage.md)
 - [Tabnine Integration Separate Documentation](docs/Tabnine-Integration.md)
@@ -217,6 +218,23 @@ git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.co
 | Command       | Description                                                  |
 |--------------------------|---------------------------------------------------|
 | `Shift s`                |  **Deletes the line and goes into insert mode.**  |                |
+
+### Presentations in Neovim
+
+This config includes [present.nvim](https://github.com/tjdevries/present.nvim) for creating presentations in markdown.
+
+| Command          | Description                            |
+|------------------|----------------------------------------|
+| `leader ps`      | **Start presentation mode**            |
+| `n`              | **Next slide (in presentation)**       |
+| `p`              | **Previous slide (in presentation)**   |
+| `q`              | **Quit presentation**                  |
+
+**Creating Presentations:**
+- Write slides in markdown
+- Use `<!-- stop -->` to split slides
+- Code blocks can be executed during presentation
+- Comments with `%%` won't be shown
 
 ## See the cheat sheet below, for more usage info
 

@@ -104,25 +104,14 @@ return {
             })
         end
     },
-    {
-        "nvim-lua/plenary.nvim", -- Required for theme switching command
-        lazy = false,
-    },
-    {
-        "nvim-telescope/telescope.nvim", -- Required for theme selection UI
-        lazy = false,
-    },
-    {
-        "nvim-lua/popup.nvim", -- Required for theme selection UI
-        lazy = false,
-    },
+    -- Removed duplicate plugin declarations (already loaded in telescope.lua)
     {
         "rcarriga/nvim-notify", -- Add this plugin for theme switching notifications
         name = "nvim-notify",   -- Add a name for this plugin
         priority = 1000,
         config = function()
             -- SET DEFAULT COLORSCHEME
-            vim.cmd.colorscheme "catppuccin"
+            vim.cmd.colorscheme "rose-pine"
 
             -- Command to switch between themes
                 vim.api.nvim_create_user_command('Color', function()

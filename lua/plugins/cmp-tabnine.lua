@@ -39,7 +39,7 @@ return {
           if not has_tabnine then
             table.insert(config.sources, { name = "tabnine", priority = 900 })
             cmp.setup(config)
-            print("Tabnine source added to nvim-cmp")
+            -- Silently add Tabnine source
           end
         end, 500)
       end,

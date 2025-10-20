@@ -1,10 +1,8 @@
 -- This init.lua is responsible for lazy.nvim
-vim.g.maplocalleader = ' '
-vim.g.mapleader = ' '
+-- Leader keys already set in globals.lua, no need to duplicate
 
 -- load the lazy pluging manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-local diagnostics = require("config.diagnostics")
 
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {

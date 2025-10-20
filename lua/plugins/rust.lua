@@ -52,8 +52,8 @@ return {
           end,
           settings = {
             ["rust-analyzer"] = {
-              checkOnSave = true,
-              check = {
+              checkOnSave = {
+                enable = true,
                 command = "clippy",
               },
               inlayHints = {
@@ -74,14 +74,26 @@ return {
         },
       })
 
-      -- Only set up rust-specific keymaps for rust files
+      -- Set up rust-specific keymaps and indentation for rust files
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "rust",
         callback = function(ev)
           local bufnr = ev.buf
           local opts = { buffer = bufnr, noremap = true, silent = true }
+          
+          -- Keymaps
           vim.keymap.set("n", "K", rt.hover_actions.hover_actions, opts)
           vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, opts)
+          
+          -- Force proper indentation settings for Rust files
+          vim.bo[bufnr].tabstop = 4
+          vim.bo[bufnr].shiftwidth = 4
+          vim.bo[bufnr].softtabstop = 4
+          vim.bo[bufnr].expandtab = true
+          vim.bo[bufnr].autoindent = true
+          vim.bo[bufnr].smartindent = true
+          -- Don't use cindent as it conflicts with smartindent/treesitter
+          vim.bo[bufnr].cindent = false
         end
       })
     end,

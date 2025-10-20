@@ -13,7 +13,7 @@ vim.api.nvim_create_user_command('SuppressErrors', function(opts)
   if opts.args and opts.args ~= "" then
     diagnostics.suppress_by_message(opts.args)
   else
-    print("Usage: SuppressErrors <pattern>")
+    vim.notify("Usage: SuppressErrors <pattern>", vim.log.levels.WARN)
   end
 end, {nargs = '?'})
 

@@ -17,9 +17,10 @@ And extensive documentation on [Tabnine](https://www.tabnine.com/) integration w
    - [Lua](#lua)
    - [TypeScript/JavaScript](#typescriptjavascript)
 7. [Debugging](#debugging)
-8. [Customization](#customization)
-9. [Troubleshooting](#troubleshooting)
-10. [Tabnine Neovim Integration](#tabnine-neovim-integration)
+8. [Presentations](#presentations)
+9. [Customization](#customization)
+10. [Troubleshooting](#troubleshooting)
+11. [Tabnine Neovim Integration](#tabnine-neovim-integration)
 
 ## Introduction
 
@@ -377,7 +378,89 @@ Debugging is provided through the Debug Adapter Protocol (DAP) with language-spe
   :lua require('dap').step_out()              # Step out
   :lua require('dap').toggle_breakpoint()     # Toggle breakpoint
   :lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: ')) # Set conditional breakpoint
-  :lua require('dap').
+```
+
+<br>
+
+## Presentations
+
+Create and deliver presentations directly in Neovim using [present.nvim](https://github.com/tjdevries/present.nvim). Write your slides in markdown and present them without leaving your editor.
+
+### Presentation Commands
+
+| Command | Description |
+|---------|-------------|
+| `:PresentStart` | Start presentation mode |
+| `<leader>ps` | Start presentation (shortcut) |
+
+### Navigation During Presentation
+
+| Key | Description |
+|-----|-------------|
+| `n` | Next slide |
+| `p` | Previous slide |
+| `q` | Quit presentation |
+
+### Creating Presentations
+
+1. **Write slides in Markdown**
+   ```markdown
+   # Slide 1 Title
+   
+   Content for slide 1
+   
+   <!-- stop -->
+   
+   # Slide 2 Title
+   
+   Content for slide 2
+   ```
+
+2. **Use slide separators**
+   - `<!-- stop -->` splits content into slides
+   - Each section between separators becomes a slide
+
+3. **Add comments**
+   - Use `%%` for comments that won't appear in presentation
+   - Example: `%% This is a presenter note`
+
+4. **Execute code blocks**
+   - Code blocks can be executed during presentation
+   - Supports Lua, Python, Bash, JavaScript, and more
+   ```lua
+   print("This code can be executed live!")
+   ```
+
+### Example Presentation
+
+```markdown
+# Welcome Slide
+
+Introduction to my presentation
+
+<!-- stop -->
+
+## Main Points
+
+- Point 1
+- Point 2
+- Point 3
+
+%% Remember to emphasize Point 2
+
+<!-- stop -->
+
+## Code Demo
+
+```lua
+print("Live code execution!")
+```
+
+<!-- stop -->
+
+# Thank You!
+
+Questions?
 ```
 
 <br>

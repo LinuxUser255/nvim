@@ -21,7 +21,7 @@ local function initialize_diagnostics()
     },
   })
 
-  print("Diagnostics and virtual text disabled by default")
+  -- Silent initialization - no print statement
 end
 
 -- Function to toggle all diagnostics
@@ -42,7 +42,7 @@ function M.toggle_diagnostics()
         focusable = false,
       },
     })
-    print("Diagnostics enabled")
+    -- Silent operation
   else
     -- Disable diagnostics
     vim.diagnostic.config({
@@ -58,7 +58,7 @@ function M.toggle_diagnostics()
         focusable = false,
       },
     })
-    print("Diagnostics disabled")
+    -- Silent operation
   end
 end
 
@@ -73,12 +73,12 @@ function M.toggle_virtual_text()
     })
 
     if M.virtual_text_active then
-      print("Virtual text enabled")
+      -- Silent operation
     else
-      print("Virtual text disabled")
+      -- Silent operation
     end
   else
-    print("Note: Diagnostics are currently disabled. Virtual text setting will apply when diagnostics are enabled.")
+    -- Silent operation when diagnostics disabled
   end
 end
 
@@ -92,7 +92,7 @@ function M.suppress_by_message(pattern)
 
   -- Add the pattern to our suppression list
   table.insert(M.suppressed_patterns, pattern)
-  print("Suppressing diagnostics matching: " .. pattern)
+  -- Silently suppress pattern
 
   -- Override the virtual text handler
   vim.diagnostic.handlers.virtual_text.show = function(namespace, bufnr, diagnostics, opts)
@@ -122,9 +122,9 @@ function M.reset_suppressions()
     vim.diagnostic.handlers.virtual_text.show = M.original_handler
     M.original_handler = nil
     M.suppressed_patterns = {}
-    print("All diagnostic suppressions have been reset")
+    -- Suppressions reset
   else
-    print("No suppressions were active")
+    -- No active suppressions
   end
 end
 
