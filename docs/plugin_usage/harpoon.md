@@ -1,6 +1,6 @@
 # Harpoon
 
-**Plugin:** `ThePrimeagen/harpoon` (branch: `harpoon2`)  
+**Plugin:** `ThePrimeagen/harpoon` (branch: `harpoon2`)
 **Purpose:** Lightning-fast file navigation and bookmarking system
 
 ## Overview
@@ -26,12 +26,14 @@ Harpoon is a file mark/jump manager that enables rapid navigation between freque
 
 ### Navigation
 
+- **The `C` in the Keybinding is Ctrl, (the control key), not capital C.
+
 | Keybinding | Action | Description |
 |------------|--------|-------------|
 | `<C-n>` | Next file | Jump to next file in Harpoon list |
 | `<C-p>` | Previous file | Jump to previous file in list |
 
-> **✅ Conflicts Resolved:**  
+> **✅ Conflicts Resolved:**
 > - Telescope git files moved from `<C-p>` to `<leader>gf`
 > - Telescope LSP references moved from `<leader>fl` to `<leader>lr`
 > - Harpoon now has priority on `<C-p>` and `<leader>fl`
@@ -69,7 +71,7 @@ Harpoon is a file mark/jump manager that enables rapid navigation between freque
 When working on a feature that touches multiple files:
 
 1. Open `controller.js` → `<leader>a` (mark it)
-2. Open `model.js` → `<leader>a` (mark it) 
+2. Open `model.js` → `<leader>a` (mark it)
 3. Open `view.js` → `<leader>a` (mark it)
 4. Now jump between these three files instantly with `<C-n>`/`<C-p>`
 5. Or use `<C-e>` to see all marks and pick one
