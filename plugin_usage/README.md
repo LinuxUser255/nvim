@@ -1,0 +1,60 @@
+# Plugin Usage Documentation
+
+This directory contains per-plugin usage guides for your Neovim configuration. Each document includes: what the plugin is, common use-cases, key bindings, commands, how to use it, and how to modify its configuration.
+
+Index:
+- harpoon.md
+- telescope.md
+- treesitter.md
+- toggleterm.md
+- lspconfig.md
+- nvim-cmp.md
+- cmp-nvim-lsp.md
+- cmp-buffer.md
+- cmp-path.md
+- cmp-cmdline.md
+- luasnip.md
+- cmp-luasnip.md
+- lspkind.md
+- colors.md
+- catppuccin.md
+- tokyonight.md
+- rose-pine.md
+- which-key.md
+- todo-comments.md
+- zen-mode.md
+- express-line.md
+- lualine.md
+- nvim-web-devicons.md
+- vim-be-good.md
+- clangd-extensions.md
+- nvim-dap.md
+- nvim-dap-ui.md
+- nvim-nio.md
+- neotest.md
+- neotest-python.md
+- neotest-vitest.md
+- go-nvim.md
+- nvim-dap-python.md
+- rust-tools.md
+- crates-nvim.md
+- typescript-tools.md
+- template-string.md
+- tsc.md
+- ts-error-translator.md
+- present.md
+- tabnine-nvim.md
+- cmp-tabnine.md
+- tabnine-chat-extension.md
+- latex.md
+- mason.md
+- mason-lspconfig.md
+- fidget.md
+- neodev.md
+- nvim-notify.md
+- plenary.md
+- guihua.md
+- fixcursorhold.md
+- ui.md
+- editor.md
+- tools.md
