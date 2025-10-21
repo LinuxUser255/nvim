@@ -31,9 +31,17 @@ Harpoon is a file mark/jump manager that enables rapid navigation between freque
 | `<C-n>` | Next file | Jump to next file in Harpoon list |
 | `<C-p>` | Previous file | Jump to previous file in list |
 
-> **⚠️ Conflicts:**  
-> - `<leader>fl` overrides Telescope LSP references  
-> - `<C-p>` conflicts with `Telescope git_files`
+> **✅ Conflicts Resolved:**  
+> - Telescope git files moved from `<C-p>` to `<leader>gf`
+> - Telescope LSP references moved from `<leader>fl` to `<leader>lr`
+> - Harpoon now has priority on `<C-p>` and `<leader>fl`
+
+### Alternative Bindings (if Ctrl keys conflict)
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `<leader>hp` | Previous file | Alternative to `<C-p>` |
+| `<leader>hn` | Next file | Alternative to `<C-n>` |
 
 ## Usage Examples
 

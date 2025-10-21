@@ -125,11 +125,13 @@ vim.keymap.set("n", "<leader>fo", "<cmd>Telescope oldfiles<cr>", { desc = "Old F
 vim.keymap.set("n", "<leader>fs", "<cmd>Telescope grep_string<cr>", { desc = "Grep Strg" })
 vim.keymap.set("n", "<leader>fc", "<cmd>Telescope git_commits<cr>", { desc = "Commits" })
 
-vim.keymap.set("n", "<C-p>", "<cmd>Telescope git_files<cr>", { desc = "Git files" })
+-- vim.keymap.set("n", "<C-p>", "<cmd>Telescope git_files<cr>", { desc = "Git files" }) -- DISABLED: Harpoon uses <C-p>
+vim.keymap.set("n", "<leader>gf", "<cmd>Telescope git_files<cr>", { desc = "Git files" }) -- Moved to <leader>gf
 vim.keymap.set("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
 vim.keymap.set("n", "<leader>fj", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
 vim.keymap.set("n", "<leader>fk", "<cmd>Telescope keymaps<cr>", { desc = "Keymaps" })
-vim.keymap.set("n", "<leader>fl", "<cmd>Telescope lsp_references<cr>", { desc = "LSP References" })
+-- vim.keymap.set("n", "<leader>fl", "<cmd>Telescope lsp_references<cr>", { desc = "LSP References" }) -- DISABLED: Harpoon uses <leader>fl
+vim.keymap.set("n", "<leader>lr", "<cmd>Telescope lsp_references<cr>", { desc = "LSP References" }) -- Moved to <leader>lr
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
