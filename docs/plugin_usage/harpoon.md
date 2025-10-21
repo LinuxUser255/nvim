@@ -26,7 +26,7 @@ Harpoon is a file mark/jump manager that enables rapid navigation between freque
 
 ### Navigation
 
-- **The `C` in the Keybinding is Ctrl, (the control key), not capital C.
+- #### The `C` in the Keybinding is `Ctrl`, (the control key), not capital `C.`
 
 | Keybinding | Action | Description |
 |------------|--------|-------------|
