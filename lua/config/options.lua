@@ -34,3 +34,6 @@ vim.opt.cursorline = true
 
 -- display vertical line column at 80
 vim.opt.colorcolumn = "80"
+
+-- Enable system clipboard integration
+vim.opt.clipboard = "unnamedplus"
