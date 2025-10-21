@@ -8,16 +8,16 @@
 - Bookmark files as you work and jump between them instantly
 
 **Key bindings**
-- `<leader>a`  Add current file to Harpoon list
-- `<C-e>`      Toggle Harpoon quick menu
-- `<leader>fl` Open Harpoon list in Telescope (note: overrides Telescope LSP references mapping)
-- `<C-p>`      Jump to previous Harpoon entry (note: conflicts with `Telescope git_files`)
-- `<C-n>`      Jump to next Harpoon entry
+ `<leader>a`  Add current file to Harpoon list
+ `<C-e>`      Toggle Harpoon quick menu
+ `<leader>fl` Open Harpoon list in Telescope (note: overrides Telescope LSP references mapping)
+ `<C-p>`      Jump to previous Harpoon entry (note: conflicts with `Telescope git_files`)
+ `<C-n>`      Jump to next Harpoon entry
 
 **Commands/Usage**
-- Add files with `<leader>a`  while visiting them
-- Open menu with `<C-e>`     select a file to jump
-- Cycle with `<C-p>` or  `<C-n>`
+ Add files with `<leader>a`  while visiting them
+ Open menu with `<C-e>`     select a file to jump
+ Cycle with `<C-p>` or  `<C-n>`
 
 **Modify**
 - Edit keymaps or behavior in `lua/plugins/harpoon.lua`
