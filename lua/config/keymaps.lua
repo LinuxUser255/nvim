@@ -76,7 +76,7 @@ vim.keymap.set("n", "N", "Nzzzv")
 
 -- Pasting highlighted text over a pre-selected highligted text
 -- Deletes highlighted word into the 'void' register and then paste it over.
-vim.keymap.set("x", "<leader>p", [["_dP]])
+vim.keymap.set("x", "<leader>rp", [["_dP]], { desc = "Replace paste (delete to void)" })
 
 -- YANK TEXT TO THE SYSTEM CLIPBOARD, leader y enabling you to paste elsewhere
 -- 1st way: Select the line(s): Normal mode, ctrl v to select the line, then leader y
@@ -86,6 +86,16 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("n", "Q", "<nop>")
+
+-- Ensure normal paste works (explicit mappings)
+vim.keymap.set("n", "p", "p", { noremap = true, desc = "Paste after cursor" })
+vim.keymap.set("n", "P", "P", { noremap = true, desc = "Paste before cursor" })
+vim.keymap.set("v", "p", "p", { noremap = true, desc = "Paste in visual mode" })
+vim.keymap.set("v", "P", "P", { noremap = true, desc = "Paste before in visual mode" })
+
+-- System clipboard paste (leader+p for system, regular p for internal)
+vim.keymap.set({"n", "v"}, "<leader>p", [["+p]], { desc = "Paste from system clipboard" })
+vim.keymap.set({"n", "v"}, "<leader>P", [["+P]], { desc = "Paste before from system clipboard" })
 
 -- TOGGLE WARNING MESSAGES OFF AND ON.
 vim.keymap.set('n', '<leader>dt', ':DiagnosticsToggle<CR>', { noremap = true, silent = true })

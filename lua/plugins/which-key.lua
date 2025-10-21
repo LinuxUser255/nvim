@@ -1,9 +1,10 @@
 return {
   "folke/which-key.nvim",
+  enabled = false,  -- DISABLED: was interfering with yank/paste operations
   event = "VeryLazy",
   opts = {
     preset = "modern", -- "classic", "modern", or "helix"
-    delay = 300, -- delay before showing the popup (ms)
+    delay = 500, -- increased delay to avoid interfering with normal operations
     filter = function(mapping)
       -- example to exclude mappings without a description
       return mapping.desc and mapping.desc ~= ""
@@ -11,7 +12,7 @@ return {
     spec = {}, -- configure custom key mapping groups
     notify = true, -- show a warning when issues were detected with your mappings
     triggers = {
-      { "<auto>", mode = "nxso" },
+      { "<leader>", mode = "nxsov" }, -- Only show for leader key combos
     },
     plugins = {
       marks = true, -- shows a list of your marks on ' and `
@@ -21,7 +22,7 @@ return {
         suggestions = 20, -- how many suggestions should be shown in the list?
       },
       presets = {
-        operators = true, -- adds help for operators like d, y, ...
+        operators = false, -- DISABLED: was intercepting y, d, c operations
         motions = true, -- adds help for motions
         text_objects = true, -- help for text objects triggered after entering an operator
         windows = true, -- default bindings on <c-w>

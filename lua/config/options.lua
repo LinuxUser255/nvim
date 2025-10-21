@@ -35,5 +35,10 @@ vim.opt.cursorline = true
 -- display vertical line column at 80
 vim.opt.colorcolumn = "80"
 
--- Enable system clipboard integration
-vim.opt.clipboard = "unnamedplus"
+-- Clipboard configuration
+-- Leave unset for separate registers, or use "unnamed,unnamedplus" for full integration
+vim.opt.clipboard = ""  -- Empty means separate registers
+
+-- This gives you:
+-- yy/p for internal yanking/pasting (fast, works within nvim)
+-- <leader>y/<leader>p for system clipboard operations
