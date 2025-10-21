@@ -1,28 +1,89 @@
-# Harpoon (ThePrimeagen/harpoon)
+# Harpoon
 
-**What it is**
-- File mark/jump manager for rapid navigation between frequently used files
-- This config uses branch `harpoon2`.
+**Plugin:** `ThePrimeagen/harpoon` (branch: `harpoon2`)  
+**Purpose:** Lightning-fast file navigation and bookmarking system
 
-**Use cases**
-- Bookmark files as you work and jump between them instantly
+## Overview
 
-**Key bindings**
- `<leader>a`  Add current file to Harpoon list
- `<C-e>`      Toggle Harpoon quick menu
- `<leader>fl` Open Harpoon list in Telescope (note: overrides Telescope LSP references mapping)
- `<C-p>`      Jump to previous Harpoon entry (note: conflicts with `Telescope git_files`)
- `<C-n>`      Jump to next Harpoon entry
+Harpoon is a file mark/jump manager that enables rapid navigation between frequently used files. Think of it as project-specific bookmarks that persist across sessions.
 
-**Commands/Usage**
- Add files with `<leader>a`  while visiting them
- Open menu with `<C-e>`     select a file to jump
- Cycle with `<C-p>` or  `<C-n>`
+## Key Features
 
-**Modify**
-- Edit keymaps or behavior in `lua/plugins/harpoon.lua`
-- The Telescope integration is implemented via a custom function there; adjust mappings or list formatting as desired
+- **Quick file marking** - Instantly bookmark any file you're working on
+- **Rapid navigation** - Jump to bookmarked files without file explorers or fuzzy finders
+- **Persistent marks** - Bookmarks persist per project across Neovim sessions
+- **Telescope integration** - View and manage marks through Telescope UI
 
-**Dependencies**
-- `nvim-lua/plenary.nvim`
-- Optional, Telescope (used by this config to display the Harpoon list)
+## Key Bindings
+
+### Core Operations
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `<leader>a` | Add file | Add current file to Harpoon list |
+| `<C-e>` | Toggle menu | Open/close Harpoon quick menu |
+| `<leader>fl` | Telescope view | Browse Harpoon list in Telescope |
+
+### Navigation
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `<C-n>` | Next file | Jump to next file in Harpoon list |
+| `<C-p>` | Previous file | Jump to previous file in list |
+
+> **⚠️ Conflicts:**  
+> - `<leader>fl` overrides Telescope LSP references  
+> - `<C-p>` conflicts with `Telescope git_files`
+
+## Usage Examples
+
+### Basic Workflow
+
+1. **Mark files as you work:**
+   ```
+   Open a file → Press <leader>a to add it to Harpoon
+   ```
+
+2. **Navigate between marked files:**
+   ```
+   <C-e>  → View all marked files and select one
+   <C-n>  → Cycle forward through marks
+   <C-p>  → Cycle backward through marks
+   ```
+
+3. **Manage marks via Telescope:**
+   ```
+   <leader>fl → Opens interactive list with search/filter
+   ```
+
+### Typical Use Case
+
+When working on a feature that touches multiple files:
+
+1. Open `controller.js` → `<leader>a` (mark it)
+2. Open `model.js` → `<leader>a` (mark it) 
+3. Open `view.js` → `<leader>a` (mark it)
+4. Now jump between these three files instantly with `<C-n>`/`<C-p>`
+5. Or use `<C-e>` to see all marks and pick one
+
+## Configuration
+
+**Location:** `lua/plugins/harpoon.lua`
+
+### Customization Options
+
+- **Modify keybindings** - Change the default mappings in the config file
+- **Adjust list display** - Customize how files appear in the menu
+- **Telescope formatting** - Modify the custom Telescope integration function
+
+## Dependencies
+
+- **Required:** `nvim-lua/plenary.nvim`
+- **Optional:** `nvim-telescope/telescope.nvim` (for Telescope integration)
+
+## Tips
+
+- Keep your Harpoon list small (3-5 files) for maximum efficiency
+- Use it for "working set" files you're actively editing
+- Clear marks regularly when switching tasks
+- Consider it as a complement to, not replacement for, fuzzy finders
