@@ -57,14 +57,20 @@ return {
         vim.keymap.set("n", "n", function()
           if vim.g.presenting then
             require("present").next()
+          else
+            -- Fall back to normal 'n' behavior
+            vim.cmd('normal! n')
           end
-        end, vim.tbl_extend("force", opts, { desc = "Next slide" }))
+        end, vim.tbl_extend("force", opts, { desc = "Next slide / search next" }))
         
         vim.keymap.set("n", "p", function()
           if vim.g.presenting then
             require("present").prev()
+          else
+            -- Fall back to normal 'p' paste behavior
+            vim.cmd('normal! p')
           end
-        end, vim.tbl_extend("force", opts, { desc = "Previous slide" }))
+        end, vim.tbl_extend("force", opts, { desc = "Previous slide / paste" }))
         
         -- Stop presentation
         vim.keymap.set("n", "q", function()
