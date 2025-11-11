@@ -4,20 +4,34 @@ return {
   lazy = false,  -- Load immediately
   priority = 1000,  -- High priority to ensure it loads before extensions
   config = function()
-    -- Load and configure Tabnine
+    -- macOS branch: Configure Tabnine for direct integration
     require('tabnine').setup({
       disable_auto_comment = true,
       accept_keymap = "<Tab>",  -- Tab will work through nvim-cmp
       dismiss_keymap = "<C-]>",
       debounce_ms = 800,
       suggestion_color = {gui = "#808080", cterm = 244},
-      exclude_filetypes = {"TelescopePrompt"},
+      exclude_filetypes = {"TelescopePrompt", "vim"},
       -- Enable Tabnine Chat feature
       chat = {
         enable = true,
         shortcut = "<leader>tc", -- Shortcut to open Tabnine Chat
       }
     })
+    
+    -- Register cmp_tabnine source for nvim-cmp
+    local has_cmp_tabnine, cmp_tabnine = pcall(require, 'cmp_tabnine.config')
+    if has_cmp_tabnine then
+      cmp_tabnine:setup({
+        max_lines = 1000,
+        max_num_results = 3,
+        sort = true,
+        run_on_every_keystroke = true,
+        snippet_placeholder = '..',
+        ignored_file_types = {},
+        show_prediction_strength = false
+      })
+    end
 
     -- Keymaps for common Tabnine commands
     vim.keymap.set("n", "<leader>th", "<cmd>TabnineHub<CR>", { desc = "Open Tabnine Hub" })
@@ -60,26 +74,6 @@ return {
       end
     end, {})
 
-    -- Register Tabnine as a source for nvim-cmp
-    local has_cmp, cmp = pcall(require, "cmp")
-    if has_cmp then
-      -- Check if Tabnine source is already registered
-      local sources = cmp.get_config().sources
-      local has_tabnine_source = false
-
-      for _, source in ipairs(sources or {}) do
-        if source.name == "tabnine" then
-          has_tabnine_source = true
-          break
-        end
-      end
-
-      -- Add Tabnine as a source if not already present
-      if not has_tabnine_source then
-        sources = sources or {}
-        table.insert(sources, { name = "tabnine", priority = 900 })
-        cmp.setup({ sources = sources })
-      end
-    end
+    -- macOS: Tabnine source registration handled in nvim-cmp config directly
   end,
 }
