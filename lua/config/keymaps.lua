@@ -35,10 +35,11 @@
 -- leader fg    live grep
 -- leader /     fuzzy find in current buffer
 
--- [[ NetRW cmds Project view, vertical & horizontal window split ]]
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-vim.keymap.set("n", "<leader>ve", vim.cmd.Vex)
-vim.keymap.set("n", "<leader>he", vim.cmd.Sex)
+-- [[ Oil.nvim file explorer (replaces netrw) ]]
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory (Oil)" })
+vim.keymap.set("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "Project view (Oil)" })
+-- Note: Vex/Sex (vertical/horizontal split explorers) not available in oil by default
+-- Use <C-w>v or <C-w>s to split, then - to open oil in the new split
 
 -- [[ Vertical split window navigation ]]
 -- Remap Ctrl + l to move to the right split window

@@ -48,11 +48,11 @@ return {
 			-- install jsregexp (optional!).
 			build = "make install_jsregexp",
 		},
-		-- macOS branch: Add cmp-tabnine as dependency
-		{
-			"tzachar/cmp-tabnine",
-			build = "./install.sh",
-			dependencies = "hrsh7th/nvim-cmp",
-		},
+		-- DISABLED: cmp-tabnine removed due to 403 download errors
+		-- {
+		-- 	"tzachar/cmp-tabnine",
+		-- 	build = "./install.sh",
+		-- 	dependencies = "hrsh7th/nvim-cmp",
+		-- },
 	},
 }

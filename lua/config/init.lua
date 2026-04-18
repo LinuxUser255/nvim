@@ -1,7 +1,13 @@
 -- This init.lua is responsible for lazy.nvim
 -- Leader keys already set in globals.lua, no need to duplicate
 
--- load the lazy pluging manager
+-- IMPORTANT: Load options/globals BEFORE lazy.nvim setup to ensure
+-- netrw settings (keepdir, fastbrowse) take effect before plugins
+require('config.options')
+require("config.globals")
+require('config.keymaps')
+
+-- load the lazy plugin manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 
 if not vim.loop.fs_stat(lazypath) then
@@ -19,11 +25,6 @@ end
 -- run the command :help 'runtimepath' for more info
 vim.opt.rtp:prepend(lazypath)
 
--- Pulling the options, globals and keymap lua config files
-require('config.options')
-require("config.globals")
-require('config.keymaps')
-
--- Invoke lazy, and separate the responsiblity of plugins
+-- Invoke lazy, and separate the responsibility of plugins
 -- Instruct lazy to look in the 'plugins' directory
 require('lazy').setup('plugins')

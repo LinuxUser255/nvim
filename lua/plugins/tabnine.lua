@@ -1,8 +1,11 @@
+-- DISABLED: TabNine binary download fails with 403 error
+-- Re-enable when TabNine fixes their CDN/download infrastructure
 return {
   'codota/tabnine-nvim',
+  enabled = true,  -- Maybe Disabled due to 403 Node.js download error
   build = "./dl_binaries.sh",
-  lazy = false,  -- Load immediately
-  priority = 1000,  -- High priority to ensure it loads before extensions
+  lazy = true,
+  -- priority = 1000,
   config = function()
     -- macOS branch: Configure Tabnine for direct integration
     require('tabnine').setup({
@@ -18,7 +21,7 @@ return {
         shortcut = "<leader>tc", -- Shortcut to open Tabnine Chat
       }
     })
-    
+
     -- Register cmp_tabnine source for nvim-cmp
     local has_cmp_tabnine, cmp_tabnine = pcall(require, 'cmp_tabnine.config')
     if has_cmp_tabnine then

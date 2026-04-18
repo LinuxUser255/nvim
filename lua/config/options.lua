@@ -1,6 +1,11 @@
 -- [[ Setting options ]]
 vim.opt.guicursor = ""
 
+-- Disable netrw completely (replaced by oil.nvim)
+-- Must be set before any plugin loads
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.opt.nu = true
 vim.opt.relativenumber = true
 

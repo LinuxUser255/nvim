@@ -297,7 +297,7 @@ return {
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp", priority = 1000 },
-                    { name = "tabnine", priority = 900 },
+                    -- { name = "tabnine", priority = 900 },  -- DISABLED: TabNine plugin broken
                     { name = "luasnip", priority = 800 },
                     { name = "buffer", priority = 700 },
                     { name = "path", priority = 600 },

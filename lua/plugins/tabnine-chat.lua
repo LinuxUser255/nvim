@@ -1,7 +1,9 @@
+-- DISABLED: Depends on tabnine-nvim which is disabled due to 403 errors
 return {
   -- Create a local plugin
   dir = vim.fn.stdpath("config") .. "/lua/custom/tabnine-chat",
   name = "tabnine-chat-extension",
+  enabled = false,  -- Disabled: parent plugin (tabnine-nvim) is broken
 
   -- This is an extension to the main tabnine-nvim plugin
   dependencies = {
