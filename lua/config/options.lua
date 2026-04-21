@@ -18,7 +18,7 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
@@ -38,7 +38,8 @@ vim.opt.colorcolumn = "80"
 -- Clipboard configuration
 -- Leave unset for separate registers, or use "unnamed,unnamedplus" for full integration
 vim.opt.clipboard = ""  -- Empty means separate registers
-
 -- This gives you:
 -- yy/p for internal yanking/pasting (fast, works within nvim)
 -- <leader>y/<leader>p for system clipboard operations
+
+
