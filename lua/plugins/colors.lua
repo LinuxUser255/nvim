@@ -1,4 +1,4 @@
--- SET DEFAULT COLORSCHEME ON LINE 125:  vim.cmd.colorscheme "colorscheme here"
+-- SET DEFAULT COLORSCHEME ON LINE 114: vim.cmd.colorscheme "catppuccin"
 return {
     {
         -- Catppuccin colorscheme
