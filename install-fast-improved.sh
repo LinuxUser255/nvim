@@ -44,6 +44,11 @@ readonly YELLOW='\033[1;33m'
 readonly CYAN='\033[0;36m'
 readonly NC='\033[0m'
 
+readonly NPROC=$(nproc)
+readonly NVIM_COMMIT="55d3d1bbeb"      # NVIM v0.12.2-dev-73+g55d3d1bbeb
+readonly NVIM_REQUIRED="0.12.2-dev-73" # minimum version string for check
+
+
 # --- State variables (all initialized to satisfy set -u) ---------------------
 
 # BUG 1 FIX — TERM collision
@@ -252,21 +257,12 @@ check_neovim_version() {
         # FIX: remove the nameref entirely. Use a plain local variable for the version
         # string. The function prints the result and calls build_neovim() if needed —
         # that is its complete contract with the caller.
-
         if ! command -v nvim &>/dev/null; then
-            printf '%b[-]%b Neovim is not installed.\n' "${RED}" "${NC}"
-            printf '%b[?]%b Would you like to install Neovim? (yes/no): ' "${CYAN}" "${NC}"
-            read -r -p "" install_nvim
-            install_nvim="${install_nvim:-no}"
-            install_nvim="${install_nvim,,}"
-            if [[ "$install_nvim" == "yes" || "$install_nvim" == "y" ]]; then
-                build_neovim
-            else
-                printf '%b[-]%b Neovim is required. Exiting.\n' "${RED}" "${NC}"
-                exit 1
-            fi
+            printf '%b[-]%b Neovim not installed — building pinned version...\n' "${RED}" "${NC}"
+            build_neovim
             return 0
         fi
+
 
         # BUG 6 FIX — head -n1 fork replaced with read + process substitution
         # ORIGINAL: raw=$(nvim --version | head -n1)
@@ -277,12 +273,12 @@ check_neovim_version() {
         # for the binary itself), but eliminates the head fork entirely.
         local ver
         IFS= read -r ver < <(nvim --version)   # one fork (nvim), head eliminated
-        ver="${ver#*v}"                          # "NVIM v0.12.2-dev" → "0.12.2-dev"
-        # REMOVED: ver="${ver%%-*}" — stripping -dev would make 0.12.2-dev == 0.12.2,
-        # causing any 0.12.2 release to satisfy a requirement for the dev build
+        ver="${ver#*v}"                          # "NVIM v0.12.2-dev-73+g55d3d1b" → "0.12.2-dev-73+g55d3d1b"
+        ver="${ver%%+*}"                          # strip "+g55d3d1bbeb" commit suffix → "0.12.2-dev-73"
 
 
-        local required_version="0.12.2-dev"
+        # The full version as nvim --version reports it — including the commit suffix
+        local required_version="0.12.2-dev-73"
 
         # sort -V order: 0.12.1 < 0.12.2-dev < 0.12.2
         # So: 0.12.1 fails (correct), 0.12.2-dev passes (correct), 0.12.2 passes (correct)
@@ -299,9 +295,10 @@ check_neovim_version() {
 }
 
 
-# build_neovim
 check_neovim_version() {
         debug "check_neovim_version"
+            printf '%b[+]%b Building Neovim %s (commit %s)...\n' \
+        "${CYAN}" "${NC}" "$NVIM_REQUIRED" "$NVIM_COMMIT"
 
         if ! command -v nvim &>/dev/null; then
             printf '%b[-]%b Neovim is not installed.\n' "${RED}" "${NC}"
@@ -336,7 +333,8 @@ check_neovim_version() {
 
 build_neovim() {
         debug "build_neovim"
-        printf '%b[+]%b Building Neovim from source...\n' "${CYAN}" "${NC}"
+        printf '%b[+]%b Building Neovim %s (commit %s)...\n' \
+            "${CYAN}" "${NC}" "$NVIM_REQUIRED" "$NVIM_COMMIT"
 
         if command -v nvim &>/dev/null; then
             printf '%b[?]%b Remove existing Neovim installation? (yes/no): ' "${CYAN}" "${NC}"
@@ -406,20 +404,20 @@ build_neovim() {
             exit 1
         }
 
-        # FIX — nightly branch, not stable
-        # stable tracks releases (0.10.x, 0.11.x).
-        # 0.12.2-dev lives on nightly. Checking out stable would build
-        # the wrong version and the version check would fail again immediately.
-        if ! git checkout nightly; then
-            printf '%b[-]%b Failed to checkout nightly branch.\n' "${RED}" "${NC}"
+        # FIX — 0.12.2-dev lives on nightly.
+       # Pinned commit — reproducible build, not subject to branch drift
+        if ! git checkout "$NVIM_COMMIT"; then
+            printf '%b[-]%b Failed to checkout commit %s\n' "${RED}" "${NC}" "$NVIM_COMMIT"
             exit 1
         fi
 
-        printf '%b[+]%b Building Neovim (this may take a while)...\n' "${CYAN}" "${NC}"
-        if ! make -j"$NPROC" CMAKE_BUILD_TYPE=RelWithDebInfo; then
-            printf '%b[-]%b Failed to build Neovim.\n' "${RED}" "${NC}"
-            exit 1
-        fi
+    printf '%b[+]%b Building (this may take a while)...\n' "${CYAN}" "${NC}"
+    if ! make -j"$NPROC" CMAKE_BUILD_TYPE=RelWithDebInfo; then
+        printf '%b[-]%b Build failed.\n' "${RED}" "${NC}"
+        exit 1
+    fi
+
+        #
 
         printf '%b[+]%b Installing Neovim...\n' "${CYAN}" "${NC}"
         if ! sudo make install; then
