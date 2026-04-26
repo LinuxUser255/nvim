@@ -222,7 +222,7 @@ full_sys_upgrade() {
         debug "full_sys_upgrade"
         local cmd=""
         case "$PKG_MANAGER" in
-            "apt")    cmd="sudo apt update && sudo apt upgrade -y"  ;;
+            "apt")    cmd="sudo apt update && sudo apt full-upgrade -y" ;;
             "dnf")    cmd="sudo dnf update -y"                      ;;
             "pacman") cmd="sudo pacman -Syu --noconfirm"            ;;
             "apk")    cmd="sudo apk update && sudo apk upgrade"     ;;
@@ -409,7 +409,7 @@ install_nvim_config_deps() {
 
         local cmd=""
         case "$PKG_MANAGER" in
-            "apt")    cmd="sudo apt update && sudo apt install -y tree-sitter tree-sitter-cli nodejs npm shellcheck ripgrep" ;;
+            "apt") cmd="sudo apt install -y libtree-sitter-dev nodejs npm shellcheck ripgrep" ;;
             "dnf")    cmd="sudo dnf update -y && sudo dnf install -y tree-sitter tree-sitter-cli nodejs npm ripgrep" ;;
             "pacman") cmd="sudo pacman -S --noconfirm tree-sitter tree-sitter-cli nodejs npm shellcheck ripgrep" ;;
             "apk")    cmd="sudo apk add --no-cache tree-sitter tree-sitter-cli nodejs npm shellcheck ripgrep" ;;
@@ -423,6 +423,20 @@ install_nvim_config_deps() {
             ;;
         esac
         eval "$cmd"
+        return 0
+}
+
+install_tree_sitter_cli() {
+        debug "install_tree_sitter_cli"
+        if ! command -v tree-sitter &>/dev/null; then
+            printf '%b[+]%b Installing tree-sitter-cli via npm...\n' "${CYAN}" "${NC}"
+            if ! npm install -g tree-sitter-cli; then
+                printf '%b[!]%b tree-sitter-cli install failed — Neovim will still work,\n' "${YELLOW}" "${NC}"
+                printf '%b    but you cannot compile custom grammars.\n' "${YELLOW}"
+            fi
+        else
+            printf '%b[+]%b tree-sitter-cli already installed.\n' "${GREEN}" "${NC}"
+        fi
         return 0
 }
 
@@ -519,6 +533,7 @@ main() {
         full_sys_upgrade
         check_neovim_version   # no argument — nameref removed (Bug 5 fix)
         install_nvim_config_deps
+        install_tree_sitter_cli
         remove_old_config
         mk_nvim_dir
         install_config
