@@ -58,6 +58,7 @@ DEBUG="${DEBUG:-0}"
 OS=""
 DISTRO=""
 PKG_MANAGER=""
+BUILD_DIR=""
 
 # BUG 2 FIX — Cache nproc once at startup
 # ORIGINAL: $(nproc) called twice — once in run_parallel_tasks, once in build_neovim
@@ -381,14 +382,16 @@ build_neovim() {
         esac
         eval "$cmd"
 
-        local build_dir="/tmp/nvim-build-$$-$RANDOM"
+        BUILD_DIR="/tmp/nvim-build-$$-$RANDOM"
         if ! mkdir -p "$build_dir" 2>/dev/null; then
             printf '%b[-]%b Failed to create temporary build directory.\n' "${RED}" "${NC}"
             exit 1
         fi
-        trap 'rm -rf "$build_dir"' EXIT
+        # trap 'rm -rf "$BUILD_DIR"' EXIT
+        # Safe trap — no-op if BUILD_DIR was never set to a real path
+        trap '[[ -n "$BUILD_DIR" ]] && rm -rf "$BUILD_DIR"' EXIT
 
-        cd "$build_dir" || {
+        cd "$BUILD_DIR" || {
             printf '%b[-]%b Failed to cd to %s\n' "${RED}" "${NC}" "$build_dir"
             exit 1
         }
