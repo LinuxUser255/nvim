@@ -70,8 +70,8 @@ BUILD_DIR=""
 # nproc is an external binary (unavoidable fork — no bash builtin for CPU count).
 # But there is no reason to fork it more than once. Cache the result here and
 # reuse the variable throughout. CPU count does not change during a script run.
-NPROC=$(nproc)
-readonly NPROC
+# NPROC=$(nproc)
+# readonly NPROC
 
 # --- Helpers -----------------------------------------------------------------
 
@@ -411,11 +411,11 @@ build_neovim() {
             exit 1
         fi
 
-    printf '%b[+]%b Building (this may take a while)...\n' "${CYAN}" "${NC}"
-    if ! make -j"$NPROC" CMAKE_BUILD_TYPE=RelWithDebInfo; then
-        printf '%b[-]%b Build failed.\n' "${RED}" "${NC}"
-        exit 1
-    fi
+        printf '%b[+]%b Building (this may take a while)...\n' "${CYAN}" "${NC}"
+        if ! make -j"$NPROC" CMAKE_BUILD_TYPE=RelWithDebInfo; then
+            printf '%b[-]%b Build failed.\n' "${RED}" "${NC}"
+            exit 1
+        fi
 
         #
 
