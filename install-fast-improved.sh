@@ -246,89 +246,29 @@ full_sys_upgrade() {
 }
 
 check_neovim_version() {
-        debug "check_neovim_version"
+	debug "check_neovim_version"
 
-        # BUG 5 FIX — nameref _ver pointed at undeclared variable
-        # ORIGINAL: local -n _ver="$1"  called as: check_neovim_version nvim_version
-        # nvim_version was never declared in main() before this call. More importantly,
-        # the _ver nameref result was never actually used after the call returned —
-        # it was dead output. The function's real job is to decide whether to build,
-        # not to return a value the caller uses.
-        # FIX: remove the nameref entirely. Use a plain local variable for the version
-        # string. The function prints the result and calls build_neovim() if needed —
-        # that is its complete contract with the caller.
-        if ! command -v nvim &>/dev/null; then
-            printf '%b[-]%b Neovim not installed — building pinned version...\n' "${RED}" "${NC}"
-            build_neovim
-            return 0
-        fi
+	if ! command -v nvim &>/dev/null; then
+		printf '%b[-]%b Neovim is not installed.\n' "${RED}" "${NC}"
+		build_neovim
+		return 0
+	fi
 
+	# Read full version string — do NOT strip -dev suffix
+	local ver
+	IFS= read -r ver < <(nvim --version)
+	ver="${ver#*v}"
+	ver="${ver%%+*}"
 
-        # BUG 6 FIX — head -n1 fork replaced with read + process substitution
-        # ORIGINAL: raw=$(nvim --version | head -n1)
-        # The pipe sends nvim's stdout through head -n1 — two forks (nvim + head).
-        # head -n1 just discards every line after the first, which read -r already
-        # does naturally: it stops after consuming exactly one line from the fd.
-        # < <(nvim --version) runs nvim via process substitution (unavoidable fork
-        # for the binary itself), but eliminates the head fork entirely.
-        local ver
-        IFS= read -r ver < <(nvim --version)   # one fork (nvim), head eliminated
-        ver="${ver#*v}"                          # "NVIM v0.12.2-dev-73+g55d3d1b" → "0.12.2-dev-73+g55d3d1b"
-        ver="${ver%%+*}"                          # strip "+g55d3d1bbeb" commit suffix → "0.12.2-dev-73"
-
-
-        # The full version as nvim --version reports it — including the commit suffix
-        local required_version="0.12.2-dev-73"
-
-        # sort -V order: 0.12.1 < 0.12.2-dev < 0.12.2
-        # So: 0.12.1 fails (correct), 0.12.2-dev passes (correct), 0.12.2 passes (correct)
-        if printf '%s\n%s\n' "$required_version" "$ver" | sort -V -C; then
-            printf '%b[+]%b Neovim version check passed: %s\n' "${GREEN}" "${NC}" "$ver"
-        else
-            printf '%b[-]%b Required: %s — Found: %s\n' "${RED}" "${NC}" "$required_version" "$ver"
-            printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
-            # No prompt — if the version fails for a dev build requirement there is
-            # no alternative. The script's entire purpose requires this specific build.
-            build_neovim
-        fi
-        return 0
-}
-
-
-check_neovim_version() {
-        debug "check_neovim_version"
-            printf '%b[+]%b Building Neovim %s (commit %s)...\n' \
-        "${CYAN}" "${NC}" "$NVIM_REQUIRED" "$NVIM_COMMIT"
-
-        if ! command -v nvim &>/dev/null; then
-            printf '%b[-]%b Neovim is not installed.\n' "${RED}" "${NC}"
-            printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
-            build_neovim
-            return 0
-        fi
-
-        # Read full version string — do NOT strip -dev suffix
-        # Required version IS a dev build so the suffix is meaningful for comparison
-        local ver
-        IFS= read -r ver < <(nvim --version)   # one fork, no head fork
-        ver="${ver#*v}"                          # "NVIM v0.12.2-dev" → "0.12.2-dev"
-        # REMOVED: ver="${ver%%-*}" — stripping -dev would make 0.12.2-dev == 0.12.2,
-        # causing any 0.12.2 release to satisfy a requirement for the dev build
-
-        local required_version="0.12.2-dev"
-
-        # sort -V order: 0.12.1 < 0.12.2-dev < 0.12.2
-        # So: 0.12.1 fails (correct), 0.12.2-dev passes (correct), 0.12.2 passes (correct)
-        if printf '%s\n%s\n' "$required_version" "$ver" | sort -V -C; then
-            printf '%b[+]%b Neovim version check passed: %s\n' "${GREEN}" "${NC}" "$ver"
-        else
-            printf '%b[-]%b Required: %s — Found: %s\n' "${RED}" "${NC}" "$required_version" "$ver"
-            printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
-            # No prompt — if the version fails for a dev build requirement there is
-            # no alternative. The script's entire purpose requires this specific build.
-            build_neovim
-        fi
-        return 0
+	# sort -V order: 0.12.1 < 0.12.2-dev < 0.12.2
+	if printf '%s\n%s\n' "$NVIM_REQUIRED" "$ver" | sort -V -C; then
+		printf '%b[+]%b Neovim version check passed: %s\n' "${GREEN}" "${NC}" "$ver"
+	else
+		printf '%b[-]%b Required: %s — Found: %s\n' "${RED}" "${NC}" "$NVIM_REQUIRED" "$ver"
+		printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
+		build_neovim
+	fi
+	return 0
 }
 
 build_neovim() {
@@ -380,19 +320,18 @@ build_neovim() {
         esac
         eval "$cmd"
 
-        BUILD_DIR="/tmp/nvim-build-$$-$RANDOM"
-        if ! mkdir -p "$build_dir" 2>/dev/null; then
-            printf '%b[-]%b Failed to create temporary build directory.\n' "${RED}" "${NC}"
-            exit 1
-        fi
-        # trap 'rm -rf "$BUILD_DIR"' EXIT
-        # Safe trap — no-op if BUILD_DIR was never set to a real path
-        trap '[[ -n "$BUILD_DIR" ]] && rm -rf "$BUILD_DIR"' EXIT
+	BUILD_DIR="/tmp/nvim-build-$$-$RANDOM"
+	if ! mkdir -p "$BUILD_DIR" 2>/dev/null; then
+		printf '%b[-]%b Failed to create temporary build directory.\n' "${RED}" "${NC}"
+		exit 1
+	fi
+	# Safe trap — no-op if BUILD_DIR was never set to a real path
+	trap '[[ -n "$BUILD_DIR" ]] && rm -rf "$BUILD_DIR"' EXIT
 
-        cd "$BUILD_DIR" || {
-            printf '%b[-]%b Failed to cd to %s\n' "${RED}" "${NC}" "$build_dir"
-            exit 1
-        }
+	cd "$BUILD_DIR" || {
+		printf '%b[-]%b Failed to cd to %s\n' "${RED}" "${NC}" "$BUILD_DIR"
+		exit 1
+	}
 
         if ! git clone https://github.com/neovim/neovim.git; then
             printf '%b[-]%b Failed to clone Neovim repository.\n' "${RED}" "${NC}"
@@ -522,57 +461,19 @@ install_config() {
 }
 
 main() {
-        debug "main"
-
-        # BUG 9 FIX — run_parallel_tasks removed entirely; both functions called twice
-        #
-        # The original main() had THREE critical problems with run_parallel_tasks:
-        #
-        # PROBLEM A — Double execution
-        # ORIGINAL:
-        #   run_parallel_tasks parallel_results full_sys_upgrade install_nvim_config_deps
-        #   full_sys_upgrade          ← called again!
-        #   install_nvim_config_deps  ← called again!
-        # Both functions ran in background via run_parallel_tasks, AND then ran again
-        # sequentially. Every package install happened twice. The system upgrade ran
-        # twice. This was a straightforward copy-paste error — the explicit sequential
-        # calls were left in after the parallel wrapper was added.
-        #
-        # PROBLEM B — Package manager lock file conflict
-        # Package managers use exclusive lock files to prevent concurrent access:
-        #   apt   → /var/lib/dpkg/lock-frontend
-        #   dnf   → /var/lib/rpm/.rpm.lock
-        #   pacman → /var/lib/pacman/db.lck
-        # full_sys_upgrade and install_nvim_config_deps both call the same package
-        # manager. Running them in parallel guarantees that the second job hits a
-        # locked package database and fails with an error like:
-        #   "dpkg: error: dpkg frontend is locked by another process"
-        # These two functions CANNOT run in parallel — they are sequential by nature.
-        #
-        # PROBLEM C — Background jobs cannot modify parent shell variables
-        # Functions run via & execute in a subshell (fork of the current shell).
-        # Any variable the background function modifies (like PKG_MANAGER or DISTRO)
-        # is modified in the child's copy of memory. When the child exits, those
-        # changes vanish. The parent shell never sees them. This makes parallelizing
-        # setup/detection functions that set globals entirely pointless.
-        #
-        # FIX: remove run_parallel_tasks completely. Run the two functions sequentially.
-        # They must run in order because install_nvim_config_deps depends on PKG_MANAGER
-        # being set, and both call the same package manager which cannot be concurrent.
-        # Sequential here is not a performance regression — it is the only correct approach.
-
-        print_banner
-        install_prompt
-        get_os
-        detect_distro          # no argument — nameref removed (Bug 4 fix)
-        full_sys_upgrade
-        check_neovim_version   # no argument — nameref removed (Bug 5 fix)
-        install_nvim_config_deps
-        install_tree_sitter_cli
-        remove_old_config
-        mk_nvim_dir
-        install_config
-        return 0
+	debug "main"
+	print_banner
+	install_prompt
+	get_os
+	detect_distro
+	full_sys_upgrade
+	check_neovim_version
+	install_nvim_config_deps
+	install_tree_sitter_cli
+	remove_old_config
+	mk_nvim_dir
+	install_config
+	return 0
 }
 
 main "$@"
