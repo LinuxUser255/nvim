@@ -276,26 +276,59 @@ check_neovim_version() {
         # for the binary itself), but eliminates the head fork entirely.
         local ver
         IFS= read -r ver < <(nvim --version)   # one fork (nvim), head eliminated
-        ver="${ver#*v}"                         # strip leading "NVIM v" — no fork
-        ver="${ver%%-*}"                        # strip any "-dev" suffix — no fork
+        ver="${ver#*v}"                          # "NVIM v0.12.2-dev" → "0.12.2-dev"
+        # REMOVED: ver="${ver%%-*}" — stripping -dev would make 0.12.2-dev == 0.12.2,
+        # causing any 0.12.2 release to satisfy a requirement for the dev build
 
-        local required_version="0.9.0"
 
+        local required_version="0.12.2-dev"
+
+        # sort -V order: 0.12.1 < 0.12.2-dev < 0.12.2
+        # So: 0.12.1 fails (correct), 0.12.2-dev passes (correct), 0.12.2 passes (correct)
         if printf '%s\n%s\n' "$required_version" "$ver" | sort -V -C; then
             printf '%b[+]%b Neovim version check passed: %s\n' "${GREEN}" "${NC}" "$ver"
         else
-            printf '%b[-]%b Neovim %s or higher required. Your version: %s\n' \
-                "${RED}" "${NC}" "$required_version" "$ver"
-            printf '%b[?]%b Would you like to build the latest Neovim from source? (yes/no): ' "${CYAN}" "${NC}"
-            read -r -p "" build_source
-            build_source="${build_source:-no}"
-            build_source="${build_source,,}"
-            if [[ "$build_source" == "yes" || "$build_source" == "y" ]]; then
-                build_neovim
-            else
-                printf '%b[-]%b A newer Neovim is required. Exiting.\n' "${RED}" "${NC}"
-                exit 1
-            fi
+            printf '%b[-]%b Required: %s — Found: %s\n' "${RED}" "${NC}" "$required_version" "$ver"
+            printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
+            # No prompt — if the version fails for a dev build requirement there is
+            # no alternative. The script's entire purpose requires this specific build.
+            build_neovim
+        fi
+        return 0
+}
+
+
+# build_neovim
+check_neovim_version() {
+        debug "check_neovim_version"
+
+        if ! command -v nvim &>/dev/null; then
+            printf '%b[-]%b Neovim is not installed.\n' "${RED}" "${NC}"
+            printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
+            build_neovim
+            return 0
+        fi
+
+        # Read full version string — do NOT strip -dev suffix
+        # Required version IS a dev build so the suffix is meaningful for comparison
+        local ver
+        IFS= read -r ver < <(nvim --version)   # one fork, no head fork
+        ver="${ver#*v}"                          # "NVIM v0.12.2-dev" → "0.12.2-dev"
+        # REMOVED: ver="${ver%%-*}" — stripping -dev would make 0.12.2-dev == 0.12.2,
+        # causing any 0.12.2 release to satisfy a requirement for the dev build
+
+        local required_version="0.12.2-dev"
+
+        # sort -V order: 0.12.1 < 0.12.2-dev < 0.12.2
+        # So: 0.12.1 fails (correct), 0.12.2-dev passes (correct), 0.12.2 passes (correct)
+        if printf '%s\n%s\n' "$required_version" "$ver" | sort -V -C; then
+            printf '%b[+]%b Neovim version check passed: %s\n' "${GREEN}" "${NC}" "$ver"
+        else
+            printf '%b[-]%b Required: %s — Found: %s\n' "${RED}" "${NC}" "$required_version" "$ver"
+            printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
+            # No prompt — if the version fails for a dev build requirement there is
+            # no alternative. The script's entire purpose requires this specific build.
+            build_neovim
         fi
         return 0
 }
@@ -370,14 +403,16 @@ build_neovim() {
             exit 1
         }
 
-        if ! git checkout stable; then
-            printf '%b[-]%b Failed to checkout stable branch.\n' "${RED}" "${NC}"
+        # FIX — nightly branch, not stable
+        # stable tracks releases (0.10.x, 0.11.x).
+        # 0.12.2-dev lives on nightly. Checking out stable would build
+        # the wrong version and the version check would fail again immediately.
+        if ! git checkout nightly; then
+            printf '%b[-]%b Failed to checkout nightly branch.\n' "${RED}" "${NC}"
             exit 1
         fi
 
         printf '%b[+]%b Building Neovim (this may take a while)...\n' "${CYAN}" "${NC}"
-
-        # BUG 2 continued — reuse cached $NPROC instead of forking nproc again
         if ! make -j"$NPROC" CMAKE_BUILD_TYPE=RelWithDebInfo; then
             printf '%b[-]%b Failed to build Neovim.\n' "${RED}" "${NC}"
             exit 1
@@ -395,7 +430,6 @@ build_neovim() {
 
         printf '%b[+]%b Neovim built and installed successfully.\n' "${GREEN}" "${NC}"
 
-        # BUG 6 applied here too — replace head -n1 with read + process substitution
         local installed_version
         IFS= read -r installed_version < <(nvim --version)
         printf '%b[+]%b Installed: %s\n' "${GREEN}" "${NC}" "$installed_version"
