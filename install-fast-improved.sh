@@ -1,17 +1,25 @@
 #!/usr/bin/env bash
 # =============================================================================
 # NAME
-#   install.sh — Build Neovim from source with full language support
+#   install-fast-improved.sh — Build Neovim from source with full language support
 #
 # DESCRIPTION
 #   Detects the host OS and distribution, installs all required build
 #   dependencies, compiles Neovim from source, then sets up a custom
 #   configuration with LSP and treesitter support.
 #
-#   Supported platforms:
-#     Linux   — Debian, Ubuntu, Kali, Fedora, Red Hat, CentOS, Arch,
-#               Alpine, OpenSUSE, Void
-#     macOS   — Monterey, Ventura, Sonoma, Sequoia, Tahoe
+# Coding Style
+#   • Pure-bash / fork-minimized — replaces external commands with built-ins
+#     (parameter expansion, $OSTYPE, mapfile, etc.) wherever possible.
+#   • Fork-aware — caches unavoidable forks (e.g. readonly NPROC=$(nproc)).
+#   • Process-level parallelism — uses background jobs + wait for concurrency.
+#   • Defensive / hardened — set -euo pipefail, IFS=$'\n\t', LC_ALL=C,
+#     readonly constants, and guarded traps for predictable failure.
+#
+# Supported platforms:
+#   Linux   — Debian, Ubuntu, Kali, Fedora, Red Hat, CentOS, Arch,
+#             Alpine, OpenSUSE, Void
+#   macOS   — Monterey, Ventura, Sonoma, Sequoia, Tahoe
 #
 # LANGUAGE SUPPORT
 #   Python3 · Lua · Java · TypeScript · HTML · CSS · Rust · Go
@@ -23,10 +31,10 @@
 #   Optional:  cargo (Rust LSP), go (Go LSP), java (Java LSP)
 #
 # USAGE
-#   ./install.sh
+#   ./install-fast-improved.sh
 #
 # AUTHOR
-#   Your Name <you@example.com>
+#   LinuxUser255
 #
 # VERSION
 #   1.1.0 — 2026-04-26
@@ -48,7 +56,6 @@ readonly NPROC=$(nproc)
 readonly NVIM_COMMIT="55d3d1bbeb"      # NVIM v0.12.2-dev-73+g55d3d1bbeb
 readonly NVIM_REQUIRED="0.12.2-dev-73" # minimum version string for check
 
-
 # --- State variables (all initialized to satisfy set -u) ---------------------
 
 # BUG 1 FIX — TERM collision
@@ -56,7 +63,7 @@ readonly NVIM_REQUIRED="0.12.2-dev-73" # minimum version string for check
 # $TERM is a reserved shell variable — it holds the terminal type (xterm-256color,
 # screen-256color, etc.). Overwriting it breaks any command that queries terminal
 # capabilities downstream (tput, less, man, ncurses apps).
-# FIX: rename to SEARCH_TERM to avoid clobbering the shell's own variable.
+# Renamed to SEARCH_TERM to avoid clobbering the shell's own variable.
 DIR="${1:-.}"
 SEARCH_TERM="${2:-error}"
 DEBUG="${DEBUG:-0}"
@@ -65,7 +72,8 @@ DISTRO=""
 PKG_MANAGER=""
 BUILD_DIR=""
 
-# BUG 2 FIX — Cache nproc once at startup
+
+# BUG FIX — Cache nproc once at startup
 # ORIGINAL: $(nproc) called twice — once in run_parallel_tasks, once in build_neovim
 # nproc is an external binary (unavoidable fork — no bash builtin for CPU count).
 # But there is no reason to fork it more than once. Cache the result here and
@@ -75,13 +83,7 @@ BUILD_DIR=""
 
 # --- Helpers -----------------------------------------------------------------
 
-# BUG 3 FIX — §2 &&-trap: missing return 0
-# ORIGINAL: debug() { [[ "$DEBUG" == 1 ]] && printf '...' "$*"; }
-# Under set -euo pipefail, when DEBUG=0 the [[ ]] test evaluates false (exit 1).
-# The && short-circuits, the function exits with code 1.
-# set -e sees a non-zero exit from a function call and silently kills the script.
-# Every call to debug() in the script would terminate it when DEBUG is off.
-# FIX: explicit return 0 — load-bearing, not cosmetic. Tells set -e the function
+# Explicit return 0 — load-bearing, not cosmetic. Tells set -e the function
 # succeeded regardless of whether the [[ ]] test was true or false.
 debug() {
         [[ "$DEBUG" == 1 ]] && printf '%b[DEBUG]%b %s\n' "${CYAN}" "${NC}" "$*"
@@ -143,16 +145,6 @@ get_os() {
 detect_distro() {
         debug "detect_distro"
 
-        # BUG 4 FIX — dead nameref parameter
-        # ORIGINAL: local -n _distro=$1  (declared but never assigned — $1 was "DISTRO")
-        # The nameref _distro was set up to be an alias for the caller's variable, but
-        # the function body set DISTRO directly as a global and never wrote to _distro.
-        # The nameref did nothing — it was dead code that only added confusion.
-        # FIX: remove the unused nameref entirely. The function sets DISTRO and
-        # PKG_MANAGER directly as globals, which is its actual behavior. Call site
-        # in main() updated accordingly: detect_distro  (no argument needed).
-        #
-        # NOTE on the commented parallel distro detection idea (lines 224-234):
         # DO NOT parallelize distro detection. Every check is [[ -f /etc/... ]] —
         # a bash builtin test, no fork, completes in microseconds. Spawning background
         # jobs has a fork+exec cost of ~1-5ms each. The overhead of parallelism would
@@ -246,29 +238,29 @@ full_sys_upgrade() {
 }
 
 check_neovim_version() {
-	debug "check_neovim_version"
+    	debug "check_neovim_version"
 
-	if ! command -v nvim &>/dev/null; then
-		printf '%b[-]%b Neovim is not installed.\n' "${RED}" "${NC}"
-		build_neovim
-		return 0
-	fi
+    	if ! command -v nvim &>/dev/null; then
+    		printf '%b[-]%b Neovim is not installed.\n' "${RED}" "${NC}"
+    		build_neovim
+    		return 0
+    	fi
 
-	# Read full version string — do NOT strip -dev suffix
-	local ver
-	IFS= read -r ver < <(nvim --version)
-	ver="${ver#*v}"
-	ver="${ver%%+*}"
+    	# Read full version string — do NOT strip -dev suffix
+    	local ver
+    	IFS= read -r ver < <(nvim --version)
+    	ver="${ver#*v}"
+    	ver="${ver%%+*}"
 
-	# sort -V order: 0.12.1 < 0.12.2-dev < 0.12.2
-	if printf '%s\n%s\n' "$NVIM_REQUIRED" "$ver" | sort -V -C; then
-		printf '%b[+]%b Neovim version check passed: %s\n' "${GREEN}" "${NC}" "$ver"
-	else
-		printf '%b[-]%b Required: %s — Found: %s\n' "${RED}" "${NC}" "$NVIM_REQUIRED" "$ver"
-		printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
-		build_neovim
-	fi
-	return 0
+    	# sort -V order: 0.12.1 < 0.12.2-dev < 0.12.2
+    	if printf '%s\n%s\n' "$NVIM_REQUIRED" "$ver" | sort -V -C; then
+    		printf '%b[+]%b Neovim version check passed: %s\n' "${GREEN}" "${NC}" "$ver"
+    	else
+    		printf '%b[-]%b Required: %s — Found: %s\n' "${RED}" "${NC}" "$NVIM_REQUIRED" "$ver"
+    		printf '%b[+]%b Building required dev version from source...\n' "${CYAN}" "${NC}"
+    		build_neovim
+    	fi
+    	return 0
 }
 
 build_neovim() {
@@ -343,8 +335,8 @@ build_neovim() {
             exit 1
         }
 
-        # FIX — 0.12.2-dev lives on nightly.
-       # Pinned commit — reproducible build, not subject to branch drift
+        # Forced NVIM v0.12.2-dev-73+g55d3d1bbeb build
+        # Pinned commit — reproducible build, not subject to branch drift
         if ! git checkout "$NVIM_COMMIT"; then
             printf '%b[-]%b Failed to checkout commit %s\n' "${RED}" "${NC}" "$NVIM_COMMIT"
             exit 1
@@ -418,25 +410,12 @@ remove_old_config() {
         debug "remove_old_config"
         printf '%b[+]%b Removing old Neovim configuration...\n' "${CYAN}" "${NC}"
         rm -rf ~/.config/nvim ~/.local/share/nvim
-
-        # BUG 7 FIX — pointless sleep 2 removed
-        # ORIGINAL: sleep 2  (after rm -rf)
-        # rm is a synchronous call — it does not return until all files are deleted.
-        # The kernel guarantees this. There is nothing asynchronous to wait for.
-        # The sleep wasted 2 seconds on every install run for no reason.
         return 0
 }
 
 mk_nvim_dir() {
         debug "mk_nvim_dir"
 
-        # BUG 8 FIX — redundant post-mkdir existence check
-        # ORIGINAL: mkdir -p ...; if [[ -d ... ]]; then ... else ... exit 1
-        # mkdir -p exits non-zero only on genuine failure (permissions, bad path).
-        # It does NOT fail if the directory already exists — that is the purpose of -p.
-        # Checking [[ -d ]] after a successful mkdir is always true and adds nothing.
-        # FIX: test mkdir's exit code directly with if !. This is the correct pattern:
-        # one operation, one check, no redundancy.
         if ! mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvim" 2>/dev/null; then
             printf '%b[-]%b Failed to create Neovim configuration directory.\n' "${RED}" "${NC}"
             printf '%b    Please run manually: mkdir -p ~/.config/nvim\n' "${RED}"
@@ -461,19 +440,19 @@ install_config() {
 }
 
 main() {
-	debug "main"
-	print_banner
-	install_prompt
-	get_os
-	detect_distro
-	full_sys_upgrade
-	check_neovim_version
-	install_nvim_config_deps
-	install_tree_sitter_cli
-	remove_old_config
-	mk_nvim_dir
-	install_config
-	return 0
+    	debug "main"
+    	print_banner
+    	install_prompt
+    	get_os
+    	detect_distro
+    	full_sys_upgrade
+    	check_neovim_version
+    	install_nvim_config_deps
+    	install_tree_sitter_cli
+    	remove_old_config
+    	mk_nvim_dir
+    	install_config
+    	return 0
 }
 
 main "$@"
