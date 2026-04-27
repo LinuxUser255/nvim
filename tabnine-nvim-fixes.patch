@@ -1,0 +1,193 @@
+diff --git a/lua/tabnine/chat/init.lua b/lua/tabnine/chat/init.lua
+index e42d65c..d25eb75 100644
+--- a/lua/tabnine/chat/init.lua
++++ b/lua/tabnine/chat/init.lua
+@@ -66,37 +66,86 @@ local function write_chat_settings(settings)
+ 	fn.writefile({ vim.json.encode(settings) }, CHAT_SETTINGS_FILE)
+ end
+ 
++local DEBUG_CHAT = true
++local function debug_log(msg)
++	if DEBUG_CHAT then
++		vim.schedule(function()
++			vim.notify("[TabnineChat] " .. msg, vim.log.levels.INFO)
++		end)
++	end
++end
++
+ local function register_events(on_init)
+ 	chat_binary:register_event("get_capabilities", function(_, answer)
++		debug_log("Event: get_capabilities - requesting Features...")
++		local answered = false
++		
++		vim.defer_fn(function()
++			if not answered then
++				debug_log("Event: get_capabilities - TIMEOUT, sending default")
++				answered = true
++				answer({ enabledFeatures = { "chat_inline_completions" } })
++			end
++		end, 5000)
++		
+ 		tabnine_binary:request({
+ 			Features = { dummy = true },
+ 		}, function(response)
++			if answered then return end
++			answered = true
++			debug_log("Event: get_capabilities - got response, answering")
+ 			answer({
+-				enabledFeatures = vim.tbl_extend("force", response.enabled_features, { "chat_inline_completions" }),
++				enabledFeatures = vim.tbl_extend("force", response.enabled_features or {}, { "chat_inline_completions" }),
+ 			})
+ 		end)
+ 	end)
+ 
+ 	chat_binary:register_event("workspace_folders", function(_, answer)
++		debug_log("Event: workspace_folders")
+ 		answer({
+ 			rootPaths = { fn.getcwd() },
+ 		})
+ 	end)
+ 
+ 	chat_binary:register_event("get_server_url", function(request, answer)
++		debug_log("Event: get_server_url (kind=" .. tostring(request.kind) .. ") - requesting ChatCommunicatorAddress...")
++		local answered = false
++		
++		vim.defer_fn(function()
++			if not answered then
++				debug_log("Event: get_server_url - TIMEOUT, using node server directly")
++				answered = true
++				local port = node_server:get_port()
++				if port then
++					local path = request.kind == "forward" and "/forward" or ""
++					answer({ serverUrl = "http://127.0.0.1:" .. port .. path })
++				else
++					answer({ serverUrl = "" })
++				end
++			end
++		end, 5000)
++		
+ 		-- Call ChatCommunicatorAddress to trigger the Rust listener
+ 		tabnine_binary:request({
+ 			ChatCommunicatorAddress = { kind = request.kind },
+ 		}, function(response)
++			if answered then return end
++			debug_log("Event: get_server_url - got ChatCommunicatorAddress response, ensuring node server...")
+ 			-- Ensure node-server is running
+ 			node_server:ensure_running(function()
++				if answered then return end
+ 				local port = node_server:get_port()
++				debug_log("Event: get_server_url - node server port=" .. tostring(port))
+ 				if port then
+ 					local path = request.kind == "forward" and "/forward" or ""
++					debug_log("Event: get_server_url - answering with http://127.0.0.1:" .. port .. path)
++					answered = true
+ 					answer({
+ 						serverUrl = "http://127.0.0.1:" .. port .. path,
+ 					})
+ 				else
++					debug_log("Event: get_server_url - no port, using fallback: " .. tostring(response.address))
++					answered = true
+ 					-- Fallback to response address if node-server not available
+ 					answer({
+ 						serverUrl = response.address,
+@@ -107,6 +156,7 @@ local function register_events(on_init)
+ 	end)
+ 
+ 	chat_binary:register_event("init", function(_, answer)
++		debug_log("Event: init")
+ 		local init = {
+ 			ide = "nvim",
+ 			isDarkTheme = vim.o.background == "dark",
+@@ -152,7 +202,36 @@ local function register_events(on_init)
+ 	end)
+ 
+ 	chat_binary:register_event("get_user", function(_, answer)
++		debug_log("Event: get_user - requesting State...")
++		local answered = false
++		local timeout_ms = 5000
++		
++		-- Set a timeout to prevent hanging forever
++		vim.defer_fn(function()
++			if not answered then
++				debug_log("Event: get_user - TIMEOUT after " .. timeout_ms .. "ms, sending empty response")
++				answered = true
++				answer({
++					token = nil,
++					username = nil,
++					avatarUrl = nil,
++					serviceLevel = "Pro",
++					email = nil,
++					emailVerified = false,
++					subscriptions = {},
++					team = nil,
++					allowedTeams = {},
++				})
++			end
++		end, timeout_ms)
++		
+ 		tabnine_binary:request({ State = { dummy = true } }, function(state)
++			if answered then
++				debug_log("Event: get_user - got state but already timed out")
++				return
++			end
++			answered = true
++			debug_log("Event: get_user - got state, service_level=" .. tostring(state.service_level))
+ 			answer({
+ 				token = state.access_token,
+ 				username = state.user_name,
+diff --git a/lua/tabnine/node_server.lua b/lua/tabnine/node_server.lua
+index b564f10..8da9374 100644
+--- a/lua/tabnine/node_server.lua
++++ b/lua/tabnine/node_server.lua
+@@ -79,10 +79,25 @@ local function cloud_host()
+ 	return "https://update.tabnine.com"
+ end
+ 
++local function try_system_node()
++	-- Check for system Node.js as fallback
++	local system_node = fn.exepath("node")
++	if system_node and system_node ~= "" then
++		return system_node
++	end
++	return nil
++end
++
+ local function ensure_node_runtime(callback)
+ 	local path = installer_path()
+ 	if not path or fn.executable(path) ~= 1 then
+-		callback(nil, "Node installer not found")
++		-- Try system Node.js as fallback
++		local sys_node = try_system_node()
++		if sys_node then
++			callback(sys_node, nil)
++			return
++		end
++		callback(nil, "Node installer not found and no system Node.js available")
+ 		return
+ 	end
+ 
+@@ -101,12 +116,24 @@ local function ensure_node_runtime(callback)
+ 		handle:close()
+ 
+ 		if code ~= 0 then
++			-- Installer failed, try system Node.js as fallback
++			local sys_node = try_system_node()
++			if sys_node then
++				callback(sys_node, nil)
++				return
++			end
+ 			callback(nil, "Node installer failed: " .. stderr_data)
+ 			return
+ 		end
+ 
+ 		local runtime_dir = stdout_data:gsub("%s+$", "")
+ 		if runtime_dir == "" then
++			-- Empty result, try system Node.js as fallback
++			local sys_node = try_system_node()
++			if sys_node then
++				callback(sys_node, nil)
++				return
++			end
+ 			callback(nil, "Node installer returned empty path")
+ 			return
+ 		end
