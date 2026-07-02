@@ -18,7 +18,10 @@ vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 
-vim.opt.hlsearch = true
+-- this line highlights search results, and if set to true, search results remain highlighted
+-- after the search is done, the cursor is moved to the first match
+-- and if set to false, search results highlights are non-persistent
+vim.opt.hlsearch = false
 vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
