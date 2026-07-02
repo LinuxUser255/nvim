@@ -1,60 +1,74 @@
-local config = function()
-	require("nvim-treesitter.configs").setup({
-		build = ":TSUpdate",
-		indent = {
-			enable = true,
-		},
-		autotag = {
-			enable = true,
-		},
-		event = {
-			"BufReadPre",
-			"BufNewFile",
-		},
-		ensure_installed = {
-			"vim",
-			"python",
-			"go",
-			"c",
-			"regex",
-			"rust",
-			"markdown",
-			"json",
-			"javascript",
-			"typescript",
-			"yaml",
-			"html",
-			"css",
-			"markdown",
-			"bash",
-			"lua",
-			"dockerfile",
-			"solidity",
-			"gitignore",
-			"python",
-			"vue",
-			"svelte",
-			"toml",
-		},
-		auto_install = true,
-		highlight = {
-			enable = true,
-			additional_vim_regex_highlighting = true,
-		},
-		incremental_selection = {
-			enable = true,
-			keymaps = {
-				init_selection = "<C-s>",
-				node_incremental = "<C-s>",
-				scope_incremental = false,
-				node_decremental = "<BS>",
-			},
-		},
-	})
-end
+-- DUPLICATE FILE — DO NOT EDIT THIS ONE
+-- Location: lua/plugins/treesitter.lua
+-- This file is IDENTICAL to nvim-treesitter.lua and was causing double-setup crashes on 0.12
+--
+-- RECOMMENDED ACTION:
+--   Option 1 (Safest right now): Replace entire content with this no-op
+--   Option 2: Delete the file entirely with: git rm lua/plugins/treesitter.lua
+--
+-- After applying, only lua/plugins/nvim-treesitter.lua should contain real config.
+
+
+--local config = function()
+--	require("nvim-treesitter.configs").setup({
+--		build = ":TSUpdate",
+--		indent = {
+--			enable = true,
+--		},
+--		autotag = {
+--			enable = true,
+--		},
+--		event = {
+--			"BufReadPre",
+--			"BufNewFile",
+--		},
+--		ensure_installed = {
+--			"vim",
+--			"python",
+--			"go",
+--			"c",
+--			"regex",
+--			"rust",
+--			"markdown",
+--			"json",
+--			"javascript",
+--			"typescript",
+--			"yaml",
+--			"html",
+--			"css",
+--			"markdown",
+--			"bash",
+--			"lua",
+--			"dockerfile",
+--			"solidity",
+--			"gitignore",
+--			"python",
+--			"vue",
+--			"svelte",
+--			"toml",
+--		},
+--		auto_install = true,
+--		highlight = {
+--			enable = true,
+--			additional_vim_regex_highlighting = true,
+--		},
+--		incremental_selection = {
+--			enable = true,
+--			keymaps = {
+--				init_selection = "<C-s>",
+--				node_incremental = "<C-s>",
+--				scope_incremental = false,
+--				node_decremental = "<BS>",
+--			},
+--		},
+--	})
+--end
 
 return {
-	"nvim-treesitter/nvim-treesitter",
-	lazy = false,
-	config = config,
+--	"nvim-treesitter/nvim-treesitter",
+--	lazy = false,
+--	config = config,
+-- This is now a safe no-op. All Treesitter logic lives in:
+--   - lua/plugins/nvim-treesitter.lua  (parsers + indent + incremental_selection)
+--   - lua/config/treesitter-core.lua   (core native highlighting)
 }

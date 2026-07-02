@@ -40,13 +40,17 @@ return
         vim.keymap.set("n", "<leader>fl", function() toggle_telescope(harpoon:list()) end,
             { desc = "Open Harpoon in Telescope" })
         
-        -- Navigation keymaps with better descriptions
-        vim.keymap.set("n", "<C-p>", function() harpoon:list():prev() end,
+        -- Navigation: <A-j>/<A-k> chosen over <C-j>/<C-k> because:
+        --   <C-j> = quickfix cprev  (keymaps.lua:110)
+        --   <C-k> = quickfix cnext  (keymaps.lua:109) + LSP signature_help (lsp.lua:211)
+        -- <C-a> rejected: kills Vim's built-in number-increment primitive.
+        -- <A-j> / <A-k> are clean across the entire config.
+        vim.keymap.set("n", "<A-k>", function() harpoon:list():prev() end,
             { desc = "Previous Harpoon file" })
-        vim.keymap.set("n", "<C-n>", function() harpoon:list():next() end,
+        vim.keymap.set("n", "<A-j>", function() harpoon:list():next() end,
             { desc = "Next Harpoon file" })
-        
-        -- Alternative keymaps if Ctrl conflicts are problematic
+
+        -- Leader fallbacks (zero Ctrl/Alt conflicts)
         vim.keymap.set("n", "<leader>hp", function() harpoon:list():prev() end,
             { desc = "Previous Harpoon file (alt)" })
         vim.keymap.set("n", "<leader>hn", function() harpoon:list():next() end,
