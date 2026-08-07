@@ -2,6 +2,7 @@ return {
   -- Create a local plugin
   dir = vim.fn.stdpath("config") .. "/lua/custom/tabnine-chat",
   name = "tabnine-chat-extension",
+  enabled = false, -- disabled: tabnine deprecated/unsupported, was causing startup hangs
 
   -- This is an extension to the main tabnine-nvim plugin
   dependencies = {

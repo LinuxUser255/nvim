@@ -1,6 +1,9 @@
 -- Turning on Tabnine autocomplete.
+-- Disabled: tabnine is deprecated/unsupported and was causing nvim to hang on startup
+-- (synchronous Node runtime fetch on load, triggered via BufReadPre/VeryLazy events).
 return {
   "tzachar/cmp-tabnine",
+  enabled = false,
   build = "./install.sh",
   dependencies = {
     "hrsh7th/nvim-cmp",

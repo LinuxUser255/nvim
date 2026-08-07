@@ -297,7 +297,7 @@ return {
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp", priority = 1000 },
-                    { name = "tabnine", priority = 900 },
+                    -- { name = "tabnine", priority = 900 }, -- disabled: tabnine deprecated/unsupported, was causing startup hangs
                     { name = "luasnip", priority = 800 },
                     { name = "buffer", priority = 700 },
                     { name = "path", priority = 600 },
