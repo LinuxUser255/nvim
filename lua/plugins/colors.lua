@@ -111,7 +111,7 @@ return {
         priority = 1000,
         config = function()
             -- SET DEFAULT COLORSCHEME
-            vim.cmd.colorscheme "rose-pine"
+            vim.cmd.colorscheme "catppuccin"
 
             -- Command to switch between themes
                 vim.api.nvim_create_user_command('Color', function()
