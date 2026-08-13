@@ -60,13 +60,15 @@ For more on the architecture of this config, see the docs and illustration here:
 
 # Installation
 
-### Automated script: build Neovim from source, and this Neovim Config
+# GitHub
+
+## Automated script: build Neovim from source, and this Neovim Config - From GitHub
 
 ```bash
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
 ```
 
-### The manual way.
+## The manual way - From GitHub
 
 ```bash
 # remove your old neovim config and it's files
@@ -76,6 +78,36 @@ rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
 git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 
 ```
+
+## Automated script: build Neovim from source, and this Neovim Config - GitHub
+
+```bash
+curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
+```
+
+---
+
+
+# GitLab
+
+### The manual way From GitLab.
+
+```bash
+# remove your old neovim config and it's files
+rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
+
+# git clone this one
+git clone https://gitlab.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+
+```
+
+
+## Automated script: build Neovim from source, and this Neovim Config - GitLab
+
+```bash
+git clone https://gitlab.com/LinuxUser255/nvim/-/raw/main/install-fast-improved.sh?ref_type=heads && chmod +x  install-fast-improved.sh && .install-fast-improved.sh
+```
+
 
 
 <br>
