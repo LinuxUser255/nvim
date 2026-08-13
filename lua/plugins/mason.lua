@@ -18,8 +18,8 @@ return {
 
     -- Adds a number of user-friendly snippets
     'rafamadriz/friendly-snippets',
-    --TabNine, AI Autocompletion
-    'codota/tabnine-nvim', build = "./dl_binaries.sh" ,
+    --TabNine, AI Autocompletion (disabled: deprecated/unsupported, caused startup hangs)
+    { 'codota/tabnine-nvim', build = "./dl_binaries.sh", enabled = false },
 
     cmd = 'Mason',
     event = 'BufReadPre',

@@ -1,30 +1,50 @@
+-- Rust-specific indentation, independent of the LSP/hover plugin below
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "rust",
+  callback = function(ev)
+    local bufnr = ev.buf
+    vim.bo[bufnr].tabstop = 4
+    vim.bo[bufnr].shiftwidth = 4
+    vim.bo[bufnr].softtabstop = 4
+    vim.bo[bufnr].expandtab = true
+    vim.bo[bufnr].autoindent = true
+    vim.bo[bufnr].smartindent = true
+    -- Don't use cindent as it conflicts with smartindent/treesitter
+    vim.bo[bufnr].cindent = false
+  end,
+})
+
 return {
   -- Rust-specific plugin with enhanced features
+  -- Replaces simrat39/rust-tools.nvim (archived upstream). rust-tools' hover_actions
+  -- and code_action_group rendered their popups via guihua.lua, which runs its own
+  -- blocking mouse/keyboard input-capture loop. A mouse click/scroll inside that
+  -- popup could leave the loop waiting on an event it never received, freezing the
+  -- whole editor (main thread wedged, not just the popup). rustaceanvim's hover
+  -- actions/code actions go through vim.ui.select instead, so there's no custom
+  -- blocking input loop to get stuck in.
   {
-    "simrat39/rust-tools.nvim",
-    -- Remove ft restriction and use event instead
-    event = { "BufReadPre", "BufNewFile" },
-    dependencies = {
-      "neovim/nvim-lspconfig",
-      "nvim-lua/plenary.nvim",
-      "mfussenegger/nvim-dap",
-    },
-    config = function()
-      local rt = require("rust-tools")
-
-      -- Disable inlay hints to avoid the index out of bounds error
-      -- The rust-tools plugin has a bug with buffer line access
-
-      rt.setup({
+    "mrcjkb/rustaceanvim",
+    version = "^6",
+    lazy = false,
+    init = function()
+      vim.g.rustaceanvim = {
         server = {
           on_attach = function(_client, bufnr)
-            -- Inlay hints disabled due to index out of bounds error
-            -- rt.inlay_hints.enable()
+            local opts = { buffer = bufnr, noremap = true, silent = true }
+            vim.keymap.set("n", "K", function()
+              vim.cmd.RustLsp({ "hover", "actions" })
+            end, opts)
+            vim.keymap.set("n", "<Leader>ca", function()
+              vim.cmd.RustLsp("codeAction")
+            end, opts)
           end,
           settings = {
             ["rust-analyzer"] = {
-              checkOnSave = {
-                enable = true,
+              -- checkOnSave must be a boolean; command lives under `check` now.
+              -- See docs/troubleshooting/rust-anaylzer-checkonsave-warning.md
+              checkOnSave = true,
+              check = {
                 command = "clippy",
               },
               inlayHints = {
@@ -43,30 +63,7 @@ return {
             name = "rt_lldb",
           },
         },
-      })
-
-      -- Set up rust-specific keymaps and indentation for rust files
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "rust",
-        callback = function(ev)
-          local bufnr = ev.buf
-          local opts = { buffer = bufnr, noremap = true, silent = true }
-          
-          -- Keymaps
-          vim.keymap.set("n", "K", rt.hover_actions.hover_actions, opts)
-          vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, opts)
-          
-          -- Force proper indentation settings for Rust files
-          vim.bo[bufnr].tabstop = 4
-          vim.bo[bufnr].shiftwidth = 4
-          vim.bo[bufnr].softtabstop = 4
-          vim.bo[bufnr].expandtab = true
-          vim.bo[bufnr].autoindent = true
-          vim.bo[bufnr].smartindent = true
-          -- Don't use cindent as it conflicts with smartindent/treesitter
-          vim.bo[bufnr].cindent = false
-        end
-      })
+      }
     end,
   },
 

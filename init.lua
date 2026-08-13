@@ -1,6 +1,9 @@
 -- init.lua
 -- Neovim 0.12.2-dev Configuration Entry Point
 -- Structured like main.py or Bash main() pattern design pattern
+-- Error in /home/linux/.config/nvim/init.lua:
+-- Invalid spec module: `plugins.tabnine`
+-- Expected a `table` of specs, but a `nil` was returned instead
 
 -- ============================================
 -- 1. HELPER / SETUP FUNCTIONS

@@ -21,13 +21,18 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
-                    "rust_analyzer", -- Rust language server
+                    "rust_analyzer", -- installed via mason so rustaceanvim can use the binary,
+                                     -- but not auto-enabled here (see automatic_enable below)
                     "pyright",  -- Python language server
                     "clangd",   -- Clangd-based C/C++ language server
                     "bashls",   -- Bash language server
                     "gopls",    -- Go language server
                 },
                 automatic_installation = true,
+                -- rustaceanvim (plugins/rust.lua) starts rust-analyzer itself. Without this
+                -- exclusion, mason-lspconfig auto-enables every ensure_installed server via
+                -- vim.lsp.enable(), producing a second, competing rust_analyzer client.
+                automatic_enable = { exclude = { "rust_analyzer" } },
             })
 
             require("mason-registry").refresh(function()
@@ -79,54 +84,9 @@ return {
                 on_attach = on_attach,
             })
 
-            -- Rust LSP configuration (rust-analyzer)
-            lspconfig.rust_analyzer.setup({
-                settings = {
-                    ["rust-analyzer"] = {
-                        checkOnSave = {
-                            enable = true,
-                            command = "clippy",
-                            extraArgs = {"--all", "--all-features"}
-                        },
-                        cargo = {
-                            allFeatures = true,
-                            loadOutDirsFromCheck = true,
-                        },
-                        procMacro = {
-                            enable = true,
-                        },
-                        diagnostics = {
-                            enable = true,
-                            experimental = {
-                                enable = true,
-                            },
-                        },
-                        inlayHints = {
-                            enable = true,
-                            chainingHints = { enable = true },
-                            parameterHints = { enable = true },
-                            typeHints = { enable = true },
-                            maxLength = 25,
-                        },
-                        completion = {
-                            autoimport = {
-                                enable = true,
-                            },
-                            postfix = {
-                                enable = true,
-                            },
-                        },
-                        imports = {
-                            granularity = {
-                                group = "module",
-                            },
-                            prefix = "self",
-                        },
-                    },
-                },
-                capabilities = require('cmp_nvim_lsp').default_capabilities(),
-                on_attach = on_attach,
-            })
+            -- Rust is intentionally NOT set up here: rustaceanvim (see plugins/rust.lua)
+            -- owns the rust-analyzer client. Also starting it via lspconfig here would
+            -- attach two competing rust-analyzer clients to every Rust buffer.
 
             -- Python LSP configuration (pyright)
             lspconfig.pyright.setup({
@@ -202,11 +162,17 @@ return {
                     -- Enable completion triggered by <c-x><c-o>
                     vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
+                    -- rustaceanvim (plugins/rust.lua) already sets K and <leader>ca for its
+                    -- rust-analyzer client, via vim.g.rustaceanvim.server.on_attach. Its
+                    -- on_attach runs before this LspAttach autocmd, so without this guard
+                    -- the generic mappings below would silently overwrite those.
+                    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+                    local is_rust_analyzer = client and (client.name == 'rust-analyzer' or client.name == 'rust_analyzer')
+
                     -- Buffer local mappings.
                     local opts = { buffer = ev.buf }
                     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
                     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-                    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
                     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
                     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
                     vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
@@ -216,8 +182,12 @@ return {
                     end, opts)
                     vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, opts)
                     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-                    vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
                     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+
+                    if not is_rust_analyzer then
+                        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+                        vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, opts)
+                    end
 
                     -- Add keymap to toggle inlay hints
                     -- vim.keymap.set('n', '<leader>ih', function()
@@ -297,7 +267,7 @@ return {
                 }),
                 sources = cmp.config.sources({
                     { name = "nvim_lsp", priority = 1000 },
-                    { name = "tabnine", priority = 900 },
+                    -- { name = "tabnine", priority = 900 }, -- disabled: tabnine deprecated/unsupported, was causing startup hangs
                     { name = "luasnip", priority = 800 },
                     { name = "buffer", priority = 700 },
                     { name = "path", priority = 600 },
