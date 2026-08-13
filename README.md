@@ -85,8 +85,14 @@ git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.co
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
 ```
 
+<br>
+
+
 ---
 
+
+
+<br>
 
 # GitLab
 
@@ -131,12 +137,12 @@ git clone https://gitlab.com/LinuxUser255/nvim/-/raw/main/install-fast-improved.
  - TOML
  - LaTeX
 
-### - The install script will take care of most of the dependencies; however check your version of Neovim first.
+### • The install script will take care of most of the dependencies; however check your version of Neovim first.
 ```bash
   nvim -v
 ```
 
-### - Use this config's  [install.sh script](install.sh), and all dependencies and Requirements will be automated for you.
+### •  Automated [install.sh script](install-fast-improved.sh), includes all dependencies in one go.
 
 ### This works too:
 
