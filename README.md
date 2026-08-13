@@ -68,7 +68,7 @@ For more on the architecture of this config, see the docs and illustration here:
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
 ```
 
-## The manual way - From GitHub
+## Manual install -  GitHub
 
 ```bash
 # remove your old neovim config and it's files
@@ -79,7 +79,7 @@ git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.co
 
 ```
 
-## Automated script: build Neovim from source, and this Neovim Config - GitHub
+## Automated install - GitHub
 
 ```bash
 curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
@@ -90,7 +90,7 @@ curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/ins
 
 # GitLab
 
-### The manual way From GitLab.
+### Manual install - GitLab.
 
 ```bash
 # remove your old neovim config and it's files
@@ -102,7 +102,7 @@ git clone https://gitlab.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.co
 ```
 
 
-## Automated script: build Neovim from source, and this Neovim Config - GitLab
+## Automated install - GitLab
 
 ```bash
 git clone https://gitlab.com/LinuxUser255/nvim/-/raw/main/install-fast-improved.sh?ref_type=heads && chmod +x  install-fast-improved.sh && .install-fast-improved.sh
