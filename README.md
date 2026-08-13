@@ -60,55 +60,39 @@ For more on the architecture of this config, see the docs and illustration here:
 
 # Installation
 
-# GitHub
+Choose whichever remote you prefer — GitHub or GitLab both host this config and stay in sync.
 
-## Automated script: build Neovim from source, and this Neovim Config - From GitHub
+## GitHub
 
+**Automated** — builds Neovim from source and installs this config:
 ```bash
-curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
+curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install-fast-improved.sh && chmod +x install-fast-improved.sh && ./install-fast-improved.sh
 ```
 
-## The manual way - From GitHub
-
+**Manual**:
 ```bash
-# remove your old neovim config and it's files
-rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
+# remove your old neovim config and its files
+rm -rf ~/.config/nvim ~/.local/share/nvim
 
-# git clone this one
+# clone this repo
 git clone https://github.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-
 ```
 
-## Automated script: build Neovim from source, and this Neovim Config - GitHub
+## GitLab
 
+**Automated** — builds Neovim from source and installs this config:
 ```bash
-curl -LO https://raw.githubusercontent.com/LinuxUser255/nvim/refs/heads/main/install.sh && chmod +x install.sh && ./install.sh
+curl -LO https://gitlab.com/LinuxUser255/nvim/-/raw/main/install-fast-improved.sh && chmod +x install-fast-improved.sh && ./install-fast-improved.sh
 ```
 
----
-
-
-# GitLab
-
-### The manual way From GitLab.
-
+**Manual**:
 ```bash
-# remove your old neovim config and it's files
-rm -rf ~/.config/nvim; rm -rf ~/.local/share/nvim
+# remove your old neovim config and its files
+rm -rf ~/.config/nvim ~/.local/share/nvim
 
-# git clone this one
+# clone this repo
 git clone https://gitlab.com/LinuxUser255/nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
-
 ```
-
-
-## Automated script: build Neovim from source, and this Neovim Config - GitLab
-
-```bash
-git clone https://gitlab.com/LinuxUser255/nvim/-/raw/main/install-fast-improved.sh?ref_type=heads && chmod +x  install-fast-improved.sh && .install-fast-improved.sh
-```
-
-
 
 <br>
 
