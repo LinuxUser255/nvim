@@ -1,5 +1,9 @@
 # Neovim Config
 
+**Attention**, the GitLab repo, https://gitlab.com/LinuxUser255/nvim, is the primary repository for this codebase.
+The GitHub repo is remote-tracking only. All changes are made on GitLab.
+
+
 ![nvim-telescope-inaction-scaled.png](resources/nvim-telescope-inaction-scaled.png)
 
 ## Table of Contents
