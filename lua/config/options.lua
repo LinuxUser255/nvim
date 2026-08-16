@@ -15,6 +15,13 @@ vim.opt.wrap = false
 
 vim.opt.swapfile = false
 vim.opt.backup = false
+
+-- Disable the blocking "-- More --" pager. A vim.schedule()'d callback that
+-- echoes a multi-line message (e.g. a checkOnSave/clippy result firing during
+-- :q teardown) parks the *entire* main thread in get_keystroke waiting for a
+-- keypress nobody sees coming - looks exactly like a freeze. See
+-- ~/Projects/neovim-fix-freeze for the diagnostic backtrace that found this.
+vim.opt.more = false
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 

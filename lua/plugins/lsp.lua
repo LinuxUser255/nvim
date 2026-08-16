@@ -29,10 +29,11 @@ return {
                     "gopls",    -- Go language server
                 },
                 automatic_installation = true,
-                -- rustaceanvim (plugins/rust.lua) starts rust-analyzer itself. Without this
-                -- exclusion, mason-lspconfig auto-enables every ensure_installed server via
-                -- vim.lsp.enable(), producing a second, competing rust_analyzer client.
-                automatic_enable = { exclude = { "rust_analyzer" } },
+                -- rustaceanvim (plugins/rust.lua) starts rust-analyzer itself, and lua_ls/
+                -- pyright/clangd/gopls are configured and enabled manually below via
+                -- vim.lsp.config()/vim.lsp.enable(). Without this exclusion, mason-lspconfig
+                -- would also auto-enable them, producing a second, competing client for each.
+                automatic_enable = { exclude = { "rust_analyzer", "lua_ls", "pyright", "clangd", "gopls" } },
             })
 
             require("mason-registry").refresh(function()
@@ -56,8 +57,6 @@ return {
                 end
             end)
 
-            local lspconfig = require("lspconfig")
-
             -- Enhanced on_attach function with better inlay hint handling
             local function on_attach(client, bufnr)
                 -- Enable inlay hints if supported, with error handling
@@ -70,9 +69,9 @@ return {
                 --     end
                 -- end
             end
-            
+
             -- Lua LSP configuration
-            lspconfig.lua_ls.setup({
+            vim.lsp.config('lua_ls', {
                 settings = {
                     Lua = {
                         runtime = { version = "Lua 5.1" },
@@ -83,13 +82,14 @@ return {
                 },
                 on_attach = on_attach,
             })
+            vim.lsp.enable('lua_ls')
 
             -- Rust is intentionally NOT set up here: rustaceanvim (see plugins/rust.lua)
             -- owns the rust-analyzer client. Also starting it via lspconfig here would
             -- attach two competing rust-analyzer clients to every Rust buffer.
 
             -- Python LSP configuration (pyright)
-            lspconfig.pyright.setup({
+            vim.lsp.config('pyright', {
                 settings = {
                     python = {
                         analysis = {
@@ -103,9 +103,10 @@ return {
                 },
                 on_attach = on_attach,
             })
+            vim.lsp.enable('pyright')
 
             -- C/C++ LSP configuration (clangd)
-            lspconfig.clangd.setup({
+            vim.lsp.config('clangd', {
                 cmd = {
                     "clangd",
                     "--background-index",
@@ -114,22 +115,19 @@ return {
                     "--header-insertion=iwyu",
                 },
                 filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
-                root_dir = require("lspconfig.util").root_pattern(
-                    "compile_commands.json",
-                    "compile_flags.txt",
-                    ".git"
-                ),
+                root_markers = { "compile_commands.json", "compile_flags.txt", ".git" },
                 init_options = {
                     compilationDatabasePath = "build",
                 },
                 on_attach = on_attach,
             })
+            vim.lsp.enable('clangd')
 
             -- Go LSP configuration (gopls)
-            lspconfig.gopls.setup({
+            vim.lsp.config('gopls', {
                 cmd = {"gopls", "serve"},
                 filetypes = {"go", "gomod", "gowork", "gotmpl"},
-                root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
+                root_markers = { "go.work", "go.mod", ".git" },
                 settings = {
                     gopls = {
                         analyses = {
@@ -154,6 +152,7 @@ return {
                 },
                 on_attach = on_attach,
             })
+            vim.lsp.enable('gopls')
 
             -- Set up keybindings for LSP functionality
             vim.api.nvim_create_autocmd('LspAttach', {

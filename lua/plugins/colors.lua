@@ -110,6 +110,13 @@ return {
         name = "nvim-notify",   -- Add a name for this plugin
         priority = 1000,
         config = function()
+            -- Route ALL messages (LSP window/showMessage, checkOnSave/clippy
+            -- output, plugin prints, etc.) through nvim-notify's async
+            -- floating UI instead of the classic blocking command-line echo.
+            -- Without this, only the manual :Color command used nvim-notify,
+            -- and everything else could still trip the "-- More --" freeze.
+            vim.notify = require("notify")
+
             -- SET DEFAULT COLORSCHEME
             vim.cmd.colorscheme "catppuccin"
 
